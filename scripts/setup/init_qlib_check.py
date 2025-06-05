@@ -3,6 +3,10 @@ import qlib
 from qlib.data import D
 from qlib.config import REG_US
 import pandas as pd
+import sys
+
+# Ensure UTF-8 console output for emoji support
+sys.stdout.reconfigure(encoding="utf-8")
 
 # ✅ Initialize Qlib with local US data
 qlib.init(provider_uri="./qlib_data", region=REG_US)

@@ -1,6 +1,10 @@
 
 import json
 from v6.utils.module_fusion_watchlist import fusionner_watchlists
+import sys
+
+# Ensure UTF-8 console output for emoji support
+sys.stdout.reconfigure(encoding="utf-8")
 
 def test_fusion_watchlist():
     tickers = fusionner_watchlists()

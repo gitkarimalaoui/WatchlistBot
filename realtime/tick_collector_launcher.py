@@ -1,6 +1,10 @@
 
 import subprocess
 import os
+import sys
+
+# Ensure UTF-8 console output for emoji support
+sys.stdout.reconfigure(encoding="utf-8")
 
 def start_tick_collector_background():
     script_path = os.path.join("realtime", "real_time_tick_collector.py")

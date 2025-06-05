@@ -1,4 +1,8 @@
 import joblib
+import sys
+
+# Ensure UTF-8 console output for emoji support
+sys.stdout.reconfigure(encoding="utf-8")
 
 # Charger l'ancien modèle
 model = joblib.load('modele_ia.pkl')

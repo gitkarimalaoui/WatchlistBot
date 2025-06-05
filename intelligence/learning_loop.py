@@ -5,6 +5,10 @@ from simulations.simulation_achat import enregistrer_trade
 from simulations.simulation_vente import enregistrer_vente
 import time
 import random
+import sys
+
+# Ensure UTF-8 console output for emoji support
+sys.stdout.reconfigure(encoding="utf-8")
 
 WATCHLIST = ["CMND", "RSLS", "TCTM", "AAPL", "GME"]
 

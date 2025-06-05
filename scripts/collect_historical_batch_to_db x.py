@@ -5,6 +5,9 @@ import time
 import sqlite3
 import pandas as pd
 
+# Ensure UTF-8 console output for emoji support
+sys.stdout.reconfigure(encoding="utf-8")
+
 # ─── Configuration des chemins ─────────────────────────────────────────────────
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 UTILS = os.path.join(ROOT_DIR, "utils")

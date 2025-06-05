@@ -6,6 +6,10 @@ import re
 from datetime import datetime
 from pathlib import Path
 from playwright.async_api import async_playwright
+import sys
+
+# Ensure UTF-8 console output for emoji support
+sys.stdout.reconfigure(encoding="utf-8")
 
 # ——— Configuration ———
 DB_PATH        = Path(__file__).parents[1] / "data" / "trades.db"

@@ -5,6 +5,9 @@ import sys
 import json
 import os
 
+# Ensure UTF-8 console output for emoji support
+sys.stdout.reconfigure(encoding="utf-8")
+
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config_moomoo.json")
 
 def load_config():
