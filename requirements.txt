@@ -1,0 +1,11 @@
+streamlit
+pandas
+plotly
+transformers
+openai
+scikit-learn
+beautifulsoup4
+requests
+pyautogui
+joblib
+streamlit
