@@ -1,8 +1,6 @@
-
 import requests
 import pandas as pd
 import os
-from datetime import datetime
 import time
 
 FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY", "cvs634hr01qvc2mv1e00cvs634hr01qvc2mv1e0g")
@@ -21,12 +19,12 @@ def fetch_finnhub_historical_data(ticker: str) -> pd.DataFrame:
             return None
 
         df = pd.DataFrame({
-            "Date": pd.to_datetime(data["t"], unit="s"),
-            "Open": data["o"],
-            "High": data["h"],
-            "Low": data["l"],
-            "Close": data["c"],
-            "Volume": data["v"]
+            "timestamp": pd.to_datetime(data["t"], unit="s"),
+            "open": data["o"],
+            "high": data["h"],
+            "low": data["l"],
+            "close": data["c"],
+            "volume": data["v"]
         })
         return df
     except Exception as e:
@@ -48,12 +46,12 @@ def fetch_finnhub_intraday_data(ticker: str) -> pd.DataFrame:
             return None
 
         df = pd.DataFrame({
-            "Datetime": pd.to_datetime(data["t"], unit="s"),
-            "Open": data["o"],
-            "High": data["h"],
-            "Low": data["l"],
-            "Close": data["c"],
-            "Volume": data["v"]
+            "timestamp": pd.to_datetime(data["t"], unit="s"),
+            "open": data["o"],
+            "high": data["h"],
+            "low": data["l"],
+            "close": data["c"],
+            "volume": data["v"]
         })
         return df
     except Exception as e:
