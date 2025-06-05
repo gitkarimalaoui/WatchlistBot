@@ -1,6 +1,6 @@
 
 import streamlit as st
-from utils_graph_unifie import plot_dual_chart, charger_donnees_ticker_intelligent
+from utils_graph import plot_dual_chart, charger_donnees_ticker_intelligent
 
 def afficher_ticker_panel(ticker, stock, index):
     with st.expander(f"{index + 1}. {ticker}", expanded=False):
