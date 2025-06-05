@@ -19,7 +19,7 @@ UTILS = os.path.join(ROOT_DIR, "utils")
 SIMULATION = os.path.join(ROOT_DIR, "simulation")
 
 # ─── Ajout des chemins au système ───────────────────────────────────────────────
-for path in (SCRIPTS, ROOT_UI, UTILS, SIMULATION):
+for path in (ROOT_DIR, SCRIPTS, ROOT_UI, UTILS, SIMULATION):
     if path not in sys.path:
         sys.path.insert(0, path)
 
