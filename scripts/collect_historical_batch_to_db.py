@@ -6,10 +6,11 @@ import sqlite3
 import pandas as pd
 
 # Ensure UTF-8 console output for emoji support
+# Try to enforce UTF-8 output so emoji appear correctly
 if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 else:
-    sys.stdout = open(sys.stdout.fileno(), mode="w", encoding="utf-8", buffering=1)
+    sys.stdout = open(sys.stdout.fileno(), mode="w", encoding="utf-8", buffering=1, errors="replace")
 
 # ─── Configuration des chemins ─────────────────────────────────────────────────
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -61,11 +62,12 @@ for i, ticker in enumerate(tickers, start=1):
     df["ticker"] = ticker
 
     # Only keep timestamp and close columns to match the table schema
-    required_cols = ["timestamp", "close"]
-    if not all(col in df.columns for col in required_cols):
-        print(f"[WARN] Colonnes manquantes pour {ticker}, saute")
+    required_cols = {"timestamp", "close"}
+    if not required_cols.issubset(df.columns):
+        print(f"[WARN] Colonnes manquantes pour {ticker}, saute : {df.columns.tolist()}")
         continue
-    df = df[required_cols + ["ticker"]]
+
+    df = df[list(required_cols) + ["ticker"]]
 
     try:
         df.to_sql("historical_data", conn, if_exists="append", index=False)
