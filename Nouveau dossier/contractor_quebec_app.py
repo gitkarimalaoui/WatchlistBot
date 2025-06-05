@@ -1,0 +1,1 @@
+<... code de contractor_quebec_app.py ...>

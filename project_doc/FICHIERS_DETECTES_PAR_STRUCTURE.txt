@@ -1,0 +1,290 @@
+ÀÄÄÄWatchlistBot_V7.02.001/³   Audit_WatchlistBot_V7.02.pdf
+ÀÄÄÄWatchlistBot_V7.02.001/³   init_watchlist_table.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   lancer_watchlistbot.bat
+ÀÄÄÄWatchlistBot_V7.02.001/³   main.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   README.md
+ÀÄÄÄWatchlistBot_V7.02.001/³   VERSION_HISTORY.md
+ÀÄÄÄWatchlistBot_V7.02.001/³   __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³
+ÀÄÄÄWatchlistBot_V7.02.001/ÃÄÄÄBOTV7
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÀÄÄÄv6
+ÀÄÄÄWatchlistBot_V7.02.001/³       ÀÄÄÄdata
+ÀÄÄÄWatchlistBot_V7.02.001/³           ÀÄÄÄtrades
+ÀÄÄÄWatchlistBot_V7.02.001/³                   trades.db
+ÀÄÄÄWatchlistBot_V7.02.001/³
+ÀÄÄÄWatchlistBot_V7.02.001/ÃÄÄÄBOTV7.egg-info
+ÀÄÄÄWatchlistBot_V7.02.001/³       dependency_links.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³       entry_points.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³       PKG-INFO
+ÀÄÄÄWatchlistBot_V7.02.001/³       requires.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³       SOURCES.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³       top_level.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³
+ÀÄÄÄWatchlistBot_V7.02.001/ÃÄÄÄdata
+ÀÄÄÄWatchlistBot_V7.02.001/³       watchlist.db
+ÀÄÄÄWatchlistBot_V7.02.001/³       watchlist_jaguar.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³
+ÀÄÄÄWatchlistBot_V7.02.001/ÃÄÄÄmodels
+ÀÄÄÄWatchlistBot_V7.02.001/³       modele_ia.pkl
+ÀÄÄÄWatchlistBot_V7.02.001/³       model_gain_classifier.pkl
+ÀÄÄÄWatchlistBot_V7.02.001/³       model_gain_regressor.pkl
+ÀÄÄÄWatchlistBot_V7.02.001/³       __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³
+ÀÄÄÄWatchlistBot_V7.02.001/ÃÄÄÄrealtime
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   build_intraday_candles.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÀÄÄÄ__pycache__
+ÀÄÄÄWatchlistBot_V7.02.001/³           build_intraday_candles.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³           __init__.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³
+ÀÄÄÄWatchlistBot_V7.02.001/ÃÄÄÄscripts
+ÀÄÄÄWatchlistBot_V7.02.001/³       agent_scraper_jaguar.py
+ÀÄÄÄWatchlistBot_V7.02.001/³
+ÀÄÄÄWatchlistBot_V7.02.001/ÃÄÄÄtests
+ÀÄÄÄWatchlistBot_V7.02.001/³       test_affichage_streamlit.py
+ÀÄÄÄWatchlistBot_V7.02.001/³       test_ajout_ticker.py
+ÀÄÄÄWatchlistBot_V7.02.001/³       test_analyse_ia.py
+ÀÄÄÄWatchlistBot_V7.02.001/³       test_fusion.py
+ÀÄÄÄWatchlistBot_V7.02.001/³       test_import_txt.py
+ÀÄÄÄWatchlistBot_V7.02.001/³       test_scraping_jaguar.py
+ÀÄÄÄWatchlistBot_V7.02.001/³
+ÀÄÄÄWatchlistBot_V7.02.001/ÃÄÄÄui
+ÀÄÄÄWatchlistBot_V7.02.001/³       app_unifie_watchlistbot.py
+ÀÄÄÄWatchlistBot_V7.02.001/³       dashboard.py
+ÀÄÄÄWatchlistBot_V7.02.001/³
+ÀÄÄÄWatchlistBot_V7.02.001/ÃÄÄÄutils
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   finnhub.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   graphs.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   watchlist.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÀÄÄÄ__pycache__
+ÀÄÄÄWatchlistBot_V7.02.001/³           finnhub.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³           graphs.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³           watchlist.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³           __init__.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³
+ÀÄÄÄWatchlistBot_V7.02.001/ÃÄÄÄv5
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   config.yaml
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   image1.png
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   lancer_bot_trading.bat
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   main.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   README.md
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   requirements.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   resume_environnement_python_trading_bot.pdf
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   watchlist_bot.db
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÃÄÄÄanalyzer
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   analyse_finnhub.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   finnhub_client.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ÀÄÄÄ__pycache__
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           analyse_finnhub.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           finnhub_client.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÃÄÄÄdata
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ÀÄÄÄdb
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           watchlist_bot.db
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÃÄÄÄdata_ingestion
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   watchlist_auto.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   watchlist_generator.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ÀÄÄÄ__pycache__
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           watchlist_generator.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÃÄÄÄexecution
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³       execution_simulee.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÃÄÄÄutils
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   utils.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   utils_finnhub.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   utils_graph.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ÀÄÄÄ__pycache__
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           utils_finnhub.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           utils_graph.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           __init__.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÃÄÄÄwebapp
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   analyse_finnhub_ui.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   check_tickers.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   cloture.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   dashboard.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   journal.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   menu_v5_sidebar.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   simulation_achat.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   simulation_vente.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   telegram_alerts.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ÀÄÄÄ__pycache__
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           analyse_finnhub_ui.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           cloture.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           dashboard.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           journal.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           simulation_achat.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           simulation_vente.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÀÄÄÄ__pycache__
+ÀÄÄÄWatchlistBot_V7.02.001/³           __init__.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³
+ÀÄÄÄWatchlistBot_V7.02.001/ÃÄÄÄv6
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÃÄÄÄdata
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   config_ia.json
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   parametres.json
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   rules_auto.json
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   tickers_manuels.json
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   watchlist_source.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   watchlist_uploaded.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   watchlist_uploaded_temp.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ÃÄÄÄgraphs
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³       APLD_candles.png
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³       GNS_candles.png
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³       RSLS_candles.png
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³       __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ÃÄÄÄticks
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³       APLD.csv
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³       GNS.csv
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³       RSLS.csv
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ÃÄÄÄtrades
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³       trades.db
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³       __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ÀÄÄÄwatchlist not used
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           tickers_watchlist_avril2025.csv
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           watchlist_uploaded.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           watchlist_uploaded1.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           wlapL2025.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÃÄÄÄintelligence
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   apprentissage_hybride.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   learning_engine.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ÀÄÄÄ__pycache__
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           apprentissage_hybride.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           learning_engine.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           learning_loop.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           __init__.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÃÄÄÄmodels
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³       modele_ia.pkl
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³       model_gain_classifier.pkl
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³       model_gain_regressor.pkl
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³       __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÃÄÄÄpages
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   backtest.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   backtest_qlib.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   patterns.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   training.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ÀÄÄÄ__pycache__
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           patterns.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           __init__.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÃÄÄÄsupprim‚es
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   ai_backtest.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   auto_tick_collector.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   checklist_import_affichage.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   cloture_journee.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   dashboard.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   dashboard_apprentissage.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   dashboard_journalier.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   exec_python_debug.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   ia_control_center.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   journal_complet.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   journal_simule_aggrid.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   journal_trades.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   moteur_ia.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   parametres.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   predictor_live.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   watchlist_interactive.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   _archived_app.py.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ÃÄÄÄpages
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³       backtest.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³       backtest_qlib.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³       patterns.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³       training.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ÀÄÄÄ__pycache__
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           ai_backtest.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           analyse_tickers.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           analyse_tickers_realtime_v1.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           analyse_tickers_realtime_v2_aggrid.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           auto_tick_collector.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           checklist_import_affichage.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           parametres.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           __init__.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÃÄÄÄutils
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   check_tickers.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   config.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   dashboard_apprentissage.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   db_model.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   module_checklist_fusion.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   module_fusion_watchlist.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   module_fusion_watchlistold.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   module_import_checklist_txt.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   qlib_loader.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   telegram_ai_alerts.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   utils_affichage_ticker.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   utils_ai_predictor.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   utils_ai_strategy.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   utils_finnhub.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   utils_graph.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   utils_graph_local.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   utils_watchlist.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³   __init__.py
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³   ÀÄÄÄ__pycache__
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           check_tickers.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           module_checklist_fusion.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           module_fusion_watchlist.cpython-311.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           module_fusion_watchlist.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           qlib_loader.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           telegram_ai_alerts.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           utils_affichage_ticker.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           utils_ai_predictor.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           utils_ai_strategy.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           utils_finnhub.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           utils_graph.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           utils_graph_local.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           utils_watchlist.cpython-312.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           utils_watchlist.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           __init__.cpython-312.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³           __init__.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÃÄÄÄwatchlist
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³       tickers_watchlist_avril2025.csv
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³       tickers_watchlist_avril2025_full.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³       wlapL2025.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³   ³
+ÀÄÄÄWatchlistBot_V7.02.001/³   ÀÄÄÄ__pycache__
+ÀÄÄÄWatchlistBot_V7.02.001/³           analyse_tickers.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³           app.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³           tick_collector_launcher.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³           __init__.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/³
+ÀÄÄÄWatchlistBot_V7.02.001/ÃÄÄÄwatchlist
+ÀÄÄÄWatchlistBot_V7.02.001/³       tickers_watchlist_avril2025_full.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³       watchlist_uploaded.txt
+ÀÄÄÄWatchlistBot_V7.02.001/³
+ÀÄÄÄWatchlistBot_V7.02.001/ÀÄÄÄ__pycache__
+ÀÄÄÄWatchlistBot_V7.02.001/main.cpython-313.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/main.cpython-38.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/__init__.cpython-313.pyc
+ÀÄÄÄWatchlistBot_V7.02.001/__init__.cpython-38.pyc

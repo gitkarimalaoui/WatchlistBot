@@ -1,0 +1,16 @@
+{
+    "volume": 0.3,
+    "float": -0.2,
+    "change_percent": 0.8,
+    "news_sentiment": 0.6,
+    "premarket_gain": 0.5,
+    "mots_cles_news": [
+        "FDA",
+        "partenariat",
+        "acquisition",
+        "r\u00e9sultats cliniques"
+    ],
+    "seuil_gain_pour_selection": 20,
+    "seuil_volume": 1000000,
+    "float_max": 50000000
+}

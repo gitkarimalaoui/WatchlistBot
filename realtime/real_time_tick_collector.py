@@ -1,0 +1,46 @@
+import os
+import time
+import json
+import requests
+import pandas as pd
+from datetime import datetime
+
+FINNHUB_TOKEN = "cvs634hr01qvc2mv1e00cvs634hr01qvc2mv1e0g"
+BASE_URL = "https://finnhub.io/api/v1/quote"
+SAVE_DIR = "data/ticks"
+INTERVAL = 15  # seconds between requests
+
+TICKERS = ["AAPL", "TSLA", "NVDA", "SPPL", "SONN"]  # You can customize
+
+os.makedirs(SAVE_DIR, exist_ok=True)
+
+def get_quote(ticker):
+    url = f"{BASE_URL}?symbol={ticker}&token={FINNHUB_TOKEN}"
+    try:
+        r = requests.get(url)
+        data = r.json()
+        data["timestamp"] = int(time.time())
+        return data
+    except Exception as e:
+        print(f"Error fetching {ticker}: {e}")
+        return None
+
+def append_tick(ticker, data):
+    path = os.path.join(SAVE_DIR, f"{ticker}.csv")
+    df = pd.DataFrame([data])
+    if os.path.exists(path):
+        df.to_csv(path, mode="a", header=False, index=False)
+    else:
+        df.to_csv(path, index=False)
+
+if __name__ == "__main__":
+    print("🚀 Starting real-time tick collector...")
+    while True:
+        for ticker in TICKERS:
+            quote = get_quote(ticker)
+            if quote and "c" in quote:
+                append_tick(ticker, quote)
+                print(f"✅ {ticker} at {quote['c']} saved.")
+            else:
+                print(f"❌ No data for {ticker}.")
+        time.sleep(INTERVAL)

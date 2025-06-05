@@ -1,0 +1,4 @@
+├── models/
+│   ├── modele_ia.pkl                    ← Modèle IA entraîné
+│   └── converted/
+│       └── modele_ia_converted.pkl      ← Version exportée (ONNX, joblib, etc.)

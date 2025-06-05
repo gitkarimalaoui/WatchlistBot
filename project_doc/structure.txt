@@ -1,0 +1,58 @@
+WatchlistBot_V6.2/
+├── app.py                           ✅ Point d’entrée principal
+├── pages/                           📂 Modules affichés dans le menu
+│   ├── analyse_tickers.py
+│   ├── moteur_ia.py
+│   ├── dashboard.py
+│   ├── journal_trades.py
+│   ├── cloture_journee.py
+│   └── parametres.py
+├── utils/                           📂 Fonctions techniques & API
+│   ├── utils_finnhub.py             ✅ Appels API Finnhub (quote, float, candles)
+│   ├── utils_graph.py               ✅ Graphique bougies
+│   └── db_model.py                  ✅ Base SQLite trades
+├── config/                          📂 Paramètres manuels et IA
+│   ├── rules_auto.json              ✅ Règles de détection pump
+│   └── meta_ia.json                 ✅ Résultats IA
+├── data/                            📂 Données dynamiques utilisateurs
+│   ├── tickers_manuels.json         ✅ Watchlist utilisateur
+│   ├── journal_simule.json          ✅ Log des trades simulés
+│   └── daily_results_live.db        ✅ Résumé journalier de performance
+├── alerts/                          📂 Alerte Telegram, Discord ou autres
+│   └── telegram_alerts.py           ✅ (à venir)
+├── README_FR.md                     ✅ Guide utilisateur
+├── plan_execution.pdf               ✅ Checklist projet validée
+
+WatchlistBot_V6.2/
+├── ...
+├── simulations/
+│   ├── simulation_achat.py     ✅ exécute un achat simulé avec frais Moomoo
+│   └── simulation_vente.py     ✅ ajoute le prix de vente à un trade ouvert
+
+├── logs/
+│   └── application.log
+├── README_FR.md
+└── plan_execution.pdf
+
+WatchlistBot_V6.2/
+├── app.py
+├── pages/
+│   ├── analyse_tickers.py
+│   ├── moteur_ia.py
+│   ├── dashboard.py
+│   ├── journal_trades.py
+│   ├── cloture_journee.py
+│   └── parametres.py
+├── utils/
+│   ├── utils_graph.py
+│   └── db_model.py
+├── data/
+│   ├── tickers_manuels.json
+│   ├── rules_auto.json
+│   ├── journal_simule.json
+│   └── daily_results_live.db
+├── config/
+│   ├── fees_config.json
+│   └── meta_ia.json
+├──intelligence/
+│   └──learning_loop.py

@@ -1,0 +1,11 @@
+{
+  "search": { "x": 359, "y": 25 },
+  "quick_trade": { "x": 1645, "y": 23 },
+  "quantity": { "x": 284, "y": 421 },
+  "price": { "x": 292, "y": 379 },
+  "buy": { "x": 145, "y": 693 },
+  "submit": { "x": 1126, "y": 739 },
+  "unlock_code": "268450",
+  "unlock_input": { "x": 821, "y": 525 },
+  "lock_toggle": { "x": 1738, "y": 18 }
+}

@@ -1,0 +1,45 @@
+
+Checklist de validation - WatchlistBot V6.2
+
+1. LANCEMENT APPLICATION
+[ ] Le fichier app.py se lance avec `streamlit run app.py`
+[ ] Le menu latéral affiche correctement les sections suivantes :
+    - IA Control Center
+    - Journal complet
+    - Dashboard apprentissage IA
+    - Dashboard journalier
+
+2. IA CONTROL CENTER
+[ ] Le bouton "Lancer la boucle IA" exécute l’analyse et enregistre des trades simulés
+[ ] Le bouton "Mettre à jour l'apprentissage IA" met bien à jour le fichier meta_ia.json
+[ ] La watchlist fusionnée s'affiche correctement (au moins 1 ticker détecté)
+
+3. JOURNAL COMPLET
+[ ] Les colonnes s'affichent : ticker, prix_achat, prix_vente, frais, gain_net, provenance
+[ ] Les trades gagnants s'affichent en vert, les perdants en rouge
+[ ] Le bouton "Télécharger CSV" fonctionne
+
+4. DASHBOARD JOURNALIER
+[ ] Les lignes sont bien regroupées par jour
+[ ] Le total des gains, % réussite et score moyen s’affichent
+[ ] Le bouton d'export CSV fonctionne
+
+5. DASHBOARD APPRENTISSAGE
+[ ] Le graphique barres s'affiche avec les patterns gagnants/perdants
+[ ] Le bouton "Mise à jour IA" recharge les données sans erreur
+
+6. FICHIERS DE DONNEES
+[ ] tickers_manuels.json contient au moins 1 ticker
+[ ] rules_auto.json contient des mots-clés valides pour les news
+[ ] meta_ia.json contient un objet apprentissage ou vide initialement
+[ ] journal_simule.json est présent (vide ou non)
+
+7. CONSOLE / LOGS
+[ ] Aucun message d'erreur critique dans la console
+[ ] Les modules IA et simulations fonctionnent sans plantage
+
+8. PREPARATION IA NIVEAU 2
+[ ] Le fichier Resume_IA_WatchlistBot.pdf est bien généré et lisible
+[ ] Le projet est prêt à accueillir un moteur IA local (scikit-learn)
+
+Fait par : DevBot007 + Karim

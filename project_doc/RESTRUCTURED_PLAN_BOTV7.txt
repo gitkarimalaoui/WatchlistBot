@@ -1,0 +1,83 @@
+
+BOTV7/
+├── backtest/
+│   ├── ai_backtest_runner.py
+│   ├── runner_verbose.py
+
+├── intelligence/
+│   ├── learning_loop.py
+│   ├── apprentissage_hybride.py
+│   ├── utils_ai_predictor.py
+│   ├── check_tickers.py
+│   ├── rules_auto.json
+│   ├── meta_ia.json
+│   ├── training/
+│   │   ├── prepare_qlib_data.py
+│   │   └── tools/
+│   │       └── repickle_model.py
+
+├── config/
+│   └── config.py                 ← charge data/parametres.json dynamiquement
+
+├── core/
+│   └── db_model.py              ← structure de la base de données `trades.db`
+
+├── data/
+│   ├── ticks/
+│   │   └── *.csv
+│   ├── graphs/
+│   │   └── *.png
+│   ├── parametres.json
+│   ├── meta_ia.json
+│   ├── tickers_manuels.json
+│   └── watchlists/
+│       ├── source.txt
+│       └── import_watchlist.txt
+
+├── notifications/
+│   └── telegram_bot.py          ← ex-telegram_ai_alerts.py (renommé proprement)
+
+├── ui/
+│   ├── simulation_achat.py
+│   ├── simulation_vente.py
+│   ├── utils_affichage_ticker.py
+│   ├── dashboard/
+│   │   └── dashboard_apprentissage.py
+
+├── fusion/
+│   ├── module_checklist_fusion.py
+│   ├── module_fusion_watchlist.py
+│   └── module_import_checklist_txt.py
+
+├── qlib_integration/
+│   ├── utils/
+│   │   ├── qlib_loader.py
+│   │   └── utils_ai_strategy.py
+│   └── watchlists/
+│       └── watchlist.txt
+
+├── realtime/
+│   ├── real_time_tick_collector.py
+│   ├── tick_collector_launcher.py
+│   ├── build_intraday_candles.py
+│   ├── generer_donnees_intraday.py
+│   └── utils_graph_local.py
+
+├── scripts/
+│   ├── data_ingest/
+│   │   └── collect_historical_us_stocks.py
+│   ├── data_prep/
+│   │   └── clean_historical.py
+│   └── setup/
+│       ├── init_qlib_data.py
+│       └── init_qlib_check.py
+
+├── models/
+│   ├── modele_ia.pkl
+│   └── converted/
+│       └── modele_ia_converted.pkl
+
+├── qlib_data/                   ← ne pas modifier
+│   ├── daily/
+│   ├── 1min/
+│   └── ...

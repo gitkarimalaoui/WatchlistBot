@@ -1,0 +1,1653 @@
+ID,Epic,User Story,Acceptance Criteria,Module,Priority,Status,Testable,source_file
+US-WL-001,Watchlist Import,"As a Trader, I want to import a text file containing a watchlist of tickers so that I can quickly load external research.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-002,Watchlist Import,"As a Bot, I want to parse tickers from a manually uploaded .txt file so that they can be added to the combined watchlist.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-003,Watchlist Import,"As a System, I want to log every ticker added manually or via file with its source so that we can trace data origins.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-004,Watchlist Import,"As a Trader, I want to manually add one or more tickers from the Streamlit input field so that I can react to real-time info.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-005,Watchlist Import,"As a System, I want to store all watchlist sources in a unified data structure so that scoring and processing are centralized.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-006,Watchlist Import,"As a Bot, I want to reject duplicate tickers when merging multiple sources so that the watchlist remains clean.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-007,Watchlist Import,"As a System, I want to flag and skip invalid ticker formats during import so that errors are handled gracefully.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-008,Watchlist Import,"As a Bot, I want to label each ticker with its provenance: Manual, GPT, Jaguar, News, etc. so that we track where it came from.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-009,Watchlist Import,"As a UI User, I want to see the full list of tickers in the interface with their origin so that I understand the context of each trade.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-010,Watchlist Import,"As a Bot, I want to update the combined watchlist every 15 minutes based on sources so that the list stays up to date.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-011,Watchlist Import,"As a System, I want to alert the user if the uploaded file is malformed so that the user can correct it.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-012,Watchlist Import,"As a Bot, I want to merge tickers from manual, auto, and GPT sources into one list so that processing is unified.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-013,Watchlist Import,"As a Trader, I want to remove a ticker manually from the watchlist so that I exclude irrelevant trades.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-014,Watchlist Import,"As a Bot, I want to refresh the list in real-time after manual additions so that changes appear immediately.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-015,Watchlist Import,"As a System, I want to save the updated watchlist in SQLite database so that persistence is ensured.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-016,Watchlist Import,"As a Bot, I want to validate ticker data from API before final inclusion so that the list contains only tradable items.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-017,Watchlist Import,"As a System, I want to keep a backup copy of the last 3 imported lists so that we can recover from mistakes.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-018,Watchlist Import,"As a Bot, I want to log the time and user associated with each manual entry so that we can audit changes.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-019,Watchlist Import,"As a Trader, I want to upload a modified watchlist from another platform so that I can sync external tracking.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-WL-020,Watchlist Import,"As a Bot, I want to send a Telegram alert when new tickers are imported successfully so that I’m informed of watchlist changes.","- [ ] Watchlist parsed or updated
+- [ ] Tickers merged/stored
+- [ ] Errors logged
+- [ ] Provenance saved",manual_import.py,High,To Do,Yes,USER_STORIES_WATCHLIST_IMPORT.xlsx
+US-TRACKER-001,UI Project Tracker,"As a Trader, I want to see a list of all user stories and their statuses in the UI so that I can follow project progress.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-002,UI Project Tracker,"As a UI User, I want to filter user stories by epic or module so that I can focus on one area at a time.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-003,UI Project Tracker,"As a System, I want to store all user stories and acceptance criteria in a SQLite table so that I can query and update them.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-004,UI Project Tracker,"As a Bot, I want to auto-update the status of a story when its linked feature is triggered so that the tracker reflects live usage.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-005,UI Project Tracker,"As a Trader, I want to mark a user story as 'Done' when validated from the UI so that I confirm completion.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-006,UI Project Tracker,"As a UI User, I want to see a burndown chart based on story status so that I visualize remaining work.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-007,UI Project Tracker,"As a Tester, I want to associate a test case result with each user story so that I know what passed or failed.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-008,UI Project Tracker,"As a Project Owner, I want to see the priority of each story with color indicators so that I focus on urgent ones.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-009,UI Project Tracker,"As a UI User, I want to export the full tracker as Excel or CSV so that I can archive or report progress.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-010,UI Project Tracker,"As a System, I want to display stats on total, in progress, done, and blocked stories so that project health is visible.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-011,UI Project Tracker,"As a UI User, I want to click on a story to see full details including epic, module, and criteria so that I understand its scope.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-012,UI Project Tracker,"As a Bot, I want to load stories at startup and reflect their status in the interface so that the app is aligned with current progress.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-013,UI Project Tracker,"As a Project Owner, I want to lock story editing for certain roles so that integrity is maintained.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-014,UI Project Tracker,"As a Tester, I want to launch test scenarios linked to each story from the UI so that I validate directly.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-015,UI Project Tracker,"As a UI User, I want to create or modify a user story from the interface so that I iterate without code.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-016,UI Project Tracker,"As a System, I want to flag user stories missing test results so that test coverage is complete.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-017,UI Project Tracker,"As a Project Owner, I want to group stories by epic in collapsible sections so that navigation is easier.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-018,UI Project Tracker,"As a UI User, I want to switch views: table mode, kanban, burndown so that I choose the most useful layout.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-019,UI Project Tracker,"As a System, I want to log all changes to the tracker in an audit log so that history is preserved.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-TRACKER-020,UI Project Tracker,"As a Project Owner, I want to tag stories as 'Regression Risk' based on feature dependencies so that I plan retests properly.","- [ ] Story displayed and editable
+- [ ] Status shown
+- [ ] Linked to module and epic
+- [ ] Testable from UI",tracker_ui.py,High,To Do,Yes,USER_STORIES_UI_PROJECT_TRACKER.xlsx
+US-EXEC-001,Trade Execution,"As a Bot, I want to execute a buy order via Moomoo using pyautogui when all criteria are met so that the trade is launched automatically.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-002,Trade Execution,"As a Trader, I want to manually trigger a buy or sell from the Streamlit interface so that I can act based on visual analysis.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-003,Trade Execution,"As a System, I want to log every executed order with timestamp, ticker, price, and quantity so that we maintain traceability.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-004,Trade Execution,"As a Bot, I want to simulate a trade execution with PnL, fees, and slippage so that the strategy can be validated before real trades.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-005,Trade Execution,"As a System, I want to save real and simulated trades into trades.db so that we can track performance over time.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-006,Trade Execution,"As a Trader, I want to see execution confirmation in the UI after a trade is sent so that I know the action succeeded.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-007,Trade Execution,"As a System, I want to retry pyautogui click up to 3 times if the Moomoo window fails so that execution is resilient.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-008,Trade Execution,"As a Bot, I want to cancel trade execution if stop loss is hit so that I protect the remaining capital.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-009,Trade Execution,"As a Bot, I want to verify float, volume, and GPT score before executing so that I follow the strategy conditions.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-010,Trade Execution,"As a System, I want to store the PnL in the DB with a link to the original order so that reporting is accurate.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-011,Trade Execution,"As a Bot, I want to calculate and apply Moomoo’s fee structure during simulation so that the results are realistic.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-012,Trade Execution,"As a Trader, I want to review open and closed trades in the interface so that I track active and completed positions.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-013,Trade Execution,"As a Bot, I want to record the execution mode (manual or auto) for each trade so that behavior can be analyzed later.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-014,Trade Execution,"As a System, I want to generate logs in case of pyautogui misalignment so that we can debug missed executions.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-015,Trade Execution,"As a Bot, I want to block orders on tickers priced under $1 when real trading is enabled so that we avoid loss due to high fees.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-016,Trade Execution,"As a Bot, I want to use execution confirmation pixel color on screen to validate order sent so that trade is only confirmed when UI matches.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-017,Trade Execution,"As a Trader, I want to see estimated gain or loss before confirming manual execution so that I can make informed decisions.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-018,Trade Execution,"As a Bot, I want to limit total capital exposure per trade based on configuration so that I manage risk appropriately.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-019,Trade Execution,"As a System, I want to send a Telegram alert when a trade is executed so that remote monitoring is enabled.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-020,Trade Execution,"As a System, I want to create daily reports of all executed orders and their PnL so that performance tracking is centralized.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-021,Trade Execution,"As a Bot, I want to simulate both entry and exit of a position within the same day so that I mimic intraday strategies.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-022,Trade Execution,"As a Bot, I want to re-execute missed orders if bot was interrupted so that opportunities are not lost.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-EXEC-023,Trade Execution,"As a System, I want to update trade journal with timestamps of entry and exit so that lifecycle of a position is recorded.","- [ ] Action completed successfully
+- [ ] Logged in file or DB
+- [ ] UI feedback or simulation confirmed
+- [ ] Conditions respected",executer_ordre_moomoo.py,High,To Do,Yes,USER_STORIES_TRADE_EXECUTION.xlsx
+US-TG-001,Telegram Notifications,"As a Bot, I want to send a Telegram alert when a high-score ticker is added to the watchlist so that the trader can be notified in real time.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-002,Telegram Notifications,"As a System, I want to log every Telegram message sent with its content and timestamp so that we can audit communication events.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-003,Telegram Notifications,"As a Bot, I want to send an alert when a trade (simulated or real) is executed so that trade activity is tracked instantly.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-004,Telegram Notifications,"As a Bot, I want to summarize all trades of the day and send them via Telegram after market close so that performance is monitored.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-005,Telegram Notifications,"As a System, I want to notify the user if GPT scoring failed for any ticker so that errors are visible and actionable.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-006,Telegram Notifications,"As a Trader, I want to enable or disable Telegram alerts from the interface so that I control my notifications.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-007,Telegram Notifications,"As a Bot, I want to send an alert when capital exposure exceeds the configured limit so that financial risk is communicated.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-008,Telegram Notifications,"As a System, I want to retry Telegram message delivery up to 3 times in case of failure so that important alerts are not lost.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-009,Telegram Notifications,"As a Bot, I want to send a screenshot of the detected breakout pattern for a ticker so that the user sees the technical setup visually.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-010,Telegram Notifications,"As a Bot, I want to send a specific emoji-based message when a trade reaches +100% simulated gain so that strong trades are highlighted.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-011,Telegram Notifications,"As a Bot, I want to group multiple ticker alerts into a single message so that Telegram isn’t spammed with too many messages.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-012,Telegram Notifications,"As a System, I want to track delivery success/failure status of each Telegram message so that technical issues can be debugged.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-013,Telegram Notifications,"As a Trader, I want to configure the Telegram chat ID and token via UI settings so that I can change my destination easily.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-014,Telegram Notifications,"As a Bot, I want to send a startup notification when the bot is launched so that the user knows it's running.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-015,Telegram Notifications,"As a Bot, I want to notify if no opportunity was found during a scan window so that the user understands inactivity.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-016,Telegram Notifications,"As a System, I want to pause Telegram alerts during silent mode hours (ex. 00:00–07:00) so that night notifications are suppressed.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-017,Telegram Notifications,"As a Bot, I want to send a warning when a ticker is removed due to invalid data so that cleansing actions are transparent.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-018,Telegram Notifications,"As a System, I want to log all critical alerts in a separate 'alert.log' file so that emergency tracking is centralized.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-019,Telegram Notifications,"As a Bot, I want to send a Telegram alert if Moomoo window is not detected for trade execution so that the user can fix the issue.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-TG-020,Telegram Notifications,"As a Trader, I want to see in the UI a log of the latest 20 Telegram messages sent so that I know what was already communicated.","- [ ] Message sent or logged
+- [ ] Format correct
+- [ ] Status visible
+- [ ] Triggered at right moment",telegram_notify.py,High,To Do,Yes,USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+US-UI-001,Streamlit UI,"As a Trader, I want to view the full watchlist in a structured table with scores and origins so that I can prioritize trades visually.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-002,Streamlit UI,"As a UI User, I want to see a dynamic chart next to each ticker so that I can evaluate price movement easily.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-003,Streamlit UI,"As a Trader, I want to trigger manual ticker import from the sidebar so that I can add symbols on the fly.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-004,Streamlit UI,"As a UI User, I want to filter the watchlist by score, float, or volume so that I focus only on qualifying tickers.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-005,Streamlit UI,"As a Trader, I want to manually launch GPT scoring from the interface so that I can re-evaluate recent tickers.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-006,Streamlit UI,"As a UI User, I want to open or collapse detailed panels for each ticker so that I see only the relevant information.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-007,Streamlit UI,"As a Trader, I want to see the origin (manual, Jaguar, GPT) and timestamp for each ticker so that I know its context.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-008,Streamlit UI,"As a Trader, I want to execute a trade from the UI with confirmation and fee preview so that I can act directly from the platform.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-009,Streamlit UI,"As a UI User, I want to see a visual score breakdown for each ticker so that I understand the decision factors.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-010,Streamlit UI,"As a Trader, I want to view recent Telegram alerts in a notification panel so that I know what’s been triggered.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-011,Streamlit UI,"As a Trader, I want to access a KPI dashboard with daily/monthly PnL and target progress so that I track performance in real-time.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-012,Streamlit UI,"As a Trader, I want to toggle IA learning mode from the sidebar so that I control if the bot should auto-adjust.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-013,Streamlit UI,"As a UI User, I want to enable debug mode to view skipped or rejected tickers so that I can troubleshoot logic.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-014,Streamlit UI,"As a Trader, I want to review the complete trade journal in the UI so that I analyze recent executions.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-015,Streamlit UI,"As a UI User, I want to launch a backtest simulation from a dropdown menu so that I test strategy variations.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-016,Streamlit UI,"As a Trader, I want to trigger the daily closure and lock trades for the session so that the system logs final results.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-017,Streamlit UI,"As a UI User, I want to see a graph of total profit over time so that I visualize long-term success.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-018,Streamlit UI,"As a Trader, I want to adjust configuration parameters live (risk, float limit...) so that I fine-tune the bot behavior.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-019,Streamlit UI,"As a UI User, I want to refresh ticker data manually without restarting the app so that I keep the UI updated.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-UI-020,Streamlit UI,"As a System, I want to ensure that UI state (filters, expanded tickers) is retained during refresh so that user experience is smooth.","- [ ] Feature accessible via UI
+- [ ] Input or feedback shown
+- [ ] Integrated with backend
+- [ ] Errors handled",streamlit/app.py,High,To Do,Yes,USER_STORIES_STREAMLIT_UI.xlsx
+US-SIMU-001,Simulation Engine,"As a Bot, I want to simulate a complete trade cycle including buy and sell so that we can estimate profitability without real risk.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-002,Simulation Engine,"As a System, I want to apply Moomoo fee structure in the simulation so that simulated PnL is realistic.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-003,Simulation Engine,"As a Bot, I want to store each simulated trade in trades.db with tag 'Simulated' so that records are kept for analysis.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-004,Simulation Engine,"As a Trader, I want to manually run a batch simulation on an old watchlist so that I can evaluate strategy performance historically.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-005,Simulation Engine,"As a System, I want to log the entry and exit time for each simulated position so that the strategy behavior is traceable.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-006,Simulation Engine,"As a Bot, I want to calculate expected gain/loss before trade execution in simulation so that decisions can be evaluated upfront.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-007,Simulation Engine,"As a Bot, I want to simulate stop loss and take profit levels dynamically so that realistic exit points are tested.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-008,Simulation Engine,"As a System, I want to generate a daily summary of all simulated trades so that backtesting results can be reviewed.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-009,Simulation Engine,"As a Bot, I want to simulate only trades with a total score above threshold so that we validate only high-probability entries.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-010,Simulation Engine,"As a Trader, I want to see simulated trade outcomes in the UI with PnL so that I can adjust my strategy based on visual feedback.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-011,Simulation Engine,"As a System, I want to flag any simulated trade that exceeds risk parameters so that dangerous strategies are highlighted.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-012,Simulation Engine,"As a Bot, I want to use AI-scored tickers for simulation before real execution so that we test the scoring model in practice.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-013,Simulation Engine,"As a Bot, I want to simulate execution across 2 days for swing trade testing so that longer-term scenarios are included.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-014,Simulation Engine,"As a System, I want to compare simulated vs actual trade outcomes when available so that model accuracy is measured.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-015,Simulation Engine,"As a Bot, I want to run simulation every morning before market open so that the trader receives an early strategy preview.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-016,Simulation Engine,"As a System, I want to output a CSV or JSON report of simulation results so that external analysis is possible.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-017,Simulation Engine,"As a Bot, I want to simulate slippage on entry and exit prices so that volatility impact is reflected.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-018,Simulation Engine,"As a System, I want to allow exporting simulation logs with filters so that we focus on specific tickers or dates.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-019,Simulation Engine,"As an IA, I want to learn from successful simulations to tune scoring weights so that the model evolves with results.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SIMU-020,Simulation Engine,"As a Trader, I want to review all simulated trades in a dashboard format so that I can understand win/loss distribution.","- [ ] Simulation executed
+- [ ] Trade stored with details
+- [ ] Fees and PnL applied
+- [ ] Results viewable or exported",simulate_trade_result.py,High,To Do,Yes,USER_STORIES_SIMULATION_ENGINE.xlsx
+US-SEC-001,Security Guard & Stop Loss,"As a Bot, I want to block trades on tickers priced below $1 so that we avoid fees that exceed profit potential.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-002,Security Guard & Stop Loss,"As a System, I want to apply a per-trade stop loss threshold of -5% so that we limit individual trade risk.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-003,Security Guard & Stop Loss,"As a System, I want to pause auto-trading if daily loss exceeds -10% so that capital is preserved.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-004,Security Guard & Stop Loss,"As a Bot, I want to cancel trades that would exceed the configured max capital exposure so that I respect risk management.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-005,Security Guard & Stop Loss,"As a Trader, I want to configure stop loss and capital limits in the UI so that I can control my risk tolerance.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-006,Security Guard & Stop Loss,"As a System, I want to log every blocked or cancelled trade due to security rules so that all decisions are auditable.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-007,Security Guard & Stop Loss,"As a Bot, I want to send a Telegram alert if a trade is blocked for security reasons so that the user is immediately informed.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-008,Security Guard & Stop Loss,"As a System, I want to check float and volatility before allowing a trade so that we avoid unpredictable micro caps.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-009,Security Guard & Stop Loss,"As a Bot, I want to auto-reject trade if estimated slippage exceeds a configured max % so that execution price remains reliable.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-010,Security Guard & Stop Loss,"As a Trader, I want to enable a global kill switch to stop all trading immediately so that I can freeze the system in emergencies.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-011,Security Guard & Stop Loss,"As a System, I want to store daily capital loss percentage in KPI tracking so that I can assess risk management performance.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-012,Security Guard & Stop Loss,"As a Bot, I want to auto-disable real trading after 3 consecutive losses so that the strategy resets safely.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-013,Security Guard & Stop Loss,"As a System, I want to apply a hard cap on the number of trades per day so that I avoid overtrading.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-014,Security Guard & Stop Loss,"As a Trader, I want to see warnings in the UI if a rule is close to being triggered so that I can adjust my decisions.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-015,Security Guard & Stop Loss,"As a System, I want to verify that margin is not used (cash only) so that we comply with trading policies.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-016,Security Guard & Stop Loss,"As a Bot, I want to block tickers with low liquidity if average volume < 200K so that execution remains stable.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-017,Security Guard & Stop Loss,"As a System, I want to compare projected loss against configured risk per trade so that we avoid oversized losses.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-018,Security Guard & Stop Loss,"As a Bot, I want to auto-validate each trade against the guard rules before execution so that no violation is possible.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-019,Security Guard & Stop Loss,"As a System, I want to rollback unconfirmed trades if the Moomoo window is not responsive so that execution is guaranteed.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-SEC-020,Security Guard & Stop Loss,"As a Trader, I want to see a summary report of blocked trades with reasons so that I can review guard activity.","- [ ] Rule applied
+- [ ] Trade blocked or allowed
+- [ ] Log or alert triggered
+- [ ] Risk preserved",capital_guard.py,High,To Do,Yes,USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+US-041,Execution Logic,"As a trader, I want to send order to moomoo api so that I can improve the reliability and control of my trading workflow.","- [ ] Send order to Moomoo API
+- [ ] Action reflected in UI or logs
+- [ ] Related DB entries are updated
+- [ ] Errors are logged if failed",,,,,USER_STORIES_REAL_050_BY_EPIC_FIXED.xlsx
+US-042,Execution Logic,"As a trader, I want to only if validation chatgpt = pass so that I can improve the reliability and control of my trading workflow.","- [ ] Only if validation ChatGPT = pass
+- [ ] Action reflected in UI or logs
+- [ ] Related DB entries are updated
+- [ ] Errors are logged if failed",,,,,USER_STORIES_REAL_050_BY_EPIC_FIXED.xlsx
+US-043,Execution Logic,"As a trader, I want to apply max capital per trade (500$) so that I can improve the reliability and control of my trading workflow.","- [ ] Apply max capital per trade (500$)
+- [ ] Action reflected in UI or logs
+- [ ] Related DB entries are updated
+- [ ] Errors are logged if failed",,,,,USER_STORIES_REAL_050_BY_EPIC_FIXED.xlsx
+US-044,Execution Logic,"As a trader, I want to log execution result in db so that I can improve the reliability and control of my trading workflow.","- [ ] Log execution result in DB
+- [ ] Action reflected in UI or logs
+- [ ] Related DB entries are updated
+- [ ] Errors are logged if failed",,,,,USER_STORIES_REAL_050_BY_EPIC_FIXED.xlsx
+US-045,Execution Logic,"As a trader, I want to display trade summary on ui so that I can improve the reliability and control of my trading workflow.","- [ ] Display trade summary on UI
+- [ ] Action reflected in UI or logs
+- [ ] Related DB entries are updated
+- [ ] Errors are logged if failed",,,,,USER_STORIES_REAL_050_BY_EPIC_FIXED.xlsx
+US-046,Execution Logic,"As a trader, I want to allow cancel before submit so that I can improve the reliability and control of my trading workflow.","- [ ] Allow cancel before submit
+- [ ] Action reflected in UI or logs
+- [ ] Related DB entries are updated
+- [ ] Errors are logged if failed",,,,,USER_STORIES_REAL_050_BY_EPIC_FIXED.xlsx
+US-047,Execution Logic,"As a trader, I want to pause ia if loss exceeds limit so that I can improve the reliability and control of my trading workflow.","- [ ] Pause IA if loss exceeds limit
+- [ ] Action reflected in UI or logs
+- [ ] Related DB entries are updated
+- [ ] Errors are logged if failed",,,,,USER_STORIES_REAL_050_BY_EPIC_FIXED.xlsx
+US-048,Execution Logic,"As a trader, I want to block penny stocks < 1$ if checkbox on so that I can improve the reliability and control of my trading workflow.","- [ ] Block penny stocks < 1$ if checkbox on
+- [ ] Action reflected in UI or logs
+- [ ] Related DB entries are updated
+- [ ] Errors are logged if failed",,,,,USER_STORIES_REAL_050_BY_EPIC_FIXED.xlsx
+US-049,Execution Logic,"As a trader, I want to save timestamp and price on trade so that I can improve the reliability and control of my trading workflow.","- [ ] Save timestamp and price on trade
+- [ ] Action reflected in UI or logs
+- [ ] Related DB entries are updated
+- [ ] Errors are logged if failed",,,,,USER_STORIES_REAL_050_BY_EPIC_FIXED.xlsx
+US-050,Execution Logic,"As a trader, I want to compare expected vs real price so that I can improve the reliability and control of my trading workflow.","- [ ] Compare expected vs real price
+- [ ] Action reflected in UI or logs
+- [ ] Related DB entries are updated
+- [ ] Errors are logged if failed",,,,,USER_STORIES_REAL_050_BY_EPIC_FIXED.xlsx
+US-PATT-001,Pattern Recognition,"As an IA, I want to analyze the OHLC chart of a ticker to detect bullish patterns like breakout or cup & handle so that we identify high-probability setups.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-002,Pattern Recognition,"As a Bot, I want to flag tickers with strong visual patterns for further scoring so that the decision engine can prioritize them.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-003,Pattern Recognition,"As a System, I want to store detected patterns in the database with timestamp and ticker so that pattern data is persistent.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-004,Pattern Recognition,"As an IA, I want to annotate patterns visually for display in the interface so that the trader understands the analysis.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-005,Pattern Recognition,"As a Trader, I want to view pattern labels in the Streamlit chart panel so that I can confirm breakout signals visually.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-006,Pattern Recognition,"As a Bot, I want to exclude tickers that match bearish pattern profiles so that risky trades are avoided.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-007,Pattern Recognition,"As a System, I want to log every pattern detection result with strength and type so that we can audit the pattern engine.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-008,Pattern Recognition,"As an IA, I want to adjust pattern weight based on win/loss outcome so that reliable patterns are favored.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-009,Pattern Recognition,"As a System, I want to retry pattern analysis if data is incomplete so that false negatives are minimized.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-010,Pattern Recognition,"As a Trader, I want to manually validate or override a detected pattern so that human judgment can correct false AI decisions.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-011,Pattern Recognition,"As a Bot, I want to trigger pattern recognition only after ticker is scored above a threshold so that analysis is focused on promising stocks.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-012,Pattern Recognition,"As an IA, I want to detect consolidation and breakout timing based on candle structure so that I improve entry point prediction.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-013,Pattern Recognition,"As a System, I want to save false pattern detections in a separate log so that IA training avoids incorrect signals.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-014,Pattern Recognition,"As a Trader, I want to access a pattern history for each ticker so that I can understand past behavior.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-015,Pattern Recognition,"As a System, I want to alert when a rare but historically strong pattern is found so that the trader can review it manually.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-016,Pattern Recognition,"As an IA, I want to use pattern reliability history to tune detection thresholds so that the model adapts dynamically.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-017,Pattern Recognition,"As a Bot, I want to label the pattern strength from 1 to 10 so that scores are comparable.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-018,Pattern Recognition,"As a System, I want to auto-reject pattern detection if price or volume conditions are not met so that we avoid false setups.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-019,Pattern Recognition,"As a Trader, I want to see pattern detection results in a dedicated dashboard so that I can sort tickers by technical setup.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-PATT-020,Pattern Recognition,"As an IA, I want to learn from confirmed pattern outcomes to retrain the recognition engine so that accuracy improves over time.","- [ ] Pattern detected or rejected
+- [ ] Stored in DB
+- [ ] Displayed or scored
+- [ ] Logs available",pattern_analysis.py,High,To Do,Yes,USER_STORIES_PATTERN_RECOGNITION.xlsx
+US-NEWS-001,News & Catalyst Detection,"As a Bot, I want to scrape news headlines for all tickers in the watchlist so that I can detect relevant market catalysts.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-002,News & Catalyst Detection,"As a System, I want to filter news using predefined powerful keywords (e.g., FDA, acquisition) so that I identify key events.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-003,News & Catalyst Detection,"As an IA, I want to summarize news headlines using GPT and extract sentiment so that the impact is properly understood.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-004,News & Catalyst Detection,"As a Bot, I want to assign a catalyst score to each ticker based on news analysis so that we prioritize strong opportunities.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-005,News & Catalyst Detection,"As a System, I want to store the news title, link, and score with the ticker so that the source of detection is preserved.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-006,News & Catalyst Detection,"As a Bot, I want to automatically add tickers with strong catalyst scores to the watchlist so that I don’t miss time-sensitive trades.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-007,News & Catalyst Detection,"As a System, I want to log rejected news items and reasons (e.g., duplicate, no match) so that the process is auditable.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-008,News & Catalyst Detection,"As a Trader, I want to see each ticker's news score and summary in the UI so that I understand the reason behind selection.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-009,News & Catalyst Detection,"As a Bot, I want to send a Telegram alert when a news catalyst score is above threshold so that I can act quickly.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-010,News & Catalyst Detection,"As a System, I want to save all detected catalysts in a separate catalyst.json file so that I can review triggers historically.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-011,News & Catalyst Detection,"As an IA, I want to learn from news-based trades to refine catalyst detection weights so that the system evolves.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-012,News & Catalyst Detection,"As a Bot, I want to scan news every 10 minutes during pre-market and trading hours so that I stay up to date.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-013,News & Catalyst Detection,"As a System, I want to remove expired or irrelevant news from storage after 2 days so that the list remains clean.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-014,News & Catalyst Detection,"As a Bot, I want to combine news score with float, volume, and pattern to compute final ticker score so that selection is more accurate.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-015,News & Catalyst Detection,"As a Trader, I want to manually validate or discard a news-detected ticker in the UI so that I have final control.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-016,News & Catalyst Detection,"As a System, I want to highlight tickers where news matches a historical pattern of gain so that I can spot recurring signals.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-017,News & Catalyst Detection,"As a Bot, I want to flag conflicting sentiment between news and technicals so that I can reduce false positives.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-018,News & Catalyst Detection,"As a System, I want to retry news parsing up to 3 times if feed fails so that reliability improves.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-019,News & Catalyst Detection,"As a Bot, I want to display the exact phrase that triggered news detection so that reasoning is visible.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-NEWS-020,News & Catalyst Detection,"As a Trader, I want to see a chart of detected catalyst frequency by category so that I identify hot sectors.","- [ ] News scraped or filtered
+- [ ] Ticker scored or stored
+- [ ] Logs and Telegram alerts
+- [ ] UI displays score and summary",news_filter.py,High,To Do,Yes,USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+US-METAIA-001,Meta IA Config,"As a System, I want to load IA weight configuration from meta_ia.json at startup so that the scoring logic is ready.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-002,Meta IA Config,"As a Trader, I want to view the current IA weights in the Streamlit UI so that I understand how the bot scores tickers.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-003,Meta IA Config,"As a System, I want to apply the configured weights when computing final scores so that decisions are consistent.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-004,Meta IA Config,"As a Trader, I want to manually adjust weights (e.g. float, GPT, pattern) from the UI so that I can fine-tune strategy.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-005,Meta IA Config,"As an IA, I want to auto-adjust the scoring weights based on backtest performance so that accuracy improves over time.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-006,Meta IA Config,"As a System, I want to log every change made to the meta_ia.json file so that we can audit changes.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-007,Meta IA Config,"As a Trader, I want to reset all IA weights to default from the interface so that I return to baseline configuration.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-008,Meta IA Config,"As an IA, I want to save updated weights back into meta_ia.json after learning so that improvements persist.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-009,Meta IA Config,"As a System, I want to compare current weights to the last 3 versions so that we can track evolution.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-010,Meta IA Config,"As a Bot, I want to use the weights to influence ticker scoring and trade filtering so that I follow learned logic.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-011,Meta IA Config,"As a System, I want to prevent weight changes during active session unless authorized so that stability is maintained.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-012,Meta IA Config,"As a Trader, I want to export the current IA config to a backup file so that I can reuse it later.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-013,Meta IA Config,"As a System, I want to show a warning if weights are extreme or misconfigured so that I avoid faulty scoring.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-014,Meta IA Config,"As an IA, I want to adjust GPT score weight upward if past GPT-based trades had better results so that I self-optimize.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-015,Meta IA Config,"As a System, I want to retain weight change logs linked to the learning iteration so that they’re traceable.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-016,Meta IA Config,"As a Bot, I want to refuse scoring execution if no valid meta_ia.json is loaded so that processing is safe.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-017,Meta IA Config,"As a Trader, I want to switch between preset strategies with predefined weight templates so that I test different logic paths.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-018,Meta IA Config,"As a System, I want to visually display weights as a radar or bar chart so that understanding is easier.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-019,Meta IA Config,"As an IA, I want to lock weight values temporarily during batch simulation so that consistency is guaranteed.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-METAIA-020,Meta IA Config,"As a System, I want to validate the meta_ia.json format before applying weights so that runtime errors are avoided.","- [ ] Weight loaded or adjusted
+- [ ] Reflected in logic
+- [ ] UI/JSON/log updated
+- [ ] Error-free",meta_ia.json,High,To Do,Yes,USER_STORIES_META_IA_CONFIG.xlsx
+US-LEARN-001,Learning AI,"As an IA, I want to analyze all simulated trades to detect patterns of profit and loss so that I can learn what conditions lead to better outcomes.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-002,Learning AI,"As a System, I want to log the parameters and outcomes of each simulated trade so that learning data is persistent.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-003,Learning AI,"As an IA, I want to adjust the weight of volume in the scoring model based on its historical accuracy so that prediction improves over time.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-004,Learning AI,"As an IA, I want to increase GPT influence when GPT predictions correlate with successful trades so that natural language insight is better used.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-005,Learning AI,"As a Bot, I want to trigger learning after every 10 executed trades so that the AI keeps adapting without manual intervention.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-006,Learning AI,"As a System, I want to store the updated weights in meta_ia.json so that changes persist and are reused at next run.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-007,Learning AI,"As a Trader, I want to view the current IA scoring weights in the UI so that I understand how decisions are made.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-008,Learning AI,"As an IA, I want to detect which tickers historically produced over 100% return so that they influence future scoring logic.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-009,Learning AI,"As a System, I want to save learning iterations with timestamp and diff log so that AI changes are traceable.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-010,Learning AI,"As an IA, I want to exclude learning from trades marked as invalid or cancelled so that the model is not biased.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-011,Learning AI,"As a Trader, I want to lock the IA engine from learning during testing periods so that I maintain a stable baseline.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-012,Learning AI,"As a Bot, I want to replay past simulations to reinforce successful pattern recognition so that pattern learning is strengthened.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-013,Learning AI,"As a System, I want to notify via UI when learning parameters are changed so that the trader is informed of AI evolution.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-014,Learning AI,"As an IA, I want to balance the impact of pattern score vs catalyst score based on results so that the model remains dynamic.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-015,Learning AI,"As a Trader, I want to manually reset the IA memory to baseline config so that I can start fresh during new strategies.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-016,Learning AI,"As a System, I want to track learning effectiveness by comparing before/after scoring accuracy so that improvements are measurable.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-017,Learning AI,"As a Bot, I want to apply higher confidence to patterns that repeatedly lead to profitable trades so that smart reinforcement happens.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-018,Learning AI,"As an IA, I want to run offline learning overnight based on daily results so that the main bot stays fast in trading hours.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-019,Learning AI,"As a System, I want to save IA performance logs in a daily log file so that results can be reviewed historically.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-LEARN-020,Learning AI,"As a Bot, I want to pause learning during high volatility macro news so that the model avoids adapting to anomalies.","- [ ] Learning executed or blocked as expected
+- [ ] Logs updated
+- [ ] Weights stored/visible
+- [ ] Accuracy impacted positively",learn_from_trades.py,High,To Do,Yes,USER_STORIES_LEARNING_AI.xlsx
+US-KPI-001,KPI Tracker,"As a Trader, I want to view daily PnL, number of trades, and win rate so that I can assess my bot’s performance each day.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-002,KPI Tracker,"As a System, I want to calculate the cumulative profit towards a $100,000 target so that I know progress toward the goal.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-003,KPI Tracker,"As a Bot, I want to update KPI metrics at the end of each trading session so that data remains current.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-004,KPI Tracker,"As a Trader, I want to see a dashboard with monthly performance breakdown so that I can evaluate longer-term trends.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-005,KPI Tracker,"As a System, I want to log all KPIs into a historical database or file so that reports can be generated.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-006,KPI Tracker,"As a System, I want to display a graph of cumulative PnL over time so that growth is visible.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-007,KPI Tracker,"As a Bot, I want to compare current week KPIs to the previous week so that I identify improvement or decline.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-008,KPI Tracker,"As an IA, I want to adjust behavior if KPIs are below target for multiple days so that I can self-correct.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-009,KPI Tracker,"As a Trader, I want to receive an alert if the daily loss exceeds 5% so that I can take action.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-010,KPI Tracker,"As a System, I want to calculate average trade duration and average return per trade so that I understand efficiency.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-011,KPI Tracker,"As a Bot, I want to store all KPIs per day in a structured format so that analysis is easy.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-012,KPI Tracker,"As a Trader, I want to filter KPIs by ticker, day, or execution type so that I drill into results.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-013,KPI Tracker,"As a System, I want to export KPI reports to Excel or JSON so that I can archive or share them.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-014,KPI Tracker,"As a Bot, I want to calculate win rate over the last 20 trades so that short-term performance is visible.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-015,KPI Tracker,"As a System, I want to track maximum drawdown per day so that risk exposure is known.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-016,KPI Tracker,"As a Trader, I want to see progress bars towards daily, weekly, and monthly targets so that motivation is visual.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-017,KPI Tracker,"As an IA, I want to prioritize learning from days with high PnL or high loss so that I optimize faster.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-018,KPI Tracker,"As a System, I want to store KPI snapshots before and after strategy changes so that I measure impact.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-019,KPI Tracker,"As a Trader, I want to reset KPI tracking at the start of a new month so that data is clean.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-KPI-020,KPI Tracker,"As a Bot, I want to include KPI performance in the daily Telegram summary so that I monitor it remotely.","- [ ] KPI calculated
+- [ ] Stored or displayed
+- [ ] Compared to goal
+- [ ] Export available",kpi_tracker.py,High,To Do,Yes,USER_STORIES_KPI_TRACKER.xlsx
+US-JOUR-001,Journalisation des Trades,"As a System, I want to store each trade (simulated or real) in the trades.db database so that the entire trading history is saved.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-002,Journalisation des Trades,"As a Bot, I want to record trade details including ticker, entry price, exit price, PnL, and execution type so that results are fully traceable.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-003,Journalisation des Trades,"As a Trader, I want to view the last 20 trades in the dashboard so that I can monitor performance easily.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-004,Journalisation des Trades,"As a System, I want to assign a unique ID to each trade entry so that trades are uniquely identifiable.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-005,Journalisation des Trades,"As a Bot, I want to label each trade as win/loss based on PnL outcome so that statistics can be compiled.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-006,Journalisation des Trades,"As a System, I want to save the timestamp of entry and exit for each trade so that the duration is measurable.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-007,Journalisation des Trades,"As a Bot, I want to track whether the trade was manual or automatic so that execution type is recorded.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-008,Journalisation des Trades,"As a Trader, I want to filter trade history by date range or ticker so that I can review targeted trades.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-009,Journalisation des Trades,"As a System, I want to store simulated and real trades in the same table with different flags so that data is unified but distinguishable.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-010,Journalisation des Trades,"As a Trader, I want to export the trade journal to CSV or Excel format so that I can do external analysis.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-011,Journalisation des Trades,"As a Bot, I want to annotate trades with scoring parameters at time of entry so that later analysis is possible.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-012,Journalisation des Trades,"As a System, I want to log any error encountered during DB insertion so that bugs are traceable.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-013,Journalisation des Trades,"As a Trader, I want to see trade status (open or closed) in the interface so that I know what positions are still active.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-014,Journalisation des Trades,"As a Bot, I want to auto-close any trade left open by mistake at end of session so that no ghost positions remain.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-015,Journalisation des Trades,"As an IA, I want to access the trade journal to analyze which strategies performed best so that learning is based on real data.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-016,Journalisation des Trades,"As a System, I want to limit DB size by archiving trades older than 3 months so that performance remains optimal.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-017,Journalisation des Trades,"As a Trader, I want to search the trade journal by keyword or pattern so that I can investigate special cases.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-018,Journalisation des Trades,"As a System, I want to backup the trade journal daily to a .json file so that recovery is possible.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-019,Journalisation des Trades,"As a Bot, I want to log the calculated fees and taxes separately so that net gains are clearly shown.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JOUR-020,Journalisation des Trades,"As a Trader, I want to see a visual timeline of trades per day so that I can identify activity clusters.","- [ ] Trade saved
+- [ ] Data structured
+- [ ] Visible in UI
+- [ ] Export/log available",journal.py,High,To Do,Yes,USER_STORIES_JOURNALISATION_TRADES.xlsx
+US-JS-001,Jaguar Scraping,"As a Bot, I want to scrape the latest Jaguar posts every 15 minutes so that the watchlist is automatically updated with new tickers.","- [ ] Scraping job runs every 15 min
+- [ ] New tickers added
+- [ ] Timestamp logged",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-002,Jaguar Scraping,"As a Bot, I want to parse ticker symbols from Jaguar posts so that relevant stocks can be analyzed by the IA.","- [ ] Tickers extracted from HTML
+- [ ] Noise filtered
+- [ ] Saved to list",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-003,Jaguar Scraping,"As a Bot, I want to store scraped tickers in the database so that they are available for scoring and filtering.","- [ ] Data inserted into database
+- [ ] No duplicate entries
+- [ ] Timestamp recorded",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-004,Jaguar Scraping,"As a System, I want to log scraping events and errors so that we can trace failures and maintain uptime.","- [ ] Logs written to file
+- [ ] Errors captured with code
+- [ ] File rotation daily",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-005,Jaguar Scraping,"As a Bot, I want to tag each ticker with its Jaguar source and timestamp so that we can track its origin.","- [ ] Ticker origin labeled as 'Jaguar'
+- [ ] Datetime added
+- [ ] Used in scoring screen",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-006,Jaguar Scraping,"As a System, I want to retry scraping in case of temporary failure so that we avoid missing tickers.","- [ ] Retry up to 3 times on fail
+- [ ] Wait between tries
+- [ ] Log each attempt",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-007,Jaguar Scraping,"As a Bot, I want to avoid duplicates when inserting tickers from Jaguar into the watchlist so that scoring is not biased.","- [ ] Existing tickers ignored
+- [ ] Hash or key used
+- [ ] Log skipped entries",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-008,Jaguar Scraping,"As a Bot, I want to enrich scraped tickers with volume and float from Finnhub so that they meet our filtering criteria.","- [ ] Float and volume fetched from API
+- [ ] Appended to ticker row
+- [ ] Logged on success/fail",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-009,Jaguar Scraping,"As a Bot, I want to exclude tickers under $1 or over 200M float so that only relevant penny stocks are kept.","- [ ] Filter out price < $1 or float > 200M
+- [ ] Final list reduced
+- [ ] Criteria logged",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-010,Jaguar Scraping,"As a Bot, I want to check if scraped tickers already exist in the manual list so that we don't overwrite user entries.","- [ ] Check manual list before insert
+- [ ] Alert if conflict
+- [ ] Log result",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-011,Jaguar Scraping,"As a System, I want to save scraping logs to daily files so that debugging and audits are easier.","- [ ] Write logs per day
+- [ ] Include operation details
+- [ ] Rotation confirmed",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-012,Jaguar Scraping,"As a Bot, I want to filter out Jaguar posts older than 12 hours so that only fresh opportunities are processed.","- [ ] Timestamp of post checked
+- [ ] Older than 12h skipped
+- [ ] Log kept",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-013,Jaguar Scraping,"As a Bot, I want to assign a confidence score to each scraped ticker so that we can prioritize them later.","- [ ] Score 0–10 calculated
+- [ ] Criteria explained
+- [ ] Shown in UI column",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-014,Jaguar Scraping,"As a Bot, I want to send a Telegram notification when a high-score Jaguar ticker is added so that the trader can react.","- [ ] Message sent to Telegram
+- [ ] Includes symbol, score, origin
+- [ ] Delivery confirmation logged",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-015,Jaguar Scraping,"As a System, I want to fallback to cached scraping data if the Jaguar site is down so that the bot can still run.","- [ ] Cache used if scraping fails
+- [ ] Warn user in logs
+- [ ] Fallback data timestamped",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-016,Jaguar Scraping,"As a Bot, I want to scrape only categories labeled 'hot' or 'watch' so that I avoid noise in the ticker list.","- [ ] Only posts with tags matched
+- [ ] Others skipped
+- [ ] Count logged",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-017,Jaguar Scraping,"As a Bot, I want to log which user posted each ticker (if available) so that we can refine reputation-based scoring.","- [ ] Username extracted if present
+- [ ] Added to DB
+- [ ] Shown in tooltip",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-018,Jaguar Scraping,"As a Bot, I want to compare scraped tickers with those in the scoring queue so that we avoid duplicate analysis.","- [ ] Compare ticker list vs queue
+- [ ] Skip if already queued
+- [ ] Log count",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-019,Jaguar Scraping,"As a Bot, I want to initiate Jaguar scraping manually from the UI if needed so that the trader can refresh at any time.","- [ ] Button in UI triggers scrape
+- [ ] User feedback shown
+- [ ] Manual log entry",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-JS-020,Jaguar Scraping,"As a Bot, I want to update the ticker table with new Jaguar tickers so that they appear in the UI immediately.","- [ ] DB updated with new entries
+- [ ] UI reflects change
+- [ ] Success confirmed",scraper_jaguar.py,High,To Do,Yes,USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+US-GRAPH-001,Hybrid Graph Pattern,"As a Bot, I want to capture the chart screenshot from Moomoo for each ticker with missing OHLC so that visual analysis can still be performed.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-002,Hybrid Graph Pattern,"As a System, I want to rebuild 1-minute candle charts from Finnhub data so that we have local fallback visual data.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-003,Hybrid Graph Pattern,"As an IA, I want to analyze the image of a chart to detect bullish or bearish patterns so that we can automate pattern-based scoring.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-004,Hybrid Graph Pattern,"As a System, I want to fallback to screenshot image if OHLC data is unavailable so that the visual module remains functional.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-005,Hybrid Graph Pattern,"As a Bot, I want to save pattern recognition score into the database so that it influences ticker prioritization.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-006,Hybrid Graph Pattern,"As a UI User, I want to view the hybrid chart with pattern overlays in the interface so that I can manually confirm breakout behavior.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-007,Hybrid Graph Pattern,"As an IA, I want to annotate breakout zones or resistance lines on detected patterns so that visual clarity is improved.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-008,Hybrid Graph Pattern,"As a Bot, I want to check if pattern score is high before including ticker in trade simulation so that we prioritize technical setups.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-009,Hybrid Graph Pattern,"As a System, I want to store all chart snapshots in a timestamped folder so that screenshots can be reviewed later.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-010,Hybrid Graph Pattern,"As a Bot, I want to generate alert if a strong breakout pattern is detected so that the trader can act in real time.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-011,Hybrid Graph Pattern,"As a Trader, I want to manually trigger hybrid graph analysis from the UI so that I can review fast-rising stocks.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-012,Hybrid Graph Pattern,"As a System, I want to log pattern detection events with ticker, time, and score so that we can audit AI decisions.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-013,Hybrid Graph Pattern,"As a Bot, I want to remove tickers from watchlist if pattern analysis returns bearish signal so that we reduce false positives.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-014,Hybrid Graph Pattern,"As an IA, I want to learn from confirmed breakout results to adjust future pattern weights so that the model improves over time.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-015,Hybrid Graph Pattern,"As a System, I want to retry image analysis if the first attempt fails so that pattern detection is resilient.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-016,Hybrid Graph Pattern,"As a Bot, I want to combine visual pattern score with float/volume/GPT score so that the global ticker score is more accurate.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-017,Hybrid Graph Pattern,"As a Trader, I want to see a side-by-side view of image vs OHLC data in the interface so that I can confirm which view is clearer.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-018,Hybrid Graph Pattern,"As a Bot, I want to use AI image detection only on tickers missing real-time data so that we preserve performance.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-019,Hybrid Graph Pattern,"As a UI User, I want to zoom in on the chart image inside the Streamlit interface so that I can analyze candle detail manually.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GRAPH-020,Hybrid Graph Pattern,"As a System, I want to save logs of image recognition with performance metrics so that we can evaluate AI effectiveness.","- [ ] Action is executed
+- [ ] Data or image is stored or shown
+- [ ] Log entry created
+- [ ] Result visible in UI or DB",image_pattern_ai.py,High,To Do,Yes,USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+US-GPT-001,GPT Scoring Validation,"As a Bot, I want to trigger GPT scoring in batch mode on all tickers so that scoring is automated for daily analysis.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-002,GPT Scoring Validation,"As an IA, I want to score a ticker based on its news sentiment and catalyst so that we can prioritize trades with stronger potential.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-003,GPT Scoring Validation,"As a System, I want to log the GPT response and associated ticker so that every AI decision is auditable.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-004,GPT Scoring Validation,"As an IA, I want to reject tickers with negative sentiment so that we avoid risky trades.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-005,GPT Scoring Validation,"As a Bot, I want to save GPT scores and summaries into the database so that they are used in later scoring and execution.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-006,GPT Scoring Validation,"As a Trader, I want to manually launch GPT scoring from the UI so that I can re-evaluate news-based tickers on demand.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-007,GPT Scoring Validation,"As a System, I want to retry GPT API call up to 3 times on failure so that we handle temporary connectivity issues.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-008,GPT Scoring Validation,"As an IA, I want to normalize the GPT score on a scale of 0 to 10 so that scoring integrates with other decision factors.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-009,GPT Scoring Validation,"As a System, I want to alert the user if GPT scoring fails completely so that we can take fallback action manually.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-010,GPT Scoring Validation,"As an IA, I want to explain each scoring decision in plain English so that the reasoning is transparent for the trader.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-011,GPT Scoring Validation,"As a Bot, I want to filter out tickers already scored in the last 24h so that we don’t overload the GPT API.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-012,GPT Scoring Validation,"As a System, I want to save a timestamp with every GPT score so that we know how fresh the data is.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-013,GPT Scoring Validation,"As an IA, I want to flag tickers with conflicting GPT and technical scores so that human review is suggested.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-014,GPT Scoring Validation,"As a Bot, I want to send a Telegram alert if GPT flags a very strong or dangerous catalyst so that the trader can act immediately.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-015,GPT Scoring Validation,"As a System, I want to fallback to historical scoring if GPT is unavailable so that the workflow continues without interruption.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-016,GPT Scoring Validation,"As a Trader, I want to see the GPT sentiment and catalyst explanation in the ticker details so that I can better understand the trade opportunity.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-017,GPT Scoring Validation,"As an IA, I want to update the meta_ia.json config based on GPT results so that the bot learns from recurring news patterns.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-018,GPT Scoring Validation,"As a System, I want to generate a daily summary of GPT validation results so that performance can be tracked over time.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-019,GPT Scoring Validation,"As a Bot, I want to log the time, ticker, sentiment, and GPT response ID so that traceability is ensured.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-GPT-020,GPT Scoring Validation,"As a Trader, I want to confirm if GPT score was used in a trade decision so that I understand how the AI influenced execution.","- [ ] Action is logged
+- [ ] Result stored in DB or UI
+- [ ] Fallback available
+- [ ] Triggered from correct module",run_chatgpt_batch.py,High,To Do,Yes,USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+US-CLOSE-001,Daily Closure,"As a Trader, I want to trigger daily closure from the UI manually so that the session is finalized.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-002,Daily Closure,"As a Bot, I want to freeze the trade journal and KPIs at market close so that no more trades are added.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-003,Daily Closure,"As a System, I want to save a CSV export of all trades of the day so that records are archived.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-004,Daily Closure,"As a Bot, I want to send a Telegram notification summarizing the day's results so that the trader is informed.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-005,Daily Closure,"As a System, I want to lock the interface after daily closure to prevent edits so that the session remains consistent.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-006,Daily Closure,"As a System, I want to log the closure time and result to a separate logfile so that traceability is ensured.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-007,Daily Closure,"As a Bot, I want to update daily KPIs and save them in the tracking file so that performance is measured.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-008,Daily Closure,"As a Bot, I want to reset temporary lists (watchlist, scored tickers) for the next session so that the system starts fresh.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-009,Daily Closure,"As a System, I want to archive logs from the session into a dated folder so that storage is organized.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-010,Daily Closure,"As a Trader, I want to see a dashboard summary of trades, win rate, and profit at close so that I can evaluate performance.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-011,Daily Closure,"As a Bot, I want to remove expired tickers from the database during closure so that only fresh data is kept.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-012,Daily Closure,"As a System, I want to recalculate average daily gain and save the metric so that the IA can use it next time.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-013,Daily Closure,"As a Bot, I want to append the closure data to a daily JSON history file so that it can be reused or visualized.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-014,Daily Closure,"As a System, I want to trigger backup of the database after closure so that I avoid data loss.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-015,Daily Closure,"As a Trader, I want to adjust IA parameters only before closure, not after so that the next session starts clean.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-016,Daily Closure,"As a System, I want to generate a visual snapshot of the PnL chart and save it so that I can track performance trends.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-017,Daily Closure,"As a Bot, I want to record the closure in the master execution log so that the full day is traceable.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-018,Daily Closure,"As a Trader, I want to automatically schedule daily closure at 16h00 if not triggered manually so that I don’t forget.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-019,Daily Closure,"As a Bot, I want to reject any trade attempted after closure so that the integrity of the session is maintained.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-CLOSE-020,Daily Closure,"As a System, I want to verify all trades were finalized before locking the day so that closure is clean and error-free.","- [ ] Closure executed
+- [ ] Data frozen and logged
+- [ ] Export or notification sent
+- [ ] System reset prepared",cloture.py,High,To Do,Yes,USER_STORIES_DAILY_CLOSURE.xlsx
+US-0201,AI Learning Engine,"As a UI User, I want to analyze ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,High,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0202,AI Learning Engine,"As a UI User, I want to simulate ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Low,In Progress,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0203,AI Learning Engine,"As a UI User, I want to add ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Low,In Progress,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0204,AI Learning Engine,"As a UI User, I want to log ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Low,In Progress,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0205,AI Learning Engine,"As a IA, I want to adjust ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Medium,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0206,AI Learning Engine,"As a Admin, I want to add ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,High,Done,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0207,AI Learning Engine,"As a System, I want to send ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Medium,In Progress,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0208,AI Learning Engine,"As a Bot, I want to execute ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Low,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0209,AI Learning Engine,"As a Trader, I want to analyze ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,High,In Progress,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0210,AI Learning Engine,"As a IA, I want to add ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Medium,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0211,AI Learning Engine,"As a UI User, I want to analyze ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Medium,In Progress,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0212,AI Learning Engine,"As a Trader, I want to validate ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Medium,Done,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0213,AI Learning Engine,"As a UI User, I want to validate ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Low,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0214,AI Learning Engine,"As a Trader, I want to simulate ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Low,Done,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0215,AI Learning Engine,"As a UI User, I want to filter ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Low,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0216,AI Learning Engine,"As a IA, I want to add ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,High,Done,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0217,AI Learning Engine,"As a IA, I want to simulate ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,High,In Progress,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0218,AI Learning Engine,"As a UI User, I want to validate ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Medium,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0219,AI Learning Engine,"As a Admin, I want to add ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Medium,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0220,AI Learning Engine,"As a IA, I want to send ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Low,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0221,AI Learning Engine,"As a System, I want to simulate ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Medium,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0222,AI Learning Engine,"As a Admin, I want to execute ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,High,In Progress,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0223,AI Learning Engine,"As a System, I want to adjust ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,High,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0224,AI Learning Engine,"As a IA, I want to validate ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Medium,In Progress,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0225,AI Learning Engine,"As a Admin, I want to simulate ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,High,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0226,AI Learning Engine,"As a Bot, I want to send ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Low,In Progress,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0227,AI Learning Engine,"As a Trader, I want to validate ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,High,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0228,AI Learning Engine,"As a Bot, I want to send ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Medium,Done,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0229,AI Learning Engine,"As a Trader, I want to log ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Medium,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0230,AI Learning Engine,"As a IA, I want to execute ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Low,In Progress,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0231,AI Learning Engine,"As a Admin, I want to add ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,High,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0232,AI Learning Engine,"As a IA, I want to simulate ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,High,In Progress,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0233,AI Learning Engine,"As a System, I want to analyze ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,High,Done,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0234,AI Learning Engine,"As a Admin, I want to add ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Low,Done,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0235,AI Learning Engine,"As a UI User, I want to analyze ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Medium,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0236,AI Learning Engine,"As a IA, I want to analyze ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,High,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0237,AI Learning Engine,"As a IA, I want to add ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Low,In Progress,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0238,AI Learning Engine,"As a IA, I want to add ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Low,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0239,AI Learning Engine,"As a UI User, I want to validate ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Medium,In Progress,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-0240,AI Learning Engine,"As a Admin, I want to send ai learning engine so that the related functionality executes properly.","- [ ] Action triggers a log
+- [ ] Data saved in DB
+- [ ] UI feedback shown
+- [ ] Error handled gracefully",learn_from_trades.py,Low,To Do,Yes,USER_STORIES_COUVERTURE_TOTALE.xlsx
+US-BACKTEST-001,Backtest Engine,"As a Trader, I want to run a backtest over a selected historical date range so that I can evaluate strategy performance.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-002,Backtest Engine,"As a Bot, I want to simulate trades using historical watchlists and strategy rules so that outcomes reflect past conditions.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-003,Backtest Engine,"As a System, I want to log each simulated trade from the backtest into the journal so that results are persistent.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-004,Backtest Engine,"As a Trader, I want to view backtest PnL, win rate, and trade count in a report so that I can assess effectiveness.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-005,Backtest Engine,"As a Bot, I want to apply the current IA weights and scoring logic during backtest so that the simulation reflects real use.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-006,Backtest Engine,"As a System, I want to compare backtest results across different scoring thresholds so that we identify optimal cutoffs.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-007,Backtest Engine,"As a Trader, I want to select which tickers or categories are included in the backtest so that I focus on relevant data.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-008,Backtest Engine,"As a System, I want to save backtest configurations for reuse so that tests can be rerun later.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-009,Backtest Engine,"As an IA, I want to analyze backtest results to update internal performance estimates so that AI becomes more accurate.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-010,Backtest Engine,"As a System, I want to allow exporting all backtest trades to CSV so that I can review externally.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-011,Backtest Engine,"As a Bot, I want to mark each backtest trade as 'Backtest' in the DB so that it's not confused with live trades.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-012,Backtest Engine,"As a Trader, I want to filter backtest output by win/loss or score so that I can spot strong signals.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-013,Backtest Engine,"As a System, I want to show a daily PnL chart from backtest results so that I see strategy progression over time.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-014,Backtest Engine,"As a Bot, I want to detect missing data and skip affected tickers during backtest so that simulation remains accurate.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-015,Backtest Engine,"As a Trader, I want to run two strategy versions side by side for AB testing so that I can choose the better model.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-016,Backtest Engine,"As a System, I want to log all execution decisions during backtest so that behavior is explainable.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-017,Backtest Engine,"As an IA, I want to use the best-performing tickers from backtest for future signal weighting so that success is reinforced.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-018,Backtest Engine,"As a Trader, I want to trigger backtest via the UI and see a progress bar so that I know when results are ready.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-019,Backtest Engine,"As a Bot, I want to simulate intraday entries and exits within historical data so that day trading strategies are validated.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-BACKTEST-020,Backtest Engine,"As a System, I want to limit backtest to a fixed number of API calls so that we stay within free tier limits.","- [ ] Backtest executed
+- [ ] Trades stored
+- [ ] Metrics shown
+- [ ] Results exportable",simulate_backtest.py,High,To Do,Yes,USER_STORIES_BACKTEST_ENGINE.xlsx
+US-DB-001,Administration Base de Données,"As a Developer, I want to patch the watchlist table schema automatically, so that all required columns are always present without manual intervention.","- [ ] The function adds missing columns (e.g. 'source', 'timestamp') to the 'watchlist' table
+- [ ] No error occurs if columns already exist
+- [ ] A log message confirms the patch
+- [ ] The function can be triggered from a maintenance menu or CLI",init_db_patch.py,High,To Do,Yes,generated
+US-DB-002,Administration Base de Données,"As a Developer, I want to check if a column exists in any table, so that I can use it as a helper in future database migrations or schema evolutions.","- [ ] Returns True if column exists in given table
+- [ ] Returns False otherwise
+- [ ] Can be used by patching or upgrade scripts
+- [ ] Handles invalid table names gracefully",migration.py,Medium,To Do,Yes,generated
+US-DB-003,Administration Base de Données,"As an Admin, I want to be able to reset the 'watchlist' table to a clean state, so that I can clear outdated or invalid tickers easily before a new session.","- [ ] A confirmation step is required before deletion
+- [ ] Table is emptied but structure is preserved
+- [ ] Log entry is created with timestamp
+- [ ] Accessible from Admin UI or CLI script",reset_watchlist.py,High,To Do,Yes,planned
+US-DB-004,Administration Base de Données,"As an Admin, I want to run a full backup of the trading database before applying updates, so that I can restore data in case of unexpected failure.","- [ ] Generates a .bak file with timestamp
+- [ ] Stores backups in a dedicated folder
+- [ ] Can be triggered manually or before updates
+- [ ] Visible confirmation in logs",backup_db.py,High,To Do,Yes,planned
+US-DB-005,Administration Base de Données,"As an Admin, I want a script to clean specific database tables like trades or logs, so that I can reduce file size or reset after testing sessions.","- [ ] Accepts table name as argument
+- [ ] Clears content safely without altering structure
+- [ ] Can be limited to data older than X days
+- [ ] Confirms operation in logs",clean_database.py,Medium,To Do,Yes,planned

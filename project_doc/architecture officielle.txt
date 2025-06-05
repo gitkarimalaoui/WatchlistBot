@@ -1,0 +1,27 @@
+BOTV7/
+│
+├── BOTV7/
+│   ├── app_unifie_watchlistbot.py              ✅ UI principale
+│   ├── db/                                      (si tu sépares la base SQLite)
+│   ├── data/
+│   │   ├── trades.db                            ✅ Base centrale SQLite
+│   │   ├── intraday/                            ✅ Candles 1min (fichiers CSV si backup)
+│   │   └── historical/                          ✅ Données 2y daily (si backup)
+│   ├── scripts/
+│   │   ├── collect_historical_us_stocks.py      ✅ Version CSV (backup)
+│   │   └── collect_historical_us_stocks_db.py   ✅ Version DB directe (à privilégier)
+│   ├── simulation/
+│   │   └── execution_simulee.py                 ✅ Module de simulation d’ordre
+│   ├── utils/
+│   │   ├── utils_finnhub.py                     ✅ Appels API en temps réel
+│   │   ├── utils_graph.py                       ✅ Affichage via CSV (optionnel)
+│   │   ├── utils_graph_db.py                    ✅ ✅ Affichage direct DB (prioritaire)
+│   │  
+│   └── pages/
+│       └── cloture_journee.py                   ✅ Page clôture
+BOTV7/
+└── BOTV7/
+    ├── ui/
+    └── utils_affichage_ticker.py            ✅ UI ticker avec candles live DB
+    ├── utils/
+    │   └── utils_graph_db.py             ✅ ici

@@ -1,0 +1,10 @@
+{
+    "project": "WatchlistBot",
+    "version": "V7.03",
+    "epic_active": "05 - Watchlist Import",
+    "step": "07/100",
+    "status": "in_progress",
+    "user_stories_file": "user_stories_epic_05.json",
+    "bpmn_validated": true,
+    "next_prompt": "G\u00e9n\u00e8re le diagramme BPMN pour l\u2019EPIC 'Watchlist Import' avec : UI / Bot / DB / User, conditions critiques (ticker valide, doublon, source), logging, flux d'erreur et affichage fusionn\u00e9 dans l\u2019interface."
+}

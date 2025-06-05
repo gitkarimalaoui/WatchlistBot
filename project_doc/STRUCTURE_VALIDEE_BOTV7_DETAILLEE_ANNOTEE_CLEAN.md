@@ -1,0 +1,1323 @@
+# ✅ STRUCTURE DÉTAILLÉE ANNOTÉE (SANS DOUBLONS) – WatchlistBot V7.03+
+
+# ✅ STRUCTURE DÉTAILLÉE ANNOTÉE – Fichiers WatchlistBot V7.03+ à Conserver
+
+Chaque section indique le rôle du module et les fichiers actuellement utilisés et valides.
+
+# ✅ STRUCTURE DÉTAILLÉE DE TOUS LES FICHIERS À CONSERVER (WatchlistBot V7.03+)
+
+
+
+## 📁 `autres/`
+> 📌 **Description :** Fichiers divers non classifiés automatiquement (à valider ou exclure).
+
+- VERSION_HISTORY.md
+- structure_botv7.txt
+- ³                   trades.db
+- ³               project_filebrowser.db
+- ³               watchlist_jaguar.txt
+- ³           WatchList.txt
+- ³           __init__.py
+- ³           all.txt
+- ³           modele_ia_converted.pkl
+- ³           nasdaq100.txt
+- ³           sp500.txt
+- ³           trades.db
+- ³           watchlist_uploaded.txt
+- ³           watchlist_uploaded1.txt
+- ³           wlapL2025.txt
+- ³           ³       load_all_tickers-checkpoint.py
+- ³           ³   load_all_tickers.py
+- ³       MODULE_1_WATCHLISTBOT.md
+- ³       SOURCES.txt
+- ³       USER_STORIES_ALL_CROISEES.xlsx
+- ³       USER_STORIES_COUVERTURE_TOTALE.xlsx
+- ³       USER_STORIES_DAILY_CLOSURE.xlsx
+- ³       USER_STORIES_EPIC_27_AUDIT_MODULES.xlsx
+- ³       USER_STORIES_FINAL_AVEC_AI_PERFORMANCE.xlsx
+- ³       USER_STORIES_FINAL_PAR_EPIC.xlsx
+- ³       USER_STORIES_GPT_SCORING_VALIDATION.xlsx
+- ³       USER_STORIES_HYBRID_GRAPH_PATTERN.xlsx
+- ³       USER_STORIES_JAGUAR_SCRAPING_CORRIGEES.xlsx
+- ³       USER_STORIES_JOURNALISATION_TRADES.xlsx
+- ³       USER_STORIES_KPI_TRACKER.xlsx
+- ³       USER_STORIES_LEARNING_AI.xlsx
+- ³       USER_STORIES_NEWS_CATALYST_DETECTION.xlsx
+- ³       USER_STORIES_ORGANISEES_PAR_EPIC.xlsx
+- ³       USER_STORIES_PATTERN_RECOGNITION.xlsx
+- ³       USER_STORIES_PROJECT_PRODUCTIVITY.xlsx
+- ³       USER_STORIES_SECURITY_GUARD_STOPLOSS.xlsx
+- ³       USER_STORIES_TRADE_EXECUTION.xlsx
+- ³       USER_STORIES_WATCHLIST_IMPORT.xlsx
+- ³       WatchList.txt
+- ³       __init__.py
+- ³       agent_scraper_jaguar.py
+- ³       app_unifie_watchlistbot - Copie.py
+- ³       app_unifie_watchlistbot.py
+- ³       app_unifie_watchlistbotXX.py
+- ³       batch_news_scoring_logged ok.py
+- ³       batch_news_scoring_logged.py
+- ³       db_model.py
+- ³       dependency_links.txt
+- ³       entry_points.txt
+- ³       execution_simulee.py
+- ³       info.py
+- ³       main - Copie.py
+- ³       meta_ia.json
+- ³       model_gain_classifier.pkl
+- ³       model_gain_regressor.pkl
+- ³       modele_ia.pkl
+- ³       module_import_checklist_txt.py
+- ³       patterns_ok.py
+- ³       patterns_ok_archived.py
+- ³       run_chatgpt_batch.py
+- ³       runner_verbose.py
+- ³       simulate_trade_result.py
+- ³       telegram_bot.py
+- ³       test_affichage_graphique.py
+- ³       test_affichage_streamlit.py
+- ³       test_ajout_ticker.py
+- ³       test_analyse_ia.py
+- ³       test_features.py
+- ³       test_finnhub_graph.py
+- ³       test_import_txt.py
+- ³       test_runner.py
+- ³       test_scraping_jaguar.py
+- ³       tickers_watchlist_avril2025_full.txt
+- ³       top_level.txt
+- ³       trades.db
+- ³       watchlist.db
+- ³       watchlist_jaguar 1.txt
+- ³       watchlist_jaguar.txt
+- ³       watchlist_jaguar1.txt
+- ³       watchlist_operationnel - Copie.py
+- ³       watchlist_uploaded.txt
+- ³       wlapL2025.txt
+- ³       ³   __init__.py
+- ³       ³   checklist_import_affichage.py
+- ³       ³   cloture_journee xx.py
+- ³       ³   cloture_journee.py
+- ³       ³   tickers_watchlist_US_only.txt
+- ³   Checklist_Validation_WatchlistBot_V6.2.txt
+- ³   Nouveau document texte.txt
+- ³   README for GPT .md
+- ³   README.md
+- ³   README_FR.md
+- ³   README_lancement.txt
+- ³   README_rules.md
+- ³   VERSION_HISTORY.md
+- ³   __init__.py
+- ³   analyse_tickers.py
+- ³   app_unifie_watchlistbot.py
+- ³   debug_finnhub_bougies.py
+- ³   epic_status.db
+- ³   init_db_patch.py
+- ³   init_watchlist_table.py
+- ³   journal.py
+- ³   learn_from_trades.py
+- ³   main.py
+- ³   migration.py
+- ³   model_gain.pkl
+- ³   model_gain_net.pkl
+- ³   prompt.txt
+- ³   structure.txt
+- ³   test_attach.py
+- ³   test_imports.py
+- ³   tick_collector_launcher.py
+- ³   ³               __init__.py
+- ³   ³               collect.py
+- ³   ³               gen.py
+- ³   ³               manage.py
+- ³   ³               project_filebrowser.db
+- ³   ³           __init__.py
+- ³   ³           repickle_model.py
+- ³   ³           test_storage.py
+- ³   ³           trades.db
+- ³   ³           watchlist_bot.db
+- ³   ³           watchlist_jaguar.txt
+- ³   ³           watchlist_uploaded.txt
+- ³   ³           watchlist_uploaded1.txt
+- ³   ³           wlapL2025.txt
+- ³   ³           ³       load_all_tickers-checkpoint.py
+- ³   ³           ³   load_all_tickers.py
+- ³   ³       01_system_initialization.md
+- ³   ³       02_background_scan_scheduler.md
+- ³   ³       05_watchlist_import.md
+- ³   ³       06_jaguar_scraping.md
+- ³   ³       07_scan_news.md
+- ³   ³       08_filtrage_tickers.md
+- ³   ³       09_analyse_ia.md
+- ³   ³       10_graphiques_dynamiques.md
+- ³   ³       10_intraday_features.ipynb.txt
+- ³   ³       11_interface_trading.md
+- ³   ³       12_journalisation.md
+- ³   ³       14_telegram_bot.md
+- ³   ³       15_cloture_journee.md
+- ³   ³       16_learning_engine.md
+- ³   ³       17_base_ia_historique.md
+- ³   ³       18_ia_image_graphique.md
+- ³   ³       20_ai_performance_tracking.md
+- ³   ³       21_objectif_100k_pilotage.md
+- ³   ³       22_creation_entreprise_ia.md
+- ³   ³       23_live_trade_execution.md
+- ³   ³       24 - Risk Management & Stop-Loss Guard.md
+- ³   ³       25 - Automated Reporting & Compliance.md
+- ³   ³       25_automated_reporting_compliance.md
+- ³   ³       26 - Security & Access Control.md
+- ³   ³       MODULE_1_WATCHLISTBOT.md
+- ³   ³       MODULE_2_LEARNING_ENGINE.md
+- ³   ³       __init__.py
+- ³   ³       batch_news_scoring_logged ok.py
+- ³   ³       batch_news_scoring_logged.py
+- ³   ³       check_tickers.py
+- ³   ³       clean_historical.py
+- ³   ³       collect_historical_us_stocks.py
+- ³   ³       day.txt
+- ³   ³       epic_01_system_initialization.md
+- ³   ³       epic_02_background_scan_scheduler.md
+- ³   ³       epic_05_watchlist_import.md
+- ³   ³       epic_07_scan_news.md
+- ³   ³       epic_08_filtrage_tickers.md
+- ³   ³       epic_09_analyse_ia.md
+- ³   ³       epic_10_graphiques_dynamiques.md
+- ³   ³       epic_11_interface_trading.md
+- ³   ³       epic_12_journalisation.md
+- ³   ³       epic_14_telegram_bot.md
+- ³   ³       epic_15_cloture_journee.md
+- ³   ³       epic_16_learning_engine.md
+- ³   ³       epic_17_base_ia_historique.md
+- ³   ³       epic_18_ia_image_graphique.md
+- ³   ³       epic_20_ai_performance_tracking.md
+- ³   ³       epic_21_objectif_0k_pilotage.md
+- ³   ³       epic_22_creation_entreprise_ia.md
+- ³   ³       epic_23_live_trade_execution.md
+- ³   ³       epic_24_risk_management_and_stop-loss_guard.md
+- ³   ³       epic_24_risk_management_stoploss.md
+- ³   ³       epic_25_automated_reporting_and_compliance.md
+- ³   ³       epic_25_automated_reporting_compliance.md
+- ³   ³       epic_26_security_access_control.md
+- ³   ³       epic_26_security_and_access_control.md
+- ³   ³       epic_status.db
+- ³   ³       exec_python_debug.py
+- ³   ³       execution_simulee.py
+- ³   ³       init_qlib_check.py
+- ³   ³       meta_ia.json
+- ³   ³       model_gain_classifier.pkl
+- ³   ³       model_gain_regressor.pkl
+- ³   ³       modele_ia.pkl
+- ³   ³       patterns.py
+- ³   ³       qlib_loader.py
+- ³   ³       run_chatgpt_batch.py
+- ³   ³       tickers_watchlist_avril2025_full.txt
+- ³   ³       trades.db
+- ³   ³       user_stories.db
+- ³   ³       user_stories_excel.db
+- ³   ³       wlapL2025.txt
+- ³   ³       ³       LICENSE.txt
+- ³   ³       ³       __init__.py
+- ³   ³       ³       dependency_links.txt
+- ³   ³       ³       entry_points.txt
+- ³   ³       ³       manager.py
+- ³   ³       ³       strategy.py
+- ³   ³       ³       top_level.txt
+- ³   ³       ³       update.py
+- ³   ³       ³   __init__.py
+- ³   ³       ³   cli.py
+- ³   ³       ³   easy_install.py
+- ³   ³       ³   exp.py
+- ³   ³       ³   expm.py
+- ³   ³       ³   record_temp.py
+- ³   ³       ³   recorder.py
+- ³   ³       ³   tickers_watchlist_US_only.txt
+- ³   ³       ³   ³   __init__.py
+- ³   ³       ³   ³   __main__.py
+- ³   ³       ³   ³   _deprecation_warning.py
+- ³   ³       ³   ³   _imp.py
+- ³   ³       ³   ³   archive_util.py
+- ³   ³       ³   ³   dep_util.py
+- ³   ³       ³   ³   depends.py
+- ³   ³       ³   ³   dist.py
+- ³   ³       ³   ³   errors.py
+- ³   ³       ³   ³   extension.py
+- ³   ³       ³   ³   glob.py
+- ³   ³       ³   ³   installer.py
+- ³   ³       ³   ³   launch.py
+- ³   ³       ³   ³   lib2to3_ex.py
+- ³   ³       ³   ³   monkey.py
+- ³   ³       ³   ³   msvc.py
+- ³   ³       ³   ³   namespaces.py
+- ³   ³       ³   ³   package_index.py
+- ³   ³       ³   ³   py27compat.py
+- ³   ³       ³   ³   py31compat.py
+- ³   ³       ³   ³   py33compat.py
+- ³   ³       ³   ³   py34compat.py
+- ³   ³       ³   ³   sandbox.py
+- ³   ³       ³   ³   ssl_support.py
+- ³   ³       ³   ³   version.py
+- ³   ³       ³   ³   wheel.py
+- ³   ³       ³   ³   windows_support.py
+- ³   ³       ³   ³   ³   __init__.py
+- ³   ³       ³   ³   ³   _msvccompiler.py
+- ³   ³       ³   ³   ³   alias.py
+- ³   ³       ³   ³   ³   appdirs.py
+- ³   ³       ³   ³   ³   archive_util.py
+- ³   ³       ³   ³   ³   bcppcompiler.py
+- ³   ³       ³   ³   ³   bdist_egg.py
+- ³   ³       ³   ³   ³   bdist_rpm.py
+- ³   ³       ³   ³   ³   bdist_wininst.py
+- ³   ³       ³   ³   ³   cache.py
+- ³   ³       ³   ³   ³   ccompiler.py
+- ³   ³       ³   ³   ³   cmd.py
+- ³   ³       ³   ³   ³   contextlib2.py
+- ³   ³       ³   ³   ³   cygwinccompiler.py
+- ³   ³       ³   ³   ³   debug.py
+- ³   ³       ³   ³   ³   dep_util.py
+- ³   ³       ³   ³   ³   dir_util.py
+- ³   ³       ³   ³   ³   dist.py
+- ³   ³       ³   ³   ³   dist_info.py
+- ³   ³       ³   ³   ³   distro.py
+- ³   ³       ³   ³   ³   easy_install.py
+- ³   ³       ³   ³   ³   egg_info.py
+- ³   ³       ³   ³   ³   errors.py
+- ³   ³       ³   ³   ³   exceptions.py
+- ³   ³       ³   ³   ³   extension.py
+- ³   ³       ³   ³   ³   fancy_getopt.py
+- ³   ³       ³   ³   ³   file_util.py
+- ³   ³       ³   ³   ³   filelist.py
+- ³   ³       ³   ³   ³   install.py
+- ³   ³       ³   ³   ³   install_egg_info.py
+- ³   ³       ³   ³   ³   install_lib.py
+- ³   ³       ³   ³   ³   ipaddress.py
+- ³   ³       ³   ³   ³   locations.py
+- ³   ³       ³   ³   ³   log.py
+- ³   ³       ³   ³   ³   main.py
+- ³   ³       ³   ³   ³   msvc9compiler.py
+- ³   ³       ³   ³   ³   msvccompiler.py
+- ³   ³       ³   ³   ³   ordered_set.py
+- ³   ³       ³   ³   ³   py36compat.py
+- ³   ³       ³   ³   ³   pyparsing.py
+- ³   ³       ³   ³   ³   pyproject.py
+- ³   ³       ³   ³   ³   register.py
+- ³   ³       ³   ³   ³   retrying.py
+- ³   ³       ³   ³   ³   rotate.py
+- ³   ³       ³   ³   ³   saveopts.py
+- ³   ³       ³   ³   ³   sdist.py
+- ³   ³       ³   ³   ³   self_outdated_check.py
+- ³   ³       ³   ³   ³   setopt.py
+- ³   ³       ³   ³   ³   six.py
+- ³   ³       ³   ³   ³   spawn.py
+- ³   ³       ³   ³   ³   test.py
+- ³   ³       ³   ³   ³   text_file.py
+- ³   ³       ³   ³   ³   unixccompiler.py
+- ³   ³       ³   ³   ³   upload.py
+- ³   ³       ³   ³   ³   util.py
+- ³   ³       ³   ³   ³   vendor.txt
+- ³   ³       ³   ³   ³   version.py
+- ³   ³       ³   ³   ³   versionpredicate.py
+- ³   ³       ³   ³   ³   ³   __about__.py
+- ³   ³       ³   ³   ³   ³   __init__.py
+- ³   ³       ³   ³   ³   ³   __main__.py
+- ³   ³       ³   ³   ³   ³   __version__.py
+- ³   ³       ³   ³   ³   ³   _cmd.py
+- ³   ³       ³   ³   ³   ³   _collections.py
+- ³   ³       ³   ³   ³   ³   _compat.py
+- ³   ³       ³   ³   ³   ³   _ihatexml.py
+- ³   ³       ³   ³   ³   ³   _in_process.py
+- ³   ³       ³   ³   ³   ³   _inputstream.py
+- ³   ³       ³   ³   ³   ³   _structures.py
+- ³   ³       ³   ³   ³   ³   _tokenizer.py
+- ³   ³       ³   ³   ³   ³   _typing.py
+- ³   ³       ³   ³   ³   ³   _version.py
+- ³   ³       ³   ³   ³   ³   adapter.py
+- ³   ³       ³   ³   ³   ³   adapters.py
+- ³   ³       ³   ³   ³   ³   ansi.py
+- ³   ³       ³   ³   ³   ³   ansitowin32.py
+- ³   ³       ³   ³   ³   ³   api.py
+- ³   ³       ³   ³   ³   ³   appdirs.py
+- ³   ³       ³   ³   ³   ³   auth.py
+- ³   ³       ³   ³   ³   ³   autocompletion.py
+- ³   ³       ³   ³   ³   ³   bar.py
+- ³   ³       ³   ³   ³   ³   base.py
+- ³   ³       ³   ³   ³   ³   base_command.py
+- ³   ³       ³   ³   ³   ³   bazaar.py
+- ³   ³       ³   ³   ³   ³   bdist.py
+- ³   ³       ³   ³   ³   ³   bdist_dumb.py
+- ³   ³       ³   ³   ³   ³   bdist_msi.py
+- ³   ³       ³   ³   ³   ³   bdist_rpm.py
+- ³   ³       ³   ³   ³   ³   bdist_wininst.py
+- ³   ³       ³   ³   ³   ³   big5freq.py
+- ³   ³       ³   ³   ³   ³   big5prober.py
+- ³   ³       ³   ³   ³   ³   cache.py
+- ³   ³       ³   ³   ³   ³   candidate.py
+- ³   ³       ³   ³   ³   ³   certs.py
+- ³   ³       ³   ³   ³   ³   chardistribution.py
+- ³   ³       ³   ³   ³   ³   charsetgroupprober.py
+- ³   ³       ³   ³   ³   ³   charsetprober.py
+- ³   ³       ³   ³   ³   ³   check.py
+- ³   ³       ³   ³   ³   ³   clean.py
+- ³   ³       ³   ³   ³   ³   cmdoptions.py
+- ³   ³       ³   ³   ³   ³   codec.py
+- ³   ³       ³   ³   ³   ³   codingstatemachine.py
+- ³   ³       ³   ³   ³   ³   collector.py
+- ³   ³       ³   ³   ³   ³   colorlog.py
+- ³   ³       ³   ³   ³   ³   command_context.py
+- ³   ³       ³   ³   ³   ³   common.py
+- ³   ³       ³   ³   ³   ³   compat.py
+- ³   ³       ³   ³   ³   ³   compatibility_tags.py
+- ³   ³       ³   ³   ³   ³   completion.py
+- ³   ³       ³   ³   ³   ³   connection.py
+- ³   ³       ³   ³   ³   ³   connectionpool.py
+- ³   ³       ³   ³   ³   ³   constants.py
+- ³   ³       ³   ³   ³   ³   constructors.py
+- ³   ³       ³   ³   ³   ³   controller.py
+- ³   ³       ³   ³   ³   ³   cookies.py
+- ³   ³       ³   ³   ³   ³   counter.py
+- ³   ³       ³   ³   ³   ³   cp949prober.py
+- ³   ³       ³   ³   ³   ³   datetime.py
+- ³   ³       ³   ³   ³   ³   debug.py
+- ³   ³       ³   ³   ³   ³   decoder.py
+- ³   ³       ³   ³   ³   ³   deprecation.py
+- ³   ³       ³   ³   ³   ³   direct_url.py
+- ³   ³       ³   ³   ³   ³   direct_url_helpers.py
+- ³   ³       ³   ³   ³   ³   download.py
+- ³   ³       ³   ³   ³   ³   encoder.py
+- ³   ³       ³   ³   ³   ³   encoding.py
+- ³   ³       ³   ³   ³   ³   entrypoints.py
+- ³   ³       ³   ³   ³   ³   enums.py
+- ³   ³       ³   ³   ³   ³   escprober.py
+- ³   ³       ³   ³   ³   ³   escsm.py
+- ³   ³       ³   ³   ³   ³   eucjpprober.py
+- ³   ³       ³   ³   ³   ³   euckrfreq.py
+- ³   ³       ³   ³   ³   ³   euckrprober.py
+- ³   ³       ³   ³   ³   ³   euctwfreq.py
+- ³   ³       ³   ³   ³   ³   euctwprober.py
+- ³   ³       ³   ³   ³   ³   exceptions.py
+- ³   ³       ³   ³   ³   ³   ext.py
+- ³   ³       ³   ³   ³   ³   fallback.py
+- ³   ³       ³   ³   ³   ³   fields.py
+- ³   ³       ³   ³   ³   ³   filepost.py
+- ³   ³       ³   ³   ³   ³   filesystem.py
+- ³   ³       ³   ³   ³   ³   filetypes.py
+- ³   ³       ³   ³   ³   ³   filewrapper.py
+- ³   ³       ³   ³   ³   ³   format_control.py
+- ³   ³       ³   ³   ³   ³   freeze.py
+- ³   ³       ³   ³   ³   ³   gb2312freq.py
+- ³   ³       ³   ³   ³   ³   gb2312prober.py
+- ³   ³       ³   ³   ³   ³   git.py
+- ³   ³       ³   ³   ³   ³   glibc.py
+- ³   ³       ³   ³   ³   ³   hash.py
+- ³   ³       ³   ³   ³   ³   hashes.py
+- ³   ³       ³   ³   ³   ³   hebrewprober.py
+- ³   ³       ³   ³   ³   ³   help.py
+- ³   ³       ³   ³   ³   ³   heuristics.py
+- ³   ³       ³   ³   ³   ³   hooks.py
+- ³   ³       ³   ³   ³   ³   html5parser.py
+- ³   ³       ³   ³   ³   ³   index.py
+- ³   ³       ³   ³   ³   ³   initialise.py
+- ³   ³       ³   ³   ³   ³   inject_securetransport.py
+- ³   ³       ³   ³   ³   ³   install.py
+- ³   ³       ³   ³   ³   ³   install_egg_info.py
+- ³   ³       ³   ³   ³   ³   install_headers.py
+- ³   ³       ³   ³   ³   ³   install_lib.py
+- ³   ³       ³   ³   ³   ³   installed.py
+- ³   ³       ³   ³   ³   ³   intranges.py
+- ³   ³       ³   ³   ³   ³   jisfreq.py
+- ³   ³       ³   ³   ³   ³   jpcntx.py
+- ³   ³       ³   ³   ³   ³   labels.py
+- ³   ³       ³   ³   ³   ³   langbulgarianmodel.py
+- ³   ³       ³   ³   ³   ³   langcyrillicmodel.py
+- ³   ³       ³   ³   ³   ³   langgreekmodel.py
+- ³   ³       ³   ³   ³   ³   langhebrewmodel.py
+- ³   ³       ³   ³   ³   ³   langhungarianmodel.py
+- ³   ³       ³   ³   ³   ³   langthaimodel.py
+- ³   ³       ³   ³   ³   ³   langturkishmodel.py
+- ³   ³       ³   ³   ³   ³   latin1prober.py
+- ³   ³       ³   ³   ³   ³   lazy_wheel.py
+- ³   ³       ³   ³   ³   ³   link.py
+- ³   ³       ³   ³   ³   ³   list.py
+- ³   ³       ³   ³   ³   ³   locators.py
+- ³   ³       ³   ³   ³   ³   logging.py
+- ³   ³       ³   ³   ³   ³   main.py
+- ³   ³       ³   ³   ³   ³   main_parser.py
+- ³   ³       ³   ³   ³   ³   manifest.py
+- ³   ³       ³   ³   ³   ³   markers.py
+- ³   ³       ³   ³   ³   ³   mbcharsetprober.py
+- ³   ³       ³   ³   ³   ³   mbcsgroupprober.py
+- ³   ³       ³   ³   ³   ³   mbcssm.py
+- ³   ³       ³   ³   ³   ³   mercurial.py
+- ³   ³       ³   ³   ³   ³   meta.py
+- ³   ³       ³   ³   ³   ³   misc.py
+- ³   ³       ³   ³   ³   ³   mklabels.py
+- ³   ³       ³   ³   ³   ³   models.py
+- ³   ³       ³   ³   ³   ³   ordered.py
+- ³   ³       ³   ³   ³   ³   package_finder.py
+- ³   ³       ³   ³   ³   ³   packages.py
+- ³   ³       ³   ³   ³   ³   packaging.py
+- ³   ³       ³   ³   ³   ³   parallel.py
+- ³   ³       ³   ³   ³   ³   parser.py
+- ³   ³       ³   ³   ³   ³   pkg_resources.py
+- ³   ³       ³   ³   ³   ³   poolmanager.py
+- ³   ³       ³   ³   ³   ³   prepare.py
+- ³   ³       ³   ³   ³   ³   progress_bars.py
+- ³   ³       ³   ³   ³   ³   providers.py
+- ³   ³       ³   ³   ³   ³   py31compat.py
+- ³   ³       ³   ³   ³   ³   register.py
+- ³   ³       ³   ³   ³   ³   reporters.py
+- ³   ³       ³   ³   ³   ³   req_command.py
+- ³   ³       ³   ³   ³   ³   req_file.py
+- ³   ³       ³   ³   ³   ³   req_install.py
+- ³   ³       ³   ³   ³   ³   req_set.py
+- ³   ³       ³   ³   ³   ³   req_tracker.py
+- ³   ³       ³   ³   ³   ³   req_uninstall.py
+- ³   ³       ³   ³   ³   ³   request.py
+- ³   ³       ³   ³   ³   ³   resolvers.py
+- ³   ³       ³   ³   ³   ³   resources.py
+- ³   ³       ³   ³   ³   ³   response.py
+- ³   ³       ³   ³   ³   ³   sbcharsetprober.py
+- ³   ³       ³   ³   ³   ³   sbcsgroupprober.py
+- ³   ³       ³   ³   ³   ³   scheme.py
+- ³   ³       ³   ³   ³   ³   sdist.py
+- ³   ³       ³   ³   ³   ³   search.py
+- ³   ³       ³   ³   ³   ³   search_scope.py
+- ³   ³       ³   ³   ³   ³   selection_prefs.py
+- ³   ³       ³   ³   ³   ³   serialize.py
+- ³   ³       ³   ³   ³   ³   serializer.py
+- ³   ³       ³   ³   ³   ³   session.py
+- ³   ³       ³   ³   ³   ³   sessions.py
+- ³   ³       ³   ³   ³   ³   show.py
+- ³   ³       ³   ³   ³   ³   sjisprober.py
+- ³   ³       ³   ³   ³   ³   specifiers.py
+- ³   ³       ³   ³   ³   ³   spinner.py
+- ³   ³       ³   ³   ³   ³   spinners.py
+- ³   ³       ³   ³   ³   ³   status_codes.py
+- ³   ³       ³   ³   ³   ³   structs.py
+- ³   ³       ³   ³   ³   ³   structures.py
+- ³   ³       ³   ³   ³   ³   subprocess.py
+- ³   ³       ³   ³   ³   ³   subversion.py
+- ³   ³       ³   ³   ³   ³   tags.py
+- ³   ³       ³   ³   ³   ³   target_python.py
+- ³   ³       ³   ³   ³   ³   temp_dir.py
+- ³   ³       ³   ³   ³   ³   tests.py
+- ³   ³       ³   ³   ³   ³   typing.py
+- ³   ³       ³   ³   ³   ³   tz.py
+- ³   ³       ³   ³   ³   ³   uninstall.py
+- ³   ³       ³   ³   ³   ³   universaldetector.py
+- ³   ³       ³   ³   ³   ³   unpacking.py
+- ³   ³       ³   ³   ³   ³   upload.py
+- ³   ³       ³   ³   ³   ³   urls.py
+- ³   ³       ³   ³   ³   ³   utf8prober.py
+- ³   ³       ³   ³   ³   ³   util.py
+- ³   ³       ³   ³   ³   ³   version.py
+- ³   ³       ³   ³   ³   ³   versioncontrol.py
+- ³   ³       ³   ³   ³   ³   virtualenv.py
+- ³   ³       ³   ³   ³   ³   wheel.py
+- ³   ³       ³   ³   ³   ³   win32.py
+- ³   ³       ³   ³   ³   ³   winterm.py
+- ³   ³       ³   ³   ³   ³   wrapper.py
+- ³   ³       ³   ³   ³   ³   wrappers.py
+- ³   ³       ³   ³   ³   ³   x_user_defined.py
+- ³   ³       ³   ³   ³   ³   xmlrpc.py
+- ³   ³       ³   ³   ³   ³   ³   __init__.py
+- ³   ³       ³   ³   ³   ³   ³   _appengine_environ.py
+- ³   ³       ³   ³   ³   ³   ³   _base.py
+- ³   ³       ³   ³   ³   ³   ³   alphabeticalattributes.py
+- ³   ³       ³   ³   ³   ³   ³   appengine.py
+- ³   ³       ³   ³   ³   ³   ³   base.py
+- ³   ³       ³   ³   ³   ³   ³   candidates.py
+- ³   ³       ³   ³   ³   ³   ³   chardetect.py
+- ³   ³       ³   ³   ³   ³   ³   collections_abc.py
+- ³   ³       ³   ³   ³   ³   ³   connection.py
+- ³   ³       ³   ³   ³   ³   ³   dom.py
+- ³   ³       ³   ³   ³   ³   ³   editable_legacy.py
+- ³   ³       ³   ³   ³   ³   ³   etree.py
+- ³   ³       ³   ³   ³   ³   ³   etree_lxml.py
+- ³   ³       ³   ³   ³   ³   ³   factory.py
+- ³   ³       ³   ³   ³   ³   ³   file_cache.py
+- ³   ³       ³   ³   ³   ³   ³   genshi.py
+- ³   ³       ³   ³   ³   ³   ³   inject_meta_charset.py
+- ³   ³       ³   ³   ³   ³   ³   legacy.py
+- ³   ³       ³   ³   ³   ³   ³   lint.py
+- ³   ³       ³   ³   ³   ³   ³   misc.py
+- ³   ³       ³   ³   ³   ³   ³   ntlmpool.py
+- ³   ³       ³   ³   ³   ³   ³   optionaltags.py
+- ³   ³       ³   ³   ³   ³   ³   provider.py
+- ³   ³       ³   ³   ³   ³   ³   py.py
+- ³   ³       ³   ³   ³   ³   ³   pyopenssl.py
+- ³   ³       ³   ³   ³   ³   ³   queue.py
+- ³   ³       ³   ³   ³   ³   ³   redis_cache.py
+- ³   ³       ³   ³   ³   ³   ³   request.py
+- ³   ³       ³   ³   ³   ³   ³   resolver.py
+- ³   ³       ³   ³   ³   ³   ³   response.py
+- ³   ³       ³   ³   ³   ³   ³   retry.py
+- ³   ³       ³   ³   ³   ³   ³   sanitizer.py
+- ³   ³       ³   ³   ³   ³   ³   sax.py
+- ³   ³       ³   ³   ³   ³   ³   securetransport.py
+- ³   ³       ³   ³   ³   ³   ³   shutil.py
+- ³   ³       ³   ³   ³   ³   ³   six.py
+- ³   ³       ³   ³   ³   ³   ³   socks.py
+- ³   ³       ³   ³   ³   ³   ³   ssl_.py
+- ³   ³       ³   ³   ³   ³   ³   tarfile.py
+- ³   ³       ³   ³   ³   ³   ³   timeout.py
+- ³   ³       ³   ³   ³   ³   ³   url.py
+- ³   ³       ³   ³   ³   ³   ³   wait.py
+- ³   ³       ³   ³   ³   ³   ³   wheel.py
+- ³   ³       ³   ³   ³   ³   ³   wheel_legacy.py
+- ³   ³       ³   ³   ³   ³   ³   whitespace.py
+- ³   ³       ³   ³   ³   ³   ³   ³   __init__.py
+- ³   ³       ³   ³   ³   ³   ³   ³   _implementation.py
+- ³   ³       ³   ³   ³   ³   ³   ³   bindings.py
+- ³   ³       ³   ³   ³   ³   ³   ³   low_level.py
+- ³   ³       ³   ³   ³   ³   ³   ³   makefile.py
+- ³   ³   01_system_initialization.md
+- ³   ³   02_background_scan_scheduler.md
+- ³   ³   05_watchlist_import.md
+- ³   ³   06_jaguar_scraping.md
+- ³   ³   07_scan_news.md
+- ³   ³   08_filtrage_tickers.md
+- ³   ³   09_analyse_ia.md
+- ³   ³   10_graphiques_dynamiques.md
+- ³   ³   10_intraday_features.ipynb.txt
+- ³   ³   11_interface_trading.md
+- ³   ³   12_journalisation.md
+- ³   ³   14_telegram_bot.md
+- ³   ³   15_cloture_journee.md
+- ³   ³   16_learning_engine.md
+- ³   ³   17_base_ia_historique.md
+- ³   ³   18_ia_image_graphique.md
+- ³   ³   20_ai_performance_tracking.md
+- ³   ³   21_objectif_0k_pilotage.md
+- ³   ³   22_creation_entreprise_ia.md
+- ³   ³   23_live_trade_execution.md
+- ³   ³   24_risk_management_and_stop-loss_guard.md
+- ³   ³   25_automated_reporting_and_compliance.md
+- ³   ³   26_security_and_access_control.md
+- ³   ³   27_audit_modules_ai.md
+- ³   ³   27_project_productivity.md
+- ³   ³   CODE_OF_CONDUCT.md
+- ³   ³   Checklist_Validation_WatchlistBot_V6.2.txt
+- ³   ³   EXECUTION_PATHS_BOTV7.txt
+- ³   ³   MODULE_1_WATCHLISTBOT.md
+- ³   ³   MODULE_2_LEARNING_ENGINE.md
+- ³   ³   MODULE_7_DAILY_CLOSURE.md
+- ³   ³   MODULE_9_TELEGRAM_ALERTS.md
+- ³   ³   Models Files list.txt
+- ³   ³   Nouveau document texte.txt
+- ³   ³   README.md
+- ³   ³   README_FR.md
+- ³   ³   RESTRUCTURED_PLAN_BOTV7.txt
+- ³   ³   SECURITY.md
+- ³   ³   SESSION_TRACKER.md
+- ³   ³   STRUCTURE_REGENEREE_HISTORIQUE.md
+- ³   ³   Streamlit Entreprise View.py
+- ³   ³   __init__.py
+- ³   ³   _archived_app.py.py
+- ³   ³   agent scraper_jaguar.py
+- ³   ³   agent_scraper_jaguar.py
+- ³   ³   analyse_tickers.py
+- ³   ³   app_unifie_watchlistbot - Copie.py
+- ³   ³   app_unifie_watchlistbot a ne pas supprimer avec entreprise.py
+- ³   ³   app_unifie_watchlistbot a ne pas supprimer sans entreprise.py
+- ³   ³   app_unifie_watchlistbot avec scraping et chat fonction avec le bat cdp avant.py
+- ³   ³   app_unifie_watchlistbot avec table sans profil persistant.py
+- ³   ³   app_unifie_watchlistbot cdp.py
+- ³   ³   app_unifie_watchlistbot ne pas supprimer.py
+- ³   ³   app_unifie_watchlistbot sans cdp.py
+- ³   ³   app_unifie_watchlistbot sans scraping.py
+- ³   ³   app_unifie_watchlistbot super ace toute les option mais sans verifier les donn‚es et l'affichage.py
+- ³   ³   app_unifie_watchlistbot.py
+- ³   ³   apprentissage_hybride.py
+- ³   ³   auto_tick_collector.py
+- ³   ³   batch_news_scoring.py
+- ³   ³   batch_news_scoring_logged parfait a an pas sup.py
+- ³   ³   batch_news_scoring_logged sans etree.py
+- ³   ³   check_tickers.py
+- ³   ³   checklist_import_affichage.py
+- ³   ³   clean_historical.py
+- ³   ³   cloture_journee.py
+- ³   ³   collect_historical_us_stocks.py
+- ³   ³   collect_historical_us_stocks_v1 - Copie.py
+- ³   ³   db_model.py
+- ³   ³   debug_finnhub_bougies.py
+- ³   ³   entreprise.db
+- ³   ³   exec_python_debug.py
+- ³   ³   executer_ordre_moomoo.py
+- ³   ³   executer_ordre_moomoo1.py
+- ³   ³   executer_ordre_moomoo2.py
+- ³   ³   executer_ordre_moomoo3.py
+- ³   ³   finnhub.py
+- ³   ³   generer_donnees_intraday.py
+- ³   ³   get_position.py
+- ³   ³   graphs.py
+- ³   ³   graphsx.py
+- ³   ³   init_qlib_check.py
+- ³   ³   journal.py
+- ³   ³   journal_complet.py
+- ³   ³   journal_simule_aggrid.py
+- ³   ³   journal_trades.py
+- ³   ³   learning_engine.py
+- ³   ³   learning_loop.py
+- ³   ³   load_watchlist.py
+- ³   ³   main.py
+- ³   ³   meta_ia.json
+- ³   ³   model_gain.pkl
+- ³   ³   model_gain_classifier.pkl
+- ³   ³   model_gain_net.pkl
+- ³   ³   model_gain_regressor.pkl
+- ³   ³   modele_ia 2.pkl
+- ³   ³   modele_ia.pkl
+- ³   ³   modele_ia1.pkl
+- ³   ³   modele_ia_converted.pkl
+- ³   ³   module_import_checklist_txt.py
+- ³   ³   moteur_ia.py
+- ³   ³   parametres.json
+- ³   ³   parametres.py
+- ³   ³   patterns.py
+- ³   ³   predictor_live.py
+- ³   ³   project_knowledge_base.md
+- ³   ³   project_structure.md
+- ³   ³   project_tracker DOUBLES.db
+- ³   ³   project_tracker sans missing modules.db
+- ³   ³   project_tracker sans persnal table.db
+- ³   ³   project_tracker sans prompt.db
+- ³   ³   project_tracker version 8 verifi‚e a ne pas supprime.db
+- ³   ³   project_tracker.db
+- ³   ³   project_tracker1.db
+- ³   ³   prompt.txt
+- ³   ³   qlib_loader.py
+- ³   ³   query_entreprise_db.py
+- ³   ³   readme organisation.txt
+- ³   ³   readme structure.txt
+- ³   ³   real_time_tick_collector.py
+- ³   ³   repickle_model.py
+- ³   ³   roadmap_sync.json
+- ³   ³   rules_auto.json
+- ³   ³   run_chatgpt_batch cdp ok.py
+- ³   ³   run_chatgpt_batch go go go.py
+- ³   ³   run_chatgpt_batch go go.py
+- ³   ³   run_chatgpt_batch old.py
+- ³   ³   run_chatgpt_batch operationnel.py
+- ³   ³   run_chatgpt_batch optimise sans table.py
+- ³   ³   run_chatgpt_batch pb sans.py
+- ³   ³   run_chatgpt_batch sans bon profit GPT.py
+- ³   ³   run_chatgpt_batch sans cdp.py
+- ³   ³   run_chatgpt_batch.py
+- ³   ³   scraper_jaguar new.py
+- ³   ³   scraper_jaguar.py
+- ³   ³   setup.py
+- ³   ³   structure.txt
+- ³   ³   task_manager ancienne table.py
+- ³   ³   task_manager.py
+- ³   ³   telegram_ai_alerts.py
+- ³   ³   telegram_alerts.py
+- ³   ³   test_import.py
+- ³   ³   test_imports.py
+- ³   ³   tick_collector_launcher.py
+- ³   ³   tickers_manuels.json
+- ³   ³   tickers_watchlist_US_only.txt
+- ³   ³   trades sans hitory des prompts.db
+- ³   ³   trades.db
+- ³   ³   unlock_status.json
+- ³   ³   user_stories.db
+- ³   ³   watchlist.db
+- ³   ³   watchlist.py
+- ³   ³   watchlist_bot.db
+- ³   ³   watchlist_interactive.py
+- ³   ³   watchlist_jaguar.txt
+- ³   ³   watchlist_source.txt
+- ³   ³   watchlist_uploaded.txt
+- ³   ³   watchlist_uploaded_temp.txt
+- ³   ³   ³           README.md
+- ³   ³   ³           Readme.md
+- ³   ³   ³           __init__.py
+- ³   ³   ³           base.py
+- ³   ³   ³           collector.py
+- ³   ³   ³           env_wrapper.py
+- ³   ³   ³           finite_env.py
+- ³   ³   ³           hyperparameter_158.py
+- ³   ³   ³           hyperparameter_360.py
+- ³   ³   ³           log.py
+- ³   ³   ³           merge_orders.py
+- ³   ³   ³           poet.py
+- ³   ³   ³           record_temp.py
+- ³   ³   ³           shrink.py
+- ³   ³   ³           structured.py
+- ³   ³   ³           workflow.py
+- ³   ³   ³       README.md
+- ³   ³   ³       __init__.py
+- ³   ³   ³       account.py
+- ³   ³   ³       base.py
+- ³   ³   ³       bug-report.md
+- ³   ³   ³       decision.py
+- ³   ³   ³       documentation.md
+- ³   ³   ³       example.py
+- ³   ³   ³       exceptions.py
+- ³   ³   ³       exchange.py
+- ³   ³   ³       executor.py
+- ³   ³   ³       feature-request.md
+- ³   ³   ³       feature.py
+- ³   ³   ³       file.py
+- ³   ³   ³       high_performance_ds.py
+- ³   ³   ³       highfreq_handler.py
+- ³   ³   ³       highfreq_ops.py
+- ³   ³   ³       highfreq_processor.py
+- ³   ³   ³       mod.py
+- ³   ³   ³       objm.py
+- ³   ³   ³       online_management_simulate.py
+- ³   ³   ³       paral.py
+- ³   ³   ³       patterns.py
+- ³   ³   ³       position.py
+- ³   ³   ³       profit_attribution.py
+- ³   ³   ³       question.md
+- ³   ³   ³       report.py
+- ³   ³   ³       resam.py
+- ³   ³   ³       rolling_handler.py
+- ³   ³   ³       rolling_online_management.py
+- ³   ³   ³       serial.py
+- ³   ³   ³       signal.py
+- ³   ³   ³       task_manager_rolling.py
+- ³   ³   ³       test_elem_operator.py
+- ³   ³   ³       test_file_strategy.py
+- ³   ³   ³       test_finite_env.py
+- ³   ³   ³       test_general_nn.py
+- ³   ³   ³       test_get_multi_proc.py
+- ³   ³   ³       test_handler.py
+- ³   ³   ³       test_handler_storage.py
+- ³   ³   ³       test_high_freq_trading.py
+- ³   ³   ³       test_logger.py
+- ³   ³   ³       test_mlflow.py
+- ³   ³   ³       test_processor.py
+- ³   ³   ³       test_qlib_simulator.py
+- ³   ³   ³       test_saoe_simple.py
+- ³   ³   ³       test_sepdf.py
+- ³   ³   ³       test_special_ops.py
+- ³   ³   ³       test_trainer.py
+- ³   ³   ³       test_update_pred.py
+- ³   ³   ³       time.py
+- ³   ³   ³       trades.db
+- ³   ³   ³       update_online_pred.py
+- ³   ³   ³       workflow.py
+- ³   ³   ³   10_intraday_features.ipynb.txt
+- ³   ³   ³   PULL_REQUEST_TEMPLATE.md
+- ³   ³   ³   README.md
+- ³   ³   ³   __init__.py
+- ³   ³   ³   _archived_app.py.py
+- ³   ³   ³   analyse_finnhub.py
+- ³   ³   ³   apprentissage_hybride.py
+- ³   ³   ³   auto_tick_collector.py
+- ³   ³   ³   check_dump_bin.py
+- ³   ³   ³   check_tickers.py
+- ³   ³   ³   checklist_import_affichage.py
+- ³   ³   ³   clean_historical.py
+- ³   ³   ³   cloture.py
+- ³   ³   ³   cloture_journee.py
+- ³   ³   ³   collect_historical_us_stocks.py
+- ³   ³   ³   collect_historical_us_stocks_v1 - Copie.py
+- ³   ³   ³   collect_info.py
+- ³   ³   ³   conf.py
+- ³   ³   ³   conftest.py
+- ³   ³   ³   constant.py
+- ³   ³   ³   db_model.py
+- ³   ³   ³   debug_finnhub_bougies.py
+- ³   ³   ³   dump_bin.py
+- ³   ³   ³   dump_pit.py
+- ³   ³   ³   exec_python_debug.py
+- ³   ³   ³   finnhub_client.py
+- ³   ³   ³   generer_donnees_intraday.py
+- ³   ³   ³   init_qlib_check.py
+- ³   ³   ³   journal.py
+- ³   ³   ³   journal_complet.py
+- ³   ³   ³   journal_simule_aggrid.py
+- ³   ³   ³   journal_trades.py
+- ³   ³   ³   learning_engine.py
+- ³   ³   ³   log.py
+- ³   ³   ³   menu_v5_sidebar.py
+- ³   ³   ³   modele_ia.pkl
+- ³   ³   ³   modele_ia1.pkl
+- ³   ³   ³   modele_ia_converted.pkl
+- ³   ³   ³   module_import_checklist_txt.py
+- ³   ³   ³   moteur_ia.py
+- ³   ³   ³   parametres.json
+- ³   ³   ³   parametres.py
+- ³   ³   ³   patterns.py
+- ³   ³   ³   patternsx.py
+- ³   ³   ³   predictor_live.py
+- ³   ³   ³   qlib_loader.py
+- ³   ³   ³   real_time_tick_collector.py
+- ³   ³   ³   repickle_model.py
+- ³   ³   ³   rules_auto.json
+- ³   ³   ³   run_all_model.py
+- ³   ³   ³   telegram_ai_alerts.py
+- ³   ³   ³   telegram_alerts.py
+- ³   ³   ³   test_all_pipeline.py
+- ³   ³   ³   test_contrib_model.py
+- ³   ³   ³   test_contrib_workflow.py
+- ³   ³   ³   test_pit.py
+- ³   ³   ³   test_register_ops.py
+- ³   ³   ³   test_structured_cov_estimator.py
+- ³   ³   ³   test_workflow.py
+- ³   ³   ³   tick_collector_launcher.py
+- ³   ³   ³   tickers_manuels.json
+- ³   ³   ³   tickers_watchlist_US_only.txt
+- ³   ³   ³   typehint.py
+- ³   ³   ³   watchlist_auto.py
+- ³   ³   ³   watchlist_generator.py
+- ³   ³   ³   watchlist_interactive.py
+- ³   ³   ³   watchlist_source.txt
+- ³   ³   ³   watchlist_uploaded.txt
+- ³   ³   ³   watchlist_uploaded_temp.txt
+- ³   ³   ³   workflow_by_code.py
+- ³   ³   ³   ³           README.md
+- ³   ³   ³   ³           __init__.py
+- ³   ³   ³   ³           ana.py
+- ³   ³   ³   ³           base.py
+- ³   ³   ³   ³           enhanced_indexing.py
+- ³   ³   ³   ³           future_trading_date_collector.py
+- ³   ³   ³   ³           hyperparam_opt.py
+- ³   ³   ³   ³           model.py
+- ³   ³   ³   ³           net.py
+- ³   ³   ³   ³           optimizer.py
+- ³   ³   ³   ³           sepdf.py
+- ³   ³   ³   ³           tft_model.py
+- ³   ³   ³   ³       README.md
+- ³   ³   ³   ³       __init__.py
+- ³   ³   ³   ³       __main__.py
+- ³   ³   ³   ³       alpha.py
+- ³   ³   ³   ³       api.py
+- ³   ³   ³   ³       base.py
+- ³   ³   ³   ³       callbacks.py
+- ³   ³   ³   ³       catboost_model.py
+- ³   ³   ³   ³       collector.py
+- ³   ³   ³   ³       csi300_gru_ts.pkl
+- ³   ³   ³   ³       csi300_lstm_ts.pkl
+- ³   ³   ³   ³       ddgda.py
+- ³   ³   ³   ³       double_ensemble.py
+- ³   ³   ³   ³       ensemble.py
+- ³   ³   ³   ³       features_resample_N.py
+- ³   ³   ³   ³       features_sample.py
+- ³   ³   ³   ³       file_storage.py
+- ³   ³   ³   ³       gbdt.py
+- ³   ³   ³   ³       group.py
+- ³   ³   ³   ³       handler.py
+- ³   ³   ³   ³       high_freq.py
+- ³   ³   ³   ³       highfreq_gdbt_model.py
+- ³   ³   ³   ³       integration.py
+- ³   ³   ³   ³       interpreter.py
+- ³   ³   ³   ³       launcher.py
+- ³   ³   ³   ³       linear.py
+- ³   ³   ³   ³       loader.py
+- ³   ³   ³   ³       manager.py
+- ³   ³   ³   ³       model.py
+- ³   ³   ³   ³       model_gru_csi300.pkl
+- ³   ³   ³   ³       model_lstm_csi300.pkl
+- ³   ³   ³   ³       multi_freq_handler.py
+- ³   ³   ³   ³       native.py
+- ³   ³   ³   ³       network.py
+- ³   ³   ³   ³       online_model.py
+- ³   ³   ³   ³       operator.py
+- ³   ³   ³   ³       pickle_styled.py
+- ³   ³   ³   ³       pipeline.py
+- ³   ³   ³   ³       policy.py
+- ³   ³   ³   ³       processor.py
+- ³   ³   ³   ³       pytorch_adarnn.py
+- ³   ³   ³   ³       pytorch_add.py
+- ³   ³   ³   ³       pytorch_alstm.py
+- ³   ³   ³   ³       pytorch_alstm_ts.py
+- ³   ³   ³   ³       pytorch_gats.py
+- ³   ³   ³   ³       pytorch_gats_ts.py
+- ³   ³   ³   ³       pytorch_general_nn.py
+- ³   ³   ³   ³       pytorch_gru.py
+- ³   ³   ³   ³       pytorch_gru_ts.py
+- ³   ³   ³   ³       pytorch_hist.py
+- ³   ³   ³   ³       pytorch_igmtf.py
+- ³   ³   ³   ³       pytorch_krnn.py
+- ³   ³   ³   ³       pytorch_localformer.py
+- ³   ³   ³   ³       pytorch_localformer_ts.py
+- ³   ³   ³   ³       pytorch_lstm.py
+- ³   ³   ³   ³       pytorch_lstm_ts.py
+- ³   ³   ³   ³       pytorch_nn.py
+- ³   ³   ³   ³       pytorch_sandwich.py
+- ³   ³   ³   ³       pytorch_sfm.py
+- ³   ³   ³   ³       pytorch_tabnet.py
+- ³   ³   ³   ³       pytorch_tcn.py
+- ³   ³   ³   ³       pytorch_tcn_ts.py
+- ³   ³   ³   ³       pytorch_tcts.py
+- ³   ³   ³   ³       pytorch_tra.py
+- ³   ³   ³   ³       pytorch_transformer.py
+- ³   ³   ³   ³       pytorch_transformer_ts.py
+- ³   ³   ³   ³       reward.py
+- ³   ³   ³   ³       rolling_benchmark.py
+- ³   ³   ³   ³       simulator_qlib.py
+- ³   ³   ³   ³       simulator_simple.py
+- ³   ³   ³   ³       single_order.py
+- ³   ³   ³   ³       space.py
+- ³   ³   ³   ³       state.py
+- ³   ³   ³   ³       storage.py
+- ³   ³   ³   ³       strategy.py
+- ³   ³   ³   ³       task.py
+- ³   ³   ³   ³       tcn.py
+- ³   ³   ³   ³       train_onpolicy.py
+- ³   ³   ³   ³       trainer.py
+- ³   ³   ³   ³       tuner.py
+- ³   ³   ³   ³       user.py
+- ³   ³   ³   ³       vessel.py
+- ³   ³   ³   ³       weight.py
+- ³   ³   ³   ³       xgboost.py
+- ³   ³   ³   ³   README.md
+- ³   ³   ³   ³   __init__.py
+- ³   ³   ³   ³   aux_info.py
+- ³   ³   ³   ³   base.py
+- ³   ³   ³   ³   cache.py
+- ³   ³   ³   ³   client.py
+- ³   ³   ³   ³   evaluate.py
+- ³   ³   ³   ³   evaluate_portfolio.py
+- ³   ³   ³   ³   filter.py
+- ³   ³   ³   ³   future_calendar_collector.py
+- ³   ³   ³   ³   index.py
+- ³   ³   ³   ³   inst_processor.py
+- ³   ³   ³   ³   interpreter.py
+- ³   ³   ³   ³   ops.py
+- ³   ³   ³   ³   pit.py
+- ³   ³   ³   ³   reward.py
+- ³   ³   ³   ³   seed.py
+- ³   ³   ³   ³   simulator.py
+- ³   ³   ³   ³   torch.py
+- ³   ³   ³   ³   trainer.py
+- ³   ³   ³   ³   ³       README.md
+- ³   ³   ³   ³   ³       __init__.py
+- ³   ³   ³   ³   ³       analysis_model_performance.py
+- ³   ³   ³   ³   ³       base.py
+- ³   ³   ³   ³   ³       cumulative_return.py
+- ³   ³   ³   ³   ³       parse_position.py
+- ³   ³   ³   ³   ³       qlib_Alpha158.py
+- ³   ³   ³   ³   ³       rank_label.py
+- ³   ³   ³   ³   ³       report.py
+- ³   ³   ³   ³   ³       risk_analysis.py
+- ³   ³   ³   ³   ³   README.md
+- ³   ³   ³   ³   ³   __init__.py
+- ³   ³   ³   ³   ³   cost_control.py
+- ³   ³   ³   ³   ³   example.py
+- ³   ³   ³   ³   ³   graph.py
+- ³   ³   ³   ³   ³   handler.py
+- ³   ³   ³   ³   ³   highfreq_handler.py
+- ³   ³   ³   ³   ³   highfreq_processor.py
+- ³   ³   ³   ³   ³   highfreq_provider.py
+- ³   ³   ³   ³   ³   loader.py
+- ³   ³   ³   ³   ³   order_generator.py
+- ³   ³   ³   ³   ³   processor.py
+- ³   ³   ³   ³   ³   rule_strategy.py
+- ³   ³   ³   ³   ³   signal_strategy.py
+- ³   ³   ³   ³   ³   tft.py
+
+
+
+## 📁 `backtest/`
+> 📌 **Description :** Runner d’apprentissage IA à partir de données simulées et historiques.
+
+- ³       MODULE_4_BACKTEST_ENGINE.md
+- ³       USER_STORIES_BACKTEST_ENGINE.xlsx
+- ³       ai_backtest_runner.py
+- ³       backtest file list.txt
+- ³       simulate_backtest.py
+- ³   ³       MODULE_4_BACKTEST_ENGINE.md
+- ³   ³       ai_backtest.py
+- ³   ³       backtest.py
+- ³   ³       backtest_qlib.py
+- ³   ³   MODULE_4_BACKTEST_ENGINE.md
+- ³   ³   ai_backtest.py
+- ³   ³   ai_backtest_runner.py
+- ³   ³   backtest.py
+- ³   ³   backtest_qlib.py
+- ³   ³   ³       backtest.py
+- ³   ³   ³       backtest_qlib.py
+- ³   ³   ³   ai_backtest.py
+- ³   ³   ³   ai_backtest_runner.py
+- ³   ³   ³   backtest.py
+- ³   ³   ³   backtest_qlib.py
+- ³   ³   ³   qlib_backtest.py
+- ³   ³   ³   ³       backtest.py
+
+
+
+## 📁 `config/`
+> 📌 **Description :** Fichiers de configuration dynamiques (params, settings, config).
+
+- ³       USER_STORIES_META_IA_CONFIG.xlsx
+- ³       config.py
+- ³   ³       ³   ³   config.py
+- ³   ³       ³   ³   ³   config.py
+- ³   ³       ³   ³   ³   configuration.py
+- ³   ³       ³   ³   ³   sysconfig.py
+- ³   ³       ³   ³   ³   ³   config.py
+- ³   ³       ³   ³   ³   ³   configuration.py
+- ³   ³       ³   ³   ³   ³   ³   sysconfig.py
+- ³   ³   config.py
+- ³   ³   config_ia.json
+- ³   ³   config_moomoo.json
+- ³   ³   qlib_config.py
+- ³   ³   ³       config.py
+- ³   ³   ³   config.py
+- ³   ³   ³   config_ia.json
+- ³   ³   ³   ³       config.py
+- ³   ³   ³   ³       naive_config_parser.py
+- ³   ³   ³   ³   ³       configs.py
+
+
+
+## 📁 `core/`
+> 📌 **Description :** Connexion à la base de données métier (modèles SQL, accès entreprise).
+
+- ³   ³       04 - Core Database & Logging Setup.md
+- ³   ³       epic_04_core_database_and_logging_setup.md
+- ³   ³       ³   ³   ³   core.py
+- ³   ³       ³   ³   ³   ³   core.py
+- ³   ³   04_core_database_and_logging_setup.md
+- ³   ³   ³   ³   ³       score_ic.py
+
+
+
+## 📁 `data/`
+> 📌 **Description :** Données persistées localement : watchlist, métadonnées IA, base de trading.
+
+- ³   ³       03 - Real-time Data Ingestion & Validation.md
+- ³   ³       epic_03_real-time_data_ingestion_and_validation.md
+- ³   ³       init_qlib_data.py
+- ³   ³       ³   ³   ³   ³   database.py
+- ³   ³       ³   ³   ³   ³   idnadata.py
+- ³   ³       ³   ³   ³   ³   install_data.py
+- ³   ³       ³   ³   ³   ³   metadata.py
+- ³   ³       ³   ³   ³   ³   package_data.py
+- ³   ³       ³   ³   ³   ³   uts46data.py
+- ³   ³       ³   ³   ³   ³   ³   metadata.py
+- ³   ³       ³   ³   ³   ³   ³   metadata_legacy.py
+- ³   ³   03_real-time_data_ingestion_and_validation.md
+- ³   ³   Data files to be completed.txt
+- ³   ³   Qlib data files.txt
+- ³   ³   data_dictionary.md
+- ³   ³   init_qlib_data.py
+- ³   ³   prepare_qlib_data.py
+- ³   ³   ³           data_queue.py
+- ³   ³   ³           gen_pickle_data.py
+- ³   ³   ³           vis_data.py
+- ³   ³   ³       create_dataset.py
+- ³   ³   ³       data.py
+- ³   ³   ³       data_cache_demo.py
+- ³   ³   ³       data_mem_resuse_demo.py
+- ³   ³   ³       get_data.py
+- ³   ³   ³       index_data.py
+- ³   ³   ³       prepare_riskdata.py
+- ³   ³   ³       test_data_queue.py
+- ³   ³   ³       test_datalayer.py
+- ³   ³   ³       test_dataloader.py
+- ³   ³   ³       test_dataset.py
+- ³   ³   ³       test_index_data.py
+- ³   ³   ³   check_data_health.py
+- ³   ³   ³   get_data.py
+- ³   ³   ³   init_qlib_data.py
+- ³   ³   ³   prepare_qlib_data.py
+- ³   ³   ³   test_dump_data.py
+- ³   ³   ³   test_get_data.py
+- ³   ³   ³   ³           dataset.py
+- ³   ³   ³   ³       dataset.py
+- ³   ³   ³   ³   data.py
+- ³   ³   ³   ³   ³       fill_cn_1min_data.py
+- ³   ³   ³   ³   ³   data.py
+- ³   ³   ³   ³   ³   dataset.py
+
+
+
+## 📁 `docs/`
+> 📌 **Description :** Documentation, specs, fichiers Markdown et Excel.
+
+- ³   ³       ³   ³   ³   upload_docs.py
+
+
+
+## 📁 `fusion/`
+> 📌 **Description :** Modules de fusion et de nettoyage de watchlists, checklist IA.
+
+- ³       module_checklist_fusion.py
+- ³       module_fusion_watchlist.py
+- ³       test_fusion.py
+- ³   ³   module_checklist_fusion.py
+- ³   ³   module_fusion_watchlist.py
+- ³   ³   module_fusion_watchlistold.py
+- ³   ³   ³   module_checklist_fusion.py
+- ³   ³   ³   module_fusion_watchlist.py
+- ³   ³   ³   module_fusion_watchlistold.py
+
+
+
+## 📁 `intelligence/`
+> 📌 **Description :** Moteur d’apprentissage IA : apprentissage hybride, boucles de training, Qlib.
+
+- ³   ³       training.py
+- ³   ³       ³   ³   ³   ³   dirtools.py
+- ³   ³   intelligence file list.txt
+- ³   ³   roadmap_generator_tools.py
+- ³   ³   training.py
+- ³   ³   us_db_tools.py
+- ³   ³   ³           gen_training_orders.py
+- ³   ³   ³       training.py
+- ³   ³   ³   training.py
+
+
+
+## 📁 `notifications/`
+> 📌 **Description :** Modules d’envoi de notifications via Telegram (alertes IA, résumés).
+
+- ³       USER_STORIES_TELEGRAM_NOTIFICATIONS.xlsx
+
+
+
+## 📁 `qlib_integration/`
+> 📌 **Description :** Intégration complète avec Qlib pour l’apprentissage historique et backtest IA.
+
+- ³   qlib_integration.py
+- ³   ³   qlib_integration.py
+
+
+
+## 📁 `realtime/`
+> 📌 **Description :** Collecteurs et analyseurs de données en temps réel.
+
+- ³       ³   analyse_tickers_realtime.py
+- ³   ³   realtime file list.txt
+
+
+
+## 📁 `scripts/`
+> 📌 **Description :** Scripts de traitement principal, de génération de batch, et de planification.
+
+- ³   ³       ³   ³   ³   install_scripts.py
+- ³   ³       ³   ³   ³   ³   install_scripts.py
+- ³   ³       ³   ³   ³   ³   scripts.py
+- ³   ³   scripts files.txt
+
+
+
+## 📁 `simulation/`
+> 📌 **Description :** Modules de simulation d’ordres (achat, vente, exécution).
+
+- ³       MODULE_6_SIMULATION_ENGINE.md
+- ³       USER_STORIES_SIMULATION_ENGINE.xlsx
+- ³       ³   simulation_achat.py
+- ³       ³   simulation_vente.py
+- ³   simulation_achat.py
+- ³   simulation_vente.py
+- ³   ³       13_simulation_trades.md
+- ³   ³       epic_13_simulation_trades.md
+- ³   ³   13_simulation_trades.md
+- ³   ³   ARCHITECTURE_AI_BACKTEST_SIMULATION.txt
+- ³   ³   MODULE_6_SIMULATION_ENGINE.md
+- ³   ³   simulation_achat.py
+- ³   ³   simulation_vente.py
+- ³   ³   ³   simulation_achat.py
+- ³   ³   ³   simulation_vente.py
+
+
+
+## 📁 `ui/`
+> 📌 **Description :** Interface utilisateur principale (Streamlit), incluant pages, dashboard, backtest UI, etc.
+
+- ³       USER_STORIES_STREAMLIT_UI.xlsx
+- ³       USER_STORIES_UI_PROJECT_TRACKER.xlsx
+- ³       analyse_finnhub_ui1 - Copie.py
+- ³       dashboard.py
+- ³       requires.txt
+- ³   dashboard.py
+- ³   dashboardx.py
+- ³   ³       19_ui_multi_modules.md
+- ³   ³       dashboard.py
+- ³   ³       dashboard_apprentissage.py
+- ³   ³       dashboard_journalier.py
+- ³   ³       epic_19_ui_multi_modules.md
+- ³   ³       ia_control_center.py
+- ³   ³       ³   ³   build_meta.py
+- ³   ³       ³   ³   ³   build_clib.py
+- ³   ³       ³   ³   ³   build_env.py
+- ³   ³       ³   ³   ³   build_ext.py
+- ³   ³       ³   ³   ³   build_py.py
+- ³   ³       ³   ³   ³   develop.py
+- ³   ³       ³   ³   ³   wheel_builder.py
+- ³   ³       ³   ³   ³   ³   build.py
+- ³   ³       ³   ³   ³   ³   build_clib.py
+- ³   ³       ³   ³   ³   ³   build_ext.py
+- ³   ³       ³   ³   ³   ³   build_py.py
+- ³   ³       ³   ³   ³   ³   build_scripts.py
+- ³   ³       ³   ³   ³   ³   envbuild.py
+- ³   ³       ³   ³   ³   ³   requirements.py
+- ³   ³       ³   ³   ³   ³   setuptools_build.py
+- ³   ³       ³   ³   ³   ³   ³   requirements.py
+- ³   ³   19_ui_multi_modules.md
+- ³   ³   UI files a completer.txt
+- ³   ³   build_intraday_candles.py
+- ³   ³   dashboard.py
+- ³   ³   dashboard_apprentissage.py
+- ³   ³   dashboard_journalier.py
+- ³   ³   ia_control_center.py
+- ³   ³   requirements.txt
+- ³   ³   roadmap_ui  x.py
+- ³   ³   roadmap_ui - Copie.py
+- ³   ³   roadmap_ui ancienne table.py
+- ³   ³   roadmap_ui arrang‚ avec petite erreure.py
+- ³   ³   roadmap_ui finale.py
+- ³   ³   roadmap_ui parfait sans taches.py
+- ³   ³   roadmap_ui v8.1.py
+- ³   ³   roadmap_ui version remodl‚.py
+- ³   ³   roadmap_ui xx.py
+- ³   ³   roadmap_ui.py
+- ³   ³   ³           requirements.txt
+- ³   ³   ³       requirements.txt
+- ³   ³   ³   analyse_finnhub_ui.py
+- ³   ³   ³   build_intraday_candles.py
+- ³   ³   ³   dashboard.py
+- ³   ³   ³   dashboard_apprentissage.py
+- ³   ³   ³   dashboard_journalier.py
+- ³   ³   ³   ia_control_center.py
+- ³   ³   ³   requirements.txt
+- ³   ³   ³   ³           requirements.txt
+- ³   ³   ³   ³       requirement.txt
+- ³   ³   ³   ³       requirements.txt
+- ³   ³   ³   ³   ³       requirements.txt
+- ³   ³   ³   ³   ³   requirements.txt
+
+
+
+## 📁 `utils/`
+> 📌 **Description :** Utilitaires graphiques, prédicteurs IA, fonctions Finnhub.
+
+- ³   ³               utils.py
+- ³   ³       utils_ai_strategy.py
+- ³   ³       ³       utils.py
+- ³   ³       ³   utils.py
+- ³   ³       ³   ³   distutils_patch.py
+- ³   ³       ³   ³   unicode_utils.py
+- ³   ³       ³   ³   ³   ³   _internal_utils.py
+- ³   ³       ³   ³   ³   ³   _utils.py
+- ³   ³       ³   ³   ³   ³   distutils_args.py
+- ³   ³       ³   ³   ³   ³   utils.py
+- ³   ³   utils_affichage_ticker.py
+- ³   ³   utils_ai_predictor.py
+- ³   ³   utils_ai_strategy.py
+- ³   ³   utils_finnhub avant ajout extended hours.py
+- ³   ³   utils_finnhub avec pb affichage.py
+- ³   ³   utils_finnhub.py
+- ³   ³   utils_graph.py
+- ³   ³   utils_graph_local.py
+- ³   ³   utils_watchlist.py
+- ³   ³   ³       test_utils.py
+- ³   ³   ³       utils.py
+- ³   ³   ³   utils.py
+- ³   ³   ³   utils_affichage_ticker.py
+- ³   ³   ³   utils_ai_predictor.py
+- ³   ³   ³   utils_ai_strategy.py
+- ³   ³   ³   utils_finnhub.py
+- ³   ³   ³   utils_graph.py
+- ³   ³   ³   utils_graph_local.py
+- ³   ³   ³   utils_watchlist.py
+- ³   ³   ³   ³           utils.py
+- ³   ³   ³   ³       pytorch_utils.py
+- ³   ³   ³   ³       utils.py
+- ³   ³   ³   ³   utils.py
+- ³   ³   ³   ³   ³   utils.py
+

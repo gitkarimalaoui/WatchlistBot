@@ -1,0 +1,57 @@
+
+BOTV7/
+├── backtest/
+│   ├── ai_backtest_runner.py            ← Runner IA stable (daily/intraday)
+│   ├── runner_verbose.py                ← Version avec logs détaillés
+│   ├── simulate_backtest.py             ← (placeholder ou futur batch custom)
+│
+├── intelligence/
+│   ├── learning_loop.py                 ← Boucle d'apprentissage IA automatique
+│   ├── apprentissage_hybride.py         ← Analyse des trades passés pour renforcer IA
+│   ├── rules_auto.json                  ← Règles IA apprises (modifiables)
+│   └── training/
+│       ├── prepare_qlib_data.py         ← Entraînement IA à partir des CSV cleans
+│       └── tools/
+│           └── repickle_model.py        ← Conversion ou versionnage modèle IA
+│
+├── realtime/
+│   ├── real_time_tick_collector.py      ← Collecte live des ticks
+│   ├── tick_collector_launcher.py       ← Lancement de la collecte en fond
+│   ├── build_intraday_candles.py        ← Création des bougies minute
+│   ├── generer_donnees_intraday.py      ← Script combiné tick + bougie + graph
+│   └── utils_graph_local.py             ← Générateur graphique local (matplotlib)
+│
+├── qlib_integration/
+│   ├── notebooks/
+│   │   └── 10_intraday_features.ipynb   ← Création de features IA (Qlib)
+│   ├── utils/
+│   │   ├── qlib_loader.py               ← Chargement données daily/intraday
+│   │   └── utils_ai_strategy.py         ← Stratégie IA utilisée dans backtest
+│   └── watchlists/
+│       └── watchlist.txt                ← Tickers à tester
+│
+├── scripts/
+│   ├── data_ingest/
+│   │   └── collect_historical_us_stocks.py ← Scraper YFinance (2y/7d)
+│   ├── data_prep/
+│   │   └── clean_historical.py          ← Nettoyage CSV
+│   └── setup/
+│       ├── init_qlib_data.py            ← Initialisation du store Qlib
+│       └── init_qlib_check.py           ← Test du store Qlib
+│
+├── models/
+│   ├── modele_ia.pkl                    ← Modèle IA entraîné
+│   └── converted/
+│       └── modele_ia_converted.pkl      ← Version exportée (ONNX, joblib, etc.)
+│
+├── qlib_data/                           ← 📦 Base Qlib (ne jamais modifier)
+│   ├── daily/
+│   ├── 1min/
+│   └── ...
+│
+├── data/
+│   ├── ticks/
+│   │   └── *.csv                        ← Tick data live
+│   ├── graphs/
+│   │   └── *.png                        ← Graphiques générés
+│   └── meta_ia.json                    ← Résultats IA apprises

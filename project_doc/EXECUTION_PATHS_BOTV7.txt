@@ -1,0 +1,77 @@
+
+# 🔁 Chemins d'exécution fonctionnels dans BOTV7 (V8 Unifié)
+
+## 1. Lancement standard de l’application Streamlit
+[Main UI]
+- ui/app_unifie_watchlistbot.py
+  ├── Charge modules de :
+      ├── ui/pages/analyse_ia_realtime.py
+      ├── ui/pages/cloture_journee.py
+      ├── ui/pages/checklist_import_affichage.py
+      ├── ui/dashboard/dashboard.py
+      ├── ui/dev/exec_python_debug.py
+      ├── ui/control_center/ia_control_center.py
+      └── ui/backtest_ui/ai_backtest.py
+
+## 2. Simulation manuelle depuis UI
+[Manual Trade Simulation]
+- ui/simulation_achat.py
+- ui/simulation_vente.py
+  ├── écrit dans journal_simule.json (à remplacer par trades.db)
+  └── lecture possible par dashboard_journalier.py (à archiver)
+
+## 3. Simulation IA automatique
+[AI Simulated Trading]
+- intelligence/learning_loop.py
+  ├── appelle analyse_ticker_fusion
+  ├── simule un trade
+  └── passe les résultats à apprentissage_hybride.py
+      └── met à jour meta_ia.json
+
+## 4. Backtest IA (offline ou batch)
+[Backtesting IA]
+- backtest/ai_backtest_runner.py
+  ├── utilise : qlib_loader, utils_ai_strategy
+  ├── données : qlib_data/daily/
+  └── modèle : models/modele_ia.pkl
+
+## 5. Entraînement modèle IA
+[Training IA]
+- intelligence/training/prepare_qlib_data.py
+  ├── lit les CSV dans data/historical/
+  ├── applique feature engineering
+  └── exporte modele_ia.pkl vers models/
+
+## 6. Génération données ticks live
+[Tick Data Flow]
+- realtime/real_time_tick_collector.py
+  ├── sauvegarde dans data/ticks/*.csv
+- realtime/build_intraday_candles.py
+  └── convertit les ticks → candles
+- realtime/utils_graph_local.py
+  └── affiche le graphique de candles
+
+## 7. Notification IA et Alertes
+[Telegram Alerts]
+- notifications/telegram_bot.py
+  ├── appelé par :
+      ├── cloture_journee.py
+      ├── analyse_ia_realtime.py
+      └── learning_loop.py (si IA détecte un pattern)
+
+## 8. Fusion des watchlists
+[Watchlist Builder]
+- fusion/module_fusion_watchlist.py
+  ├── combine : tickers_manuels.json + meta_ia.json + source.txt
+  └── appelée avant l'analyse IA
+
+## 9. Dashboards
+[Dashboards]
+- dashboard.py = résumé PnL & stats
+- dashboard_apprentissage.py = visualisation pattern IA
+- dashboard_journalier.py = version ancienne à base JSON
+
+## 10. Interfaces techniques
+[Tech tools]
+- exec_python_debug.py : console de test Python + IA
+- ia_control_center.py : interface UI centrale IA

@@ -1,0 +1,3 @@
+2025-05-20 17:14:00,260 - INFO - ======== Lancement du batch GPT (détection auto WebSocket) =========
+2025-05-20 17:14:00,260 - INFO - Recherche de l'onglet ChatGPT actif via CDP...
+2025-05-20 17:14:01,704 - ERROR - [FATAL] Aucune page active détectée dans le contexte.

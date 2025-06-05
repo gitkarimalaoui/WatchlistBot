@@ -1,0 +1,6 @@
+├── realtime/
+│   ├── real_time_tick_collector.py      ← Collecte live des ticks
+│   ├── tick_collector_launcher.py       ← Lancement de la collecte en fond
+│   ├── build_intraday_candles.py        ← Création des bougies minute
+│   ├── generer_donnees_intraday.py      ← Script combiné tick + bougie + graph
+│   └── utils_graph_local.py             ← Générateur graphique local (matplotlib)

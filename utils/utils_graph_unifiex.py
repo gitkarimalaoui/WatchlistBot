@@ -1,0 +1,75 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import streamlit as st
+
+from utils_yf_historical import fetch_yf_historical_data
+from utils_finnhub import fetch_finnhub_historical_data, fetch_finnhub_intraday_data
+
+
+def charger_historique_intelligent(ticker: str) -> pd.DataFrame:
+    try:
+        df = fetch_yf_historical_data(ticker)
+        if isinstance(df, pd.DataFrame) and not df.empty:
+            print(f"[INFO] Historique trouvé via YFinance pour {ticker}")
+            return df
+        else:
+            print(f"[YF WARNING] Données vides pour {ticker}")
+    except Exception as e:
+        print(f"[YF ERROR] {ticker}: {e}")
+
+    try:
+        df = fetch_finnhub_historical_data(ticker)
+        if isinstance(df, pd.DataFrame) and not df.empty:
+            print(f"[INFO] Historique trouvé via Finnhub pour {ticker}")
+            return df
+        else:
+            print(f"[Finnhub Historical] No data for {ticker}")
+    except Exception as e:
+        print(f"[Finnhub ERROR] {ticker}: {e}")
+
+    return pd.DataFrame()
+
+
+def charger_intraday_intelligent(ticker: str) -> pd.DataFrame:
+    try:
+        df = fetch_finnhub_intraday_data(ticker)
+        if isinstance(df, pd.DataFrame) and not df.empty:
+            print(f"[INFO] Intraday trouvé via Finnhub pour {ticker}")
+            return df
+        else:
+            print(f"[Finnhub Intraday] No data for {ticker}")
+    except Exception as e:
+        print(f"[Intraday ERROR] {ticker}: {e}")
+    return pd.DataFrame()
+
+
+def charger_donnees_ticker_intelligent(ticker: str) -> tuple:
+    """
+    Retourne un tuple contenant (df_historique, df_intraday)
+    """
+    historique = charger_historique_intelligent(ticker)
+    intraday = charger_intraday_intelligent(ticker)
+    return historique, intraday
+
+
+def plot_dual_chart(ticker: str, df_hist: pd.DataFrame, df_intraday: pd.DataFrame):
+    if df_hist is None or df_hist.empty:
+        st.warning(f"Aucune donnée historique disponible pour {ticker}")
+        return
+    if df_intraday is None or df_intraday.empty:
+        st.warning(f"Aucune donnée intraday disponible pour {ticker}")
+        return
+
+    st.subheader(f"📈 Graphique de {ticker}")
+
+    fig1, ax1 = plt.subplots(figsize=(10, 4))
+    df_hist["Close"].plot(ax=ax1, title=f"{ticker} - Données Historiques (Daily)", grid=True)
+    ax1.set_xlabel("Date")
+    ax1.set_ylabel("Prix de clôture")
+    st.pyplot(fig1)
+
+    fig2, ax2 = plt.subplots(figsize=(10, 4))
+    df_intraday["close"].plot(ax=ax2, title=f"{ticker} - Intraday (1m)", grid=True, color="orange")
+    ax2.set_xlabel("Heure")
+    ax2.set_ylabel("Prix")
+    st.pyplot(fig2)

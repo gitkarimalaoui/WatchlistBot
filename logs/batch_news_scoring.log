@@ -1,0 +1,5 @@
+2025-05-20 23:45:37,862 - INFO - ======= Lancement du batch GPT (CDP attach only) =======
+2025-05-20 23:45:38,161 - ERROR - Aucun onglet ChatGPT actif trouvé
+2025-05-20 23:45:38,161 - ERROR - Impossible de récupérer WebSocket ChatGPT
+2025-05-20 23:49:45,975 - INFO - ======= Lancement du batch GPT (CDP attach only) =======
+2025-05-20 23:49:47,331 - ERROR - Aucune page active détectée dans le contexte
