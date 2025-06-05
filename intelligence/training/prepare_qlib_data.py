@@ -3,6 +3,10 @@ import numpy as np
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 from pathlib import Path
+import sys
+
+# Ensure UTF-8 console output for emoji support
+sys.stdout.reconfigure(encoding="utf-8")
 
 # 1️⃣ Config
 ROOT_DIR = Path(__file__).resolve().parent.parent

@@ -1,6 +1,10 @@
 
 import requests
 import os
+import sys
+
+# Ensure UTF-8 console output for emoji support
+sys.stdout.reconfigure(encoding="utf-8")
 
 # Paramètres Telegram
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "TON_BOT_TOKEN_ICI")

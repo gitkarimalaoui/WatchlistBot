@@ -3,6 +3,10 @@ import time
 import json
 import requests
 import pandas as pd
+import sys
+
+# Ensure UTF-8 console output for emoji support
+sys.stdout.reconfigure(encoding="utf-8")
 from datetime import datetime
 
 FINNHUB_TOKEN = "cvs634hr01qvc2mv1e00cvs634hr01qvc2mv1e0g"

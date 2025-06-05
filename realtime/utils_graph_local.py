@@ -4,6 +4,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from realtime.build_intraday_candles import build_candles
+import sys
+
+# Ensure UTF-8 console output for emoji support
+sys.stdout.reconfigure(encoding="utf-8")
 
 def plot_candles(candles, ticker):
     if candles.empty:
