@@ -12,7 +12,8 @@ logging.basicConfig(
     level=logging.INFO,
     format="[%(levelname)s] %(asctime)s - %(message)s",
     handlers=[
-        logging.FileHandler(LOG_FILE, encoding="utf-8"),
+        # Overwrite previous log on each run so old errors are cleared
+        logging.FileHandler(LOG_FILE, mode="w", encoding="utf-8"),
         logging.StreamHandler(sys.stdout)
     ]
 )
