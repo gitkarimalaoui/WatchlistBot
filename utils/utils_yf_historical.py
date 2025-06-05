@@ -8,7 +8,11 @@ case in the test environment).
 
 import pandas as pd
 
-from .advanced_logger import safe_api_call
+try:
+    # Standard package import when ``utils`` is a package
+    from .advanced_logger import safe_api_call
+except Exception:  # pragma: no cover - fallback when executed as a script
+    from advanced_logger import safe_api_call
 
 try:  # yfinance is optional in the execution environment
     import yfinance as yf
@@ -16,7 +20,10 @@ except Exception:  # pragma: no cover - informational print only
     yf = None
     print("[YF WARNING] yfinance package not available")
 
-from .utils_finnhub import fetch_finnhub_historical_data
+try:
+    from .utils_finnhub import fetch_finnhub_historical_data
+except Exception:  # pragma: no cover - fallback when executed as a script
+    from utils_finnhub import fetch_finnhub_historical_data
 
 
 @safe_api_call(retries=3, delay=1.5, backoff=2.0)
