@@ -1,8 +1,6 @@
-
 import requests
 import pandas as pd
 import os
-from datetime import datetime
 import time
 
 FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY", "cvs634hr01qvc2mv1e00cvs634hr01qvc2mv1e0g")
