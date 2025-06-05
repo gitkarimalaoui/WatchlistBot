@@ -8,12 +8,22 @@ LOG_DIR = Path(__file__).parent / "logs"
 LOG_DIR.mkdir(exist_ok=True)
 LOG_FILE = LOG_DIR / "ChatGptErrorPromptGenrator.log"
 
+# Start each run with a clean log file that includes a prompt
+with open(LOG_FILE, "w", encoding="utf-8") as log:
+    log.write(
+        "I encountered an error while running WatchlistBot.\n\n"
+        "Here is the stack trace and debug information from logs/ChatGptErrorPromptGenrator.log:\n\n"
+        "<PASTE stack trace here>\n\n"
+        "<PASTE lines starting with \"=== DEBUG INFO (copy below) ===\" down to \"===============================\">\n\n"
+        "Please analyze this information and suggest how to resolve the issue.\n\n"
+    )
+
 logging.basicConfig(
     level=logging.INFO,
     format="[%(levelname)s] %(asctime)s - %(message)s",
     handlers=[
-        # Overwrite previous log on each run so old errors are cleared
-        logging.FileHandler(LOG_FILE, mode="w", encoding="utf-8"),
+        # Append after the initial prompt written above
+        logging.FileHandler(LOG_FILE, mode="a", encoding="utf-8"),
         logging.StreamHandler(sys.stdout)
     ]
 )
