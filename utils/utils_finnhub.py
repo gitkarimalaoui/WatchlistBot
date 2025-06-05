@@ -2,8 +2,10 @@ import requests
 import pandas as pd
 import os
 import time
+from config.config_manager import _load_dotenv
 
 # API key is now read strictly from the environment
+_load_dotenv()
 FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
 
 def _missing_key() -> bool:
