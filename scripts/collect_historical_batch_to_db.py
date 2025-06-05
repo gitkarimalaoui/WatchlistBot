@@ -6,7 +6,10 @@ import sqlite3
 import pandas as pd
 
 # Ensure UTF-8 console output for emoji support
-sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+else:
+    sys.stdout = open(sys.stdout.fileno(), mode="w", encoding="utf-8", buffering=1)
 
 # ─── Configuration des chemins ─────────────────────────────────────────────────
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -18,7 +21,7 @@ if UTILS not in sys.path:
 
 # ─── Import sécurisé de la fonction de collecte ────────────────────────────────
 try:
-    from utils_yf_historical import fetch_yf_historical_data
+    from utils_yf_historical import fetch_historical_with_fallback
 except ImportError as e:
     print(f"[IMPORT ERROR] Impossible d'importer utils_yf_historical: {e}")
     sys.exit(1)
@@ -50,7 +53,7 @@ CREATE TABLE IF NOT EXISTS historical_data (
 # ─── Collecte et insertion ─────────────────────────────────────────────────────
 for i, ticker in enumerate(tickers, start=1):
     print(f"🔄 [{i}/{len(tickers)}] {ticker}")
-    df = fetch_yf_historical_data(ticker)
+    df = fetch_historical_with_fallback(ticker)
     if df is None or df.empty:
         print(f"⛔ Aucun historique pour {ticker}")
         continue
