@@ -3,6 +3,7 @@ import logging
 import requests
 import sqlite3
 import os
+import platform
 from pathlib import Path
 from playwright.async_api import async_playwright
 
@@ -15,6 +16,20 @@ print("Chemin relatif DB utilisé :", DB_PATH)
 print("Chemin absolu DB :", DB_PATH.resolve())
 print("Dossier courant (cwd) :", os.getcwd())
 print("Chemin complet du script :", Path(__file__).resolve())
+
+def log_debug_prompt():
+    """Log useful environment details to help troubleshoot errors."""
+    details = [
+        "=== DEBUG PROMPT (copier-coller ci-dessous) ===",
+        f"Python: {platform.python_version()}",
+        f"OS: {platform.platform()}",
+        f"Working dir: {os.getcwd()}",
+        f"DB path: {DB_PATH.resolve()}",
+        f"Script path: {Path(__file__).resolve()}",
+        "Collez ce bloc lors d'une demande d'assistance pour accélérer le diagnostic.",
+        "==============================================="
+    ]
+    log("\n".join(details))
 
 PROMPT_INSTRUCTIONS = """\
 Tu es un expert en day trading. Voici une liste de tickers avec leurs descriptions de news.
@@ -174,4 +189,10 @@ async def run_batch():
     save_scores_from_response(response)
 
 if __name__ == "__main__":
-    asyncio.run(run_batch())
+    try:
+        log_debug_prompt()
+        asyncio.run(run_batch())
+    except Exception as e:
+        logging.error(f"Exception non gérée: {e}")
+        log_debug_prompt()
+        raise
