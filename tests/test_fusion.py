@@ -1,6 +1,6 @@
 
 import json
-from v6.utils.module_fusion_watchlist import fusionner_watchlists
+from fusion.module_fusion_watchlist import fusionner_watchlists
 import sys
 
 # Ensure UTF-8 console output for emoji support
