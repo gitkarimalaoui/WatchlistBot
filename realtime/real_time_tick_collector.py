@@ -9,7 +9,8 @@ import sys
 sys.stdout.reconfigure(encoding="utf-8")
 from datetime import datetime
 
-FINNHUB_TOKEN = "cvs634hr01qvc2mv1e00cvs634hr01qvc2mv1e0g"
+# Finnhub token loaded from environment variable
+FINNHUB_TOKEN = os.getenv("FINNHUB_API_KEY")
 BASE_URL = "https://finnhub.io/api/v1/quote"
 SAVE_DIR = "data/ticks"
 INTERVAL = 15  # seconds between requests
