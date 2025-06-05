@@ -6,7 +6,8 @@ import sqlite3
 import pandas as pd
 
 # Ensure UTF-8 console output for emoji support
-sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 
 # ─── Configuration des chemins ─────────────────────────────────────────────────
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -50,7 +51,10 @@ CREATE TABLE IF NOT EXISTS historical_data (
 # ─── Collecte et insertion ─────────────────────────────────────────────────────
 for i, ticker in enumerate(tickers, start=1):
     print(f"🔄 [{i}/{len(tickers)}] {ticker}")
-    df = fetch_yf_historical_data(ticker)
+    df = fetch_yf_historical_data(ticker, period="2y", interval="1d")
+    if df is None or df.empty:
+        print(f"⛔ Donnees vides pour {ticker}, tentative periode courte")
+        df = fetch_yf_historical_data(ticker, period="1y", interval="1d")
     if df is None or df.empty:
         print(f"⛔ Aucun historique pour {ticker}")
         continue
