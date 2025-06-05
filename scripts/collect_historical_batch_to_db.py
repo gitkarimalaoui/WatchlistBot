@@ -59,6 +59,14 @@ for i, ticker in enumerate(tickers, start=1):
         continue
 
     df["ticker"] = ticker
+
+    # Only keep timestamp and close columns to match the table schema
+    required_cols = ["timestamp", "close"]
+    if not all(col in df.columns for col in required_cols):
+        print(f"[WARN] Colonnes manquantes pour {ticker}, saute")
+        continue
+    df = df[required_cols + ["ticker"]]
+
     try:
         df.to_sql("historical_data", conn, if_exists="append", index=False)
         print(f"✅ Données insérées pour {ticker}")
