@@ -1,5 +1,19 @@
-import yfinance as yf
+"""Helpers to retrieve historical prices.
+
+The module tries to rely on ``yfinance`` if available and falls back to the
+Finnhub API otherwise.  Importing ``yfinance`` is optional so that the rest of
+the application keeps working even when the package is absent (which is the
+case in the test environment).
+"""
+
 import pandas as pd
+
+try:  # yfinance is optional in the execution environment
+    import yfinance as yf
+except Exception:  # pragma: no cover - informational print only
+    yf = None
+    print("[YF WARNING] yfinance package not available")
+
 from utils_finnhub import fetch_finnhub_historical_data
 
 
@@ -15,6 +29,10 @@ def fetch_yf_historical_data(
     returns empty dataframes. ``threads`` is disabled by default as it sometimes
     causes connection issues in constrained environments.
     """
+    if yf is None:
+        print("[YF ERROR] yfinance not available")
+        return None
+
     try:
         df = yf.download(
             tickers=ticker,
@@ -25,6 +43,15 @@ def fetch_yf_historical_data(
             threads=threads,
             group_by="ticker",
         )
+
+        if df.empty:
+            print(f"[YF WARNING] Empty data for {ticker} via download, retry histo"
+                  "ry API")
+            try:
+                df = yf.Ticker(ticker).history(period=period, interval=interval)
+            except Exception as e:
+                print(f"[YF ERROR] history fetch failed for {ticker}: {e}")
+                df = pd.DataFrame()
 
         if df.empty:
             print(f"[YF WARNING] Donnees vides pour {ticker}, fallback Finnhub")
