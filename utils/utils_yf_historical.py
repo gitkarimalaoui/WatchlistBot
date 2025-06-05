@@ -8,15 +8,18 @@ case in the test environment).
 
 import pandas as pd
 
+from .advanced_logger import safe_api_call
+
 try:  # yfinance is optional in the execution environment
     import yfinance as yf
 except Exception:  # pragma: no cover - informational print only
     yf = None
     print("[YF WARNING] yfinance package not available")
 
-from utils_finnhub import fetch_finnhub_historical_data
+from .utils_finnhub import fetch_finnhub_historical_data
 
 
+@safe_api_call(retries=3, delay=1.5, backoff=2.0)
 def fetch_yf_historical_data(
     ticker: str,
     period: str = "5y",
@@ -91,6 +94,10 @@ def fetch_yf_historical_data(
         return df
 
     except Exception as e:
+        # Retry specifically on Yahoo Finance rate limiting
+        if "YFRateLimitError" in type(e).__name__ or "Too Many Requests" in str(e):
+            print(f"[YF ERROR] Rate limit hit for {ticker}: {e}")
+            raise e
         print(f"[YF ERROR] {ticker}: {e}")
         return None
 

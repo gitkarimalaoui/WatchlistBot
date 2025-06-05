@@ -12,15 +12,18 @@ formatter = logging.Formatter("[%(levelname)s] %(asctime)s - %(message)s")
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
-def safe_api_call(retries=3, delay=1.0):
+def safe_api_call(retries=3, delay=1.0, backoff=1.0):
     def decorator(func):
         def wrapper(*args, **kwargs):
             for attempt in range(retries):
                 try:
                     return func(*args, **kwargs)
                 except Exception as e:
-                    logger.warning(f"Retry {attempt+1}/{retries} failed with error: {e}")
-                    time.sleep(delay)
+                    logger.warning(
+                        f"Retry {attempt+1}/{retries} failed with error: {e}"
+                    )
+                    sleep_time = delay * (backoff ** attempt)
+                    time.sleep(sleep_time)
             return None
         return wrapper
     return decorator
