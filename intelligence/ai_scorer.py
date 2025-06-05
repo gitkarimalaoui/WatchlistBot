@@ -1,3 +1,5 @@
+import json
+
 with open("rules_auto.json", "r") as f:
     RULES = json.load(f)
 
