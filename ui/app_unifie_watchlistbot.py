@@ -32,6 +32,11 @@ from utils_affichage_ticker import afficher_ticker_panel
 # ─── Définition chemin base SQLite ──────────────────────────────────────────────
 DB_PATH = os.path.join(ROOT_DIR, "data", "trades.db")
 
+# ─── Run ChatGPT batch automatically on app start ─────────────────────────────
+if "batch_started" not in st.session_state:
+    subprocess.Popen([sys.executable, os.path.join(SCRIPTS, "run_chatgpt_batch.py")])
+    st.session_state["batch_started"] = True
+
 # ─── Menu latéral ──────────────────────────────────────────────────────────────
 st.sidebar.markdown("## 🚀 Navigation")
 page = st.sidebar.radio("Menu principal", [

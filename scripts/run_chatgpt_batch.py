@@ -7,7 +7,18 @@ import platform
 from pathlib import Path
 from playwright.async_api import async_playwright
 
-logging.basicConfig(level=logging.INFO, format='%(message)s')
+# Configure logging both to console and to a dedicated debug file
+LOG_DIR = Path(__file__).parent.parent / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+DEBUG_LOG_FILE = LOG_DIR / "ChatGptErrorPromptGenrator.log"
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s',
+    handlers=[
+        logging.FileHandler(DEBUG_LOG_FILE, encoding='utf-8'),
+        logging.StreamHandler()
+    ]
+)
 log = logging.info
 
 DB_PATH = Path(__file__).parent.parent / "data" / "trades.db"
