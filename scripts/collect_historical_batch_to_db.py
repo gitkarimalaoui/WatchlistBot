@@ -21,7 +21,8 @@ if UTILS not in sys.path:
 
 # ─── Import sécurisé de la fonction de collecte ────────────────────────────────
 try:
-    from utils_yf_historical import fetch_historical_with_fallback
+    from utils_yf_historical import fetch_yf_historical_data
+    from utils_finnhub import fetch_finnhub_historical_data
 except ImportError as e:
     print(f"[IMPORT ERROR] Impossible d'importer utils_yf_historical: {e}")
     sys.exit(1)
@@ -53,7 +54,10 @@ CREATE TABLE IF NOT EXISTS historical_data (
 # ─── Collecte et insertion ─────────────────────────────────────────────────────
 for i, ticker in enumerate(tickers, start=1):
     print(f"🔄 [{i}/{len(tickers)}] {ticker}")
-    df = fetch_historical_with_fallback(ticker)
+    df = fetch_yf_historical_data(ticker, period="2y", interval="1d", threads=False)
+    if df is None or df.empty:
+        print(f"[INFO] Fallback Finnhub pour {ticker}")
+        df = fetch_finnhub_historical_data(ticker)
     if df is None or df.empty:
         print(f"⛔ Aucun historique pour {ticker}")
         continue
