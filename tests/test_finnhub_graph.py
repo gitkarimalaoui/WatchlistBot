@@ -1,4 +1,5 @@
 
+import os
 import streamlit as st
 import pandas as pd
 import requests
@@ -6,7 +7,7 @@ import datetime
 import matplotlib.pyplot as plt
 
 # === Paramètres ===
-FINNHUB_API_KEY = "cvs634hr01qvc2mv1e00cvs634hr01qvc2mv1e0g"
+FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
 symbol = st.text_input("Entrez un ticker (ex: TSLA)", "TSLA")
 
 # === Récupération des données Finnhub (bougies 1 minute) ===

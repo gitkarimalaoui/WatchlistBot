@@ -3,7 +3,8 @@ import pandas as pd
 import os
 import time
 
-FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY", "cvs634hr01qvc2mv1e00cvs634hr01qvc2mv1e0g")
+# API key is now read strictly from the environment
+FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
 
 def fetch_finnhub_historical_data(ticker: str) -> pd.DataFrame:
     end = int(time.time())
