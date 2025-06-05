@@ -3,7 +3,7 @@ import pandas as pd
 from typing import Optional, Dict, Any
 from datetime import datetime
 from advanced_logger import logger, safe_api_call, data_validator
-from config_manager import config_manager
+from config.config_manager import config_manager
 from data_standardizer import DataStandardizer, DataSource
 from unified_data_collector import DataProvider
 
