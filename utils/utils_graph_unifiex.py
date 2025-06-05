@@ -20,6 +20,7 @@ def charger_historique_intelligent(ticker: str) -> pd.DataFrame:
     try:
         df = fetch_finnhub_historical_data(ticker)
         if isinstance(df, pd.DataFrame) and not df.empty:
+            df = df.rename(columns={"Date": "timestamp", "Close": "close"})
             print(f"[INFO] Historique trouvé via Finnhub pour {ticker}")
             return df
         else:
@@ -63,13 +64,21 @@ def plot_dual_chart(ticker: str, df_hist: pd.DataFrame, df_intraday: pd.DataFram
     st.subheader(f"📈 Graphique de {ticker}")
 
     fig1, ax1 = plt.subplots(figsize=(10, 4))
-    df_hist["Close"].plot(ax=ax1, title=f"{ticker} - Données Historiques (Daily)", grid=True)
+    close_col_hist = "close" if "close" in df_hist.columns else "Close"
+    if close_col_hist not in df_hist.columns:
+        st.error(f"Colonnes inattendues pour les données historiques de {ticker}")
+        return
+    df_hist[close_col_hist].plot(ax=ax1, title=f"{ticker} - Données Historiques (Daily)", grid=True)
     ax1.set_xlabel("Date")
     ax1.set_ylabel("Prix de clôture")
     st.pyplot(fig1)
 
     fig2, ax2 = plt.subplots(figsize=(10, 4))
-    df_intraday["close"].plot(ax=ax2, title=f"{ticker} - Intraday (1m)", grid=True, color="orange")
+    close_col_intra = "close" if "close" in df_intraday.columns else "Close"
+    if close_col_intra not in df_intraday.columns:
+        st.error(f"Données intraday invalides pour {ticker}")
+        return
+    df_intraday[close_col_intra].plot(ax=ax2, title=f"{ticker} - Intraday (1m)", grid=True, color="orange")
     ax2.set_xlabel("Heure")
     ax2.set_ylabel("Prix")
     st.pyplot(fig2)

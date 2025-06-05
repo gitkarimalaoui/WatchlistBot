@@ -20,6 +20,7 @@ def charger_historique_intelligent(ticker: str) -> pd.DataFrame:
     try:
         df = fetch_finnhub_historical_data(ticker)
         if isinstance(df, pd.DataFrame) and not df.empty:
+            df = df.rename(columns={"Date": "timestamp", "Close": "close"})
             print(f"[INFO] Historique trouvé via Finnhub pour {ticker}")
             return df
         else:
@@ -43,21 +44,10 @@ def charger_intraday_intelligent(ticker: str) -> pd.DataFrame:
         try:
             df = fetch_yf_historical_data(ticker)  # fallback approximatif
             if isinstance(df, pd.DataFrame) and not df.empty:
-                df.rename(columns={"close": "Close", "Close": "close"}, inplace=True)
                 print(f"[INFO] Fallback YF intraday réussi pour {ticker}")
                 return df
         except Exception as fe:
             print(f"[ERROR] Échec total récupération données intraday pour {ticker}: {fe}")
-    return pd.DataFrame()
-    try:
-        df = fetch_finnhub_intraday_data(ticker)
-        if isinstance(df, pd.DataFrame) and not df.empty:
-            print(f"[INFO] Intraday trouvé via Finnhub pour {ticker}")
-            return df
-        else:
-            print(f"[Finnhub Intraday] No data for {ticker}")
-    except Exception as e:
-        print(f"[Intraday ERROR] {ticker}: {e}")
     return pd.DataFrame()
 
 
@@ -81,17 +71,28 @@ def plot_dual_chart(ticker: str, df_hist: pd.DataFrame, df_intraday: pd.DataFram
     st.subheader(f"📈 Graphique de {ticker}")
 
     fig1, ax1 = plt.subplots(figsize=(10, 4))
-    df_hist["Close"].plot(ax=ax1, title=f"{ticker} - Données Historiques (Daily)", grid=True)
+    close_col_hist = "close" if "close" in df_hist.columns else "Close"
+    if close_col_hist not in df_hist.columns:
+        st.error(f"Colonnes inattendues pour les données historiques de {ticker}")
+        return
+    df_hist[close_col_hist].plot(
+        ax=ax1, title=f"{ticker} - Données Historiques (Daily)", grid=True
+    )
     ax1.set_xlabel("Date")
     ax1.set_ylabel("Prix de clôture")
     st.pyplot(fig1)
 
     fig2, ax2 = plt.subplots(figsize=(10, 4))
-    if "close" not in df_intraday.columns:
-        print(f"[ERROR] Colonne 'close' manquante dans données intraday pour {ticker}")
+    close_col_intra = "close" if "close" in df_intraday.columns else "Close"
+    if close_col_intra not in df_intraday.columns:
+        print(
+            f"[ERROR] Colonne 'close' manquante dans données intraday pour {ticker}"
+        )
         st.error(f"Données intraday invalides pour {ticker}")
         return
-    df_intraday["close"].plot(ax=ax2, title=f"{ticker} - Intraday (1m)", grid=True, color="orange")
+    df_intraday[close_col_intra].plot(
+        ax=ax2, title=f"{ticker} - Intraday (1m)", grid=True, color="orange"
+    )
     ax2.set_xlabel("Heure")
     ax2.set_ylabel("Prix")
     st.pyplot(fig2)
