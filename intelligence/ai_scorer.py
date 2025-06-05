@@ -1,4 +1,11 @@
-with open("rules_auto.json", "r") as f:
+"""AI scoring utilities."""
+
+import json
+import os
+
+_RULES_PATH = os.path.join(os.path.dirname(__file__), "rules_auto.json")
+
+with open(_RULES_PATH, "r", encoding="utf-8") as f:
     RULES = json.load(f)
 
 def score_ai(ticker_data):
