@@ -33,23 +33,26 @@ def fetch_yf_historical_data(
                 return None
             return df
 
-        df = df.reset_index()
-        df["Date"] = pd.to_datetime(df["Date"])
+        # Convert index to a dedicated timestamp column regardless of its name
+        df.index = pd.to_datetime(df.index)
+        df.reset_index(inplace=True)
+        df.rename(columns={df.columns[0]: "timestamp"}, inplace=True)
 
         # group columns if empty or multi-indexed results
         if isinstance(df.columns, pd.MultiIndex):
             df.columns = df.columns.get_level_values(0)
 
         column_map = {
-            "Date": "timestamp",
+            "timestamp": "timestamp",
             "Open": "open",
             "High": "high",
             "Low": "low",
             "Close": "close",
+            "Adj Close": "close",
             "Volume": "volume",
         }
         available_cols = [c for c in column_map.keys() if c in df.columns]
-        if not available_cols:
+        if "timestamp" not in available_cols or "Close" not in df.columns and "Adj Close" not in df.columns:
             print(f"[YF ERROR] Colonnes manquantes pour {ticker}")
             return None
 
@@ -77,5 +80,17 @@ def fetch_historical_with_fallback(ticker: str) -> pd.DataFrame:
         return None
 
     df = df.rename(columns={"Date": "timestamp", "Close": "close"})
+
+    if "timestamp" not in df.columns:
+        df.reset_index(inplace=True)
+        df.rename(columns={df.columns[0]: "timestamp"}, inplace=True)
+
+    if "close" not in df.columns and "Close" in df.columns:
+        df.rename(columns={"Close": "close"}, inplace=True)
+
+    if "timestamp" not in df.columns or "close" not in df.columns:
+        print(f"[Finnhub ERROR] Colonnes manquantes pour {ticker}")
+        return None
+
     df = df[["timestamp", "close"]]
     return df
