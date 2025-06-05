@@ -14,6 +14,27 @@ import os
 from typing import Any, Dict
 
 
+def _load_dotenv(path: str = ".env") -> None:
+    """Populate ``os.environ`` from a simple ``.env`` file if present."""
+    if not os.path.exists(path):
+        return
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, value = line.split("=", 1)
+                os.environ.setdefault(key, value)
+    except Exception:
+        # Any error just leaves the environment unchanged
+        pass
+
+
+# Load environment variables early so subsequent code can access them
+_load_dotenv()
+
+
 class ConfigManager:
     """Load configuration from a JSON file and environment variables."""
 
