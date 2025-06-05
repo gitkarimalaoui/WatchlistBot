@@ -1,4 +1,3 @@
-
 import yfinance as yf
 import pandas as pd
 from utils_finnhub import fetch_finnhub_historical_data
@@ -16,7 +15,6 @@ def fetch_yf_historical_data(
     returns empty dataframes. ``threads`` is disabled by default as it sometimes
     causes connection issues in constrained environments.
     """
-
     try:
         df = yf.download(
             tickers=ticker,
@@ -68,5 +66,16 @@ def fetch_yf_historical_data(
 
 
 def fetch_historical_with_fallback(ticker: str) -> pd.DataFrame:
-    """Backward compatible wrapper around :func:`fetch_yf_historical_data`."""
-    return fetch_yf_historical_data(ticker)
+    """Attempt to fetch data from Yahoo Finance then fall back to Finnhub."""
+    df = fetch_yf_historical_data(ticker)
+    if df is not None and not df.empty:
+        return df
+
+    print(f"[INFO] Fallback Finnhub pour {ticker}")
+    df = fetch_finnhub_historical_data(ticker)
+    if df is None or df.empty:
+        return None
+
+    df = df.rename(columns={"Date": "timestamp", "Close": "close"})
+    df = df[["timestamp", "close"]]
+    return df
