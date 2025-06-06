@@ -1,6 +1,10 @@
 
 import streamlit as st
-from utils_graph import plot_dual_chart, charger_donnees_ticker_intelligent
+from utils_graph import (
+    plot_dual_chart,
+    charger_historique_intelligent,
+    charger_intraday_intelligent,
+)
 
 def afficher_ticker_panel(ticker, stock, index):
     with st.expander(f"{index + 1}. {ticker}", expanded=False):
@@ -10,7 +14,8 @@ def afficher_ticker_panel(ticker, stock, index):
         st.markdown(f"**Volume :** {stock.get('volume', 'N/A')}")
         st.markdown(f"**% Gain :** {stock.get('percent_gain', 'N/A')}")
 
-        df_hist, df_intraday = charger_donnees_ticker_intelligent(ticker)
+        df_hist = charger_historique_intelligent(ticker)
+        df_intraday = charger_intraday_intelligent(ticker)
 
         if df_hist is not None and not df_hist.empty:
             plot_dual_chart(ticker, df_hist, df_intraday)

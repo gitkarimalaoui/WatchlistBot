@@ -1,33 +1,66 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
+from datetime import datetime, timedelta
 
 from utils_yf_historical import fetch_yf_historical_data
 from utils_finnhub import fetch_finnhub_historical_data, fetch_finnhub_intraday_data
+from db_historical import load_historical
+import sqlite3
+from pathlib import Path
 
 
-def charger_historique_intelligent(ticker: str) -> pd.DataFrame:
-    """Retourne l'historique du ticker en essayant YF puis Finnhub."""
-    try:
-        df = fetch_yf_historical_data(ticker)
-        if isinstance(df, pd.DataFrame) and not df.empty:
-            print(f"[INFO] Historique trouvé via YFinance pour {ticker}")
-            return df
-        print(f"[YF WARNING] Données vides pour {ticker}")
-    except Exception as e:
-        print(f"[YF ERROR] {ticker}: {e}")
-
-    try:
-        df = fetch_finnhub_historical_data(ticker)
-        if isinstance(df, pd.DataFrame) and not df.empty:
+def _fetch_missing(ticker: str) -> pd.DataFrame:
+    """Try to download historical data from available sources."""
+    df = fetch_yf_historical_data(ticker)
+    if df is not None and not df.empty:
+        return df
+    df = fetch_finnhub_historical_data(ticker)
+    if df is not None and not df.empty:
+        if "Date" in df.columns:
             df = df.rename(columns={"Date": "timestamp", "Close": "close"})
-            print(f"[INFO] Historique trouvé via Finnhub pour {ticker}")
-            return df
-        print(f"[Finnhub Historical] No data for {ticker}")
-    except Exception as e:
-        print(f"[Finnhub ERROR] {ticker}: {e}")
-
+        return df
     return pd.DataFrame()
+
+
+def charger_historique_intelligent(
+    ticker: str, start_date: str | None = None, end_date: str | None = None
+) -> pd.DataFrame:
+    """Load historical data from DB and download any missing dates."""
+
+    end_dt = pd.to_datetime(end_date or datetime.today().strftime("%Y-%m-%d")).date()
+    start_dt = pd.to_datetime(start_date or (end_dt - timedelta(days=180))).date()
+
+    df_db = load_historical(str(ticker), str(start_dt), str(end_dt))
+    max_db_date = df_db["timestamp"].max().date() if not df_db.empty else start_dt - timedelta(days=1)
+
+    df_new = pd.DataFrame()
+    if max_db_date < end_dt:
+        missing_start = max_db_date + timedelta(days=1)
+        fetched = _fetch_missing(ticker)
+        if not fetched.empty:
+            mask = (fetched["timestamp"].dt.date >= missing_start) & (
+                fetched["timestamp"].dt.date <= end_dt
+            )
+            df_new = fetched.loc[mask]
+            if not df_new.empty:
+                conn = sqlite3.connect(Path(__file__).resolve().parents[1] / "data" / "trades.db")
+                time_col = "timestamp"
+                cur = conn.execute("PRAGMA table_info(historical_data)")
+                cols = [r[1] for r in cur.fetchall()]
+                if "timestamp" not in cols and "date" in cols:
+                    time_col = "date"
+                    df_new = df_new.rename(columns={"timestamp": "date"})
+                df_insert = df_new.copy()
+                df_insert["ticker"] = ticker
+                df_insert.to_sql("historical_data", conn, if_exists="append", index=False)
+                conn.close()
+
+    df_final = pd.concat([df_db, df_new], ignore_index=True)
+    if not df_final.empty:
+        df_final.sort_values("timestamp", inplace=True)
+        df_final.drop_duplicates(subset="timestamp", inplace=True)
+    return df_final
 
 
 def charger_intraday_intelligent(ticker: str) -> pd.DataFrame:
