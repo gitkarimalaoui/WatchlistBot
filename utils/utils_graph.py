@@ -71,8 +71,16 @@ def charger_historique_intelligent(
 def charger_intraday_intelligent(ticker: str) -> pd.DataFrame:
     """Load intraday data from DB and fetch missing rows from free APIs."""
     last_ts = load_last_timestamp(ticker)
+    if last_ts is not None and isinstance(last_ts, pd.Timestamp):
+        last_ts = last_ts.tz_localize(None)
+
     df_new = fetch_intraday_data(ticker)
     if df_new is not None and not df_new.empty:
+        df_new = df_new.copy()
+        df_new["timestamp"] = (
+            pd.to_datetime(df_new["timestamp"], utc=True, errors="coerce")
+            .dt.tz_localize(None)
+        )
         if last_ts is not None:
             df_new = df_new[df_new["timestamp"] > last_ts]
         insert_intraday(ticker, df_new)

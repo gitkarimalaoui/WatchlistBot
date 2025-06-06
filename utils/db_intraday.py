@@ -25,7 +25,9 @@ def load_last_timestamp(ticker: str) -> pd.Timestamp | None:
 
     if value:
         try:
-            return pd.to_datetime(value)
+            # Normalize timezone information to avoid tz-aware vs tz-naive issues
+            ts = pd.to_datetime(value, utc=True)
+            return ts.tz_localize(None)
         except Exception:
             return None
     return None
@@ -57,5 +59,8 @@ def load_intraday(ticker: str, start: str | None = None) -> pd.DataFrame:
     finally:
         conn.close()
     if not df.empty:
-        df['timestamp'] = pd.to_datetime(df['timestamp'])
+        df['timestamp'] = (
+            pd.to_datetime(df['timestamp'], utc=True, errors='coerce')
+            .dt.tz_localize(None)
+        )
     return df
