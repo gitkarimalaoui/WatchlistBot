@@ -23,8 +23,11 @@ def _fetch_missing(ticker: str) -> pd.DataFrame:
     return pd.DataFrame()
 
 
+from typing import Optional
+
+
 def charger_historique_intelligent(
-    ticker: str, start_date: str | None = None, end_date: str | None = None
+    ticker: str, start_date: Optional[str] = None, end_date: Optional[str] = None
 ) -> pd.DataFrame:
     """Load historical data from DB and download any missing dates."""
 
