@@ -21,7 +21,7 @@ Interface principale utilisateur du bot WatchlistBot (Version V7+). Ce module ce
 |---------------------------------------|-----------------------------------------------------|
 | `scripts/run_chatgpt_batch.py`        | Lance l’analyse GPT et injecte les scores           |
 | `scripts/scraper_jaguar.py`           | Scrape les tickers Jaguar depuis Moomoo            |
-| `utils/load_watchlist.py`             | Injecte les tickers extraits dans la base          |
+| `scripts/load_watchlist.py`           | Injecte les tickers extraits dans la base          |
 | `utils/utils_finnhub.py`              | Récupère prix, float, volume, graphes live         |
 | `roadmap_ui.py`                       | Interface de gestion des EPICs / tâches / US       |
 | `query_entreprise_db.py`             | Affiche KPI, cas d’usage et modules CRM/IA         |
