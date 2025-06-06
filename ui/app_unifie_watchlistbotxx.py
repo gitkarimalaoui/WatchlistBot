@@ -154,11 +154,7 @@ with st.expander("📥 Scraper Jaguar et Injecter"):
 
     if st.button("📩 Injecter dans la base"):
         before = count_watchlist_tickers()
-        subprocess.run([sys.executable, os.path.join(ROOT_DIR, "utils", "load_watchlist.py")])
-        after = count_watchlist_tickers()
-        st.success(f"✅ {after - before} tickers injectés dans la base.")
-        before = count_watchlist_tickers()
-        subprocess.run([sys.executable, os.path.join(ROOT_DIR, "utils", "load_watchlist.py")])
+        subprocess.run([sys.executable, os.path.join(SCRIPTS, "load_watchlist.py")])
         after = count_watchlist_tickers()
         st.success(f"✅ {after - before} tickers injectés dans la base.")
     if st.button("🔁 Rafraîchir la watchlist"):
