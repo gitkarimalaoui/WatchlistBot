@@ -1,0 +1,17 @@
+I encountered an error while running WatchlistBot.
+
+Here is the stack trace and debug information from logs/ChatGptErrorPromptGenrator.log:
+
+<PASTE stack trace here>
+
+<PASTE lines starting with "=== DEBUG INFO (copy below) ===" down to "===============================">
+
+Please analyze this information and suggest how to resolve the issue.
+
+[INFO] 2025-06-05 20:22:04,829 - === DEBUG INFO (copy below) ===
+Python: 3.8.6
+OS: Windows-10-10.0.19041-SP0
+Working dir: C:\Users\KARIM\Desktop\python\projet AI\BOTV7\BOTV8
+Script: C:\Python38\Scripts\streamlit.exe
+Share this block when reporting issues
+===============================
