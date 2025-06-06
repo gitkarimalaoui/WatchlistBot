@@ -77,7 +77,8 @@ def fetch_yf_historical_data(
 
         # group columns if empty or multi-indexed results
         if isinstance(df.columns, pd.MultiIndex):
-            df.columns = df.columns.get_level_values(0)
+            # drop the outer ticker level
+            df.columns = df.columns.get_level_values(1)
 
         column_map = {
             "timestamp": "timestamp",
