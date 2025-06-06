@@ -4,7 +4,9 @@ import streamlit as st
 from datetime import datetime, timedelta
 
 from utils_yf_historical import fetch_yf_historical_data
-from utils_finnhub import fetch_finnhub_historical_data, fetch_finnhub_intraday_data
+from utils_finnhub import fetch_finnhub_historical_data
+from utils_intraday import fetch_intraday_data
+from db_intraday import load_last_timestamp, insert_intraday, load_intraday
 from db_historical import load_historical
 import sqlite3
 from pathlib import Path
@@ -67,24 +69,19 @@ def charger_historique_intelligent(
 
 
 def charger_intraday_intelligent(ticker: str) -> pd.DataFrame:
-    """Retourne l'intraday du ticker via Finnhub avec fallback YF."""
-    try:
-        df = fetch_finnhub_intraday_data(ticker)
-        if isinstance(df, pd.DataFrame) and not df.empty:
-            print(f"[INFO] Intraday trouvé via Finnhub pour {ticker}")
-            return df
-        print(f"[Finnhub Intraday] No data for {ticker}")
-        raise ValueError("Finnhub intraday data empty")
-    except Exception as e:
-        print(f"[WARNING] Fallback YF déclenché pour {ticker}: {e}")
-        try:
-            df = fetch_yf_historical_data(ticker)  # fallback approximatif
-            if isinstance(df, pd.DataFrame) and not df.empty:
-                print(f"[INFO] Fallback YF intraday réussi pour {ticker}")
-                return df
-        except Exception as fe:
-            print(f"[ERROR] Échec total récupération données intraday pour {ticker}: {fe}")
-    return pd.DataFrame()
+    """Load intraday data from DB and fetch missing rows from free APIs."""
+    last_ts = load_last_timestamp(ticker)
+    df_new = fetch_intraday_data(ticker)
+    if df_new is not None and not df_new.empty:
+        if last_ts is not None:
+            df_new = df_new[df_new["timestamp"] > last_ts]
+        insert_intraday(ticker, df_new)
+    df_db = load_intraday(ticker)
+    if df_db is None:
+        return pd.DataFrame()
+    df_db.sort_values("timestamp", inplace=True)
+    df_db.drop_duplicates(subset="timestamp", inplace=True)
+    return df_db
 
 
 def charger_donnees_ticker_intelligent(ticker: str) -> tuple:
