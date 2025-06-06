@@ -3,6 +3,7 @@ import requests
 import time
 import random
 from datetime import datetime
+from typing import Optional
 
 try:
     from .utils_finnhub import fetch_finnhub_historical_data
@@ -16,7 +17,7 @@ FMP_API_KEY = "c0uNeGCdI4sIJ060nGu5kvk1zbYxhK7R"
 POLYGON_API_KEY = "OeOiRyypszZztM1W9Hb00TF3RoNRySSX"
 
 
-def fetch_from_yfinance(ticker: str) -> pd.DataFrame | None:
+def fetch_from_yfinance(ticker: str) -> Optional[pd.DataFrame]:
     """Retrieve daily prices via Yahoo Finance."""
     try:
         import yfinance as yf
@@ -42,7 +43,7 @@ def fetch_from_yfinance(ticker: str) -> pd.DataFrame | None:
         return None
 
 
-def fetch_from_finnhub(ticker: str) -> pd.DataFrame | None:
+def fetch_from_finnhub(ticker: str) -> Optional[pd.DataFrame]:
     """Retrieve daily prices via Finnhub."""
     try:
         return fetch_finnhub_historical_data(ticker)
@@ -51,7 +52,7 @@ def fetch_from_finnhub(ticker: str) -> pd.DataFrame | None:
         return None
 
 
-def fetch_from_alphavantage(ticker: str) -> pd.DataFrame | None:
+def fetch_from_alphavantage(ticker: str) -> Optional[pd.DataFrame]:
     """Retrieve daily prices via Alpha Vantage."""
     try:
         url = (
@@ -81,7 +82,7 @@ def fetch_from_alphavantage(ticker: str) -> pd.DataFrame | None:
         return None
 
 
-def fetch_from_fmp(ticker: str) -> pd.DataFrame | None:
+def fetch_from_fmp(ticker: str) -> Optional[pd.DataFrame]:
     """Retrieve daily close prices via Financial Modeling Prep."""
     try:
         url = f"https://financialmodelingprep.com/api/v3/historical-price-full/{ticker}?apikey={FMP_API_KEY}&serietype=line"
@@ -99,7 +100,7 @@ def fetch_from_fmp(ticker: str) -> pd.DataFrame | None:
         return None
 
 
-def fetch_from_polygon(ticker: str) -> pd.DataFrame | None:
+def fetch_from_polygon(ticker: str) -> Optional[pd.DataFrame]:
     """Retrieve recent daily prices via Polygon."""
     try:
         today = datetime.today().strftime("%Y-%m-%d")
@@ -132,7 +133,7 @@ SOURCES = [
 ]
 
 
-def fetch_historical_data(ticker: str) -> pd.DataFrame | None:
+def fetch_historical_data(ticker: str) -> Optional[pd.DataFrame]:
     """Try multiple free sources until one succeeds."""
     for name, func in SOURCES:
         print(f"[TRYING] {name} for {ticker}...")
@@ -154,12 +155,12 @@ def fetch_yf_historical_data(
     period: str = "5y",
     interval: str = "1d",
     threads: bool = False,
-) -> pd.DataFrame | None:
+) -> Optional[pd.DataFrame]:
     """Legacy wrapper that only queries Yahoo Finance."""
     _ = period, interval, threads
     return fetch_from_yfinance(ticker)
 
 
-def fetch_historical_with_fallback(ticker: str) -> pd.DataFrame | None:
+def fetch_historical_with_fallback(ticker: str) -> Optional[pd.DataFrame]:
     """Legacy wrapper that calls :func:`fetch_historical_data`."""
     return fetch_historical_data(ticker)
