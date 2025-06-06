@@ -1,138 +1,165 @@
-"""Helpers to retrieve historical prices.
-
-The module tries to rely on ``yfinance`` if available and falls back to the
-Finnhub API otherwise.  Importing ``yfinance`` is optional so that the rest of
-the application keeps working even when the package is absent (which is the
-case in the test environment).
-"""
-
 import pandas as pd
-
-try:
-    # Standard package import when ``utils`` is a package
-    from .advanced_logger import safe_api_call
-except Exception:  # pragma: no cover - fallback when executed as a script
-    from advanced_logger import safe_api_call
-
-try:  # yfinance is optional in the execution environment
-    import yfinance as yf
-except Exception:  # pragma: no cover - informational print only
-    yf = None
-    print("[YF WARNING] yfinance package not available")
+import requests
+import time
+import random
+from datetime import datetime
 
 try:
     from .utils_finnhub import fetch_finnhub_historical_data
-except Exception:  # pragma: no cover - fallback when executed as a script
+except Exception:
     from utils_finnhub import fetch_finnhub_historical_data
 
+# === API KEYS ===
+FINNHUB_API_KEY = "cvs634hr01qvc2mv1e00cvs634hr01qvc2mv1e0g"
+ALPHA_VANTAGE_API_KEY = "LMIOGZ2DXX9HJ6OL"
+FMP_API_KEY = "c0uNeGCdI4sIJ060nGu5kvk1zbYxhK7R"
+POLYGON_API_KEY = "OeOiRyypszZztM1W9Hb00TF3RoNRySSX"
 
-@safe_api_call(retries=3, delay=1.5, backoff=2.0)
+
+def fetch_from_yfinance(ticker: str) -> pd.DataFrame | None:
+    """Retrieve daily prices via Yahoo Finance."""
+    try:
+        import yfinance as yf
+        df = yf.download(ticker, period="6mo", interval="1d", progress=False)
+        if df.empty:
+            return None
+        df.reset_index(inplace=True)
+        df.rename(
+            columns={
+                "Date": "timestamp",
+                "Open": "open",
+                "High": "high",
+                "Low": "low",
+                "Close": "close",
+                "Adj Close": "close",
+                "Volume": "volume",
+            },
+            inplace=True,
+        )
+        return df[["timestamp", "open", "high", "low", "close", "volume"]]
+    except Exception as e:  # pragma: no cover - best effort log only
+        print(f"[YF ERROR] {e}")
+        return None
+
+
+def fetch_from_finnhub(ticker: str) -> pd.DataFrame | None:
+    """Retrieve daily prices via Finnhub."""
+    try:
+        return fetch_finnhub_historical_data(ticker)
+    except Exception as e:  # pragma: no cover - best effort log only
+        print(f"[FINNHUB ERROR] {e}")
+        return None
+
+
+def fetch_from_alphavantage(ticker: str) -> pd.DataFrame | None:
+    """Retrieve daily prices via Alpha Vantage."""
+    try:
+        url = (
+            f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={ticker}&apikey={ALPHA_VANTAGE_API_KEY}&outputsize=compact"
+        )
+        res = requests.get(url).json()
+        data = res.get("Time Series (Daily)", {})
+        if not data:
+            return None
+        df = pd.DataFrame.from_dict(data, orient="index", dtype=float)
+        df = df.rename(
+            columns={
+                "1. open": "open",
+                "2. high": "high",
+                "3. low": "low",
+                "4. close": "close",
+                "5. volume": "volume",
+            }
+        )
+        df["timestamp"] = pd.to_datetime(df.index)
+        df = df[["timestamp", "open", "high", "low", "close", "volume"]].sort_values(
+            "timestamp"
+        )
+        return df
+    except Exception as e:  # pragma: no cover - best effort log only
+        print(f"[AV ERROR] {e}")
+        return None
+
+
+def fetch_from_fmp(ticker: str) -> pd.DataFrame | None:
+    """Retrieve daily close prices via Financial Modeling Prep."""
+    try:
+        url = f"https://financialmodelingprep.com/api/v3/historical-price-full/{ticker}?apikey={FMP_API_KEY}&serietype=line"
+        res = requests.get(url).json()
+        historical = res.get("historical", [])
+        if not historical:
+            return None
+        df = pd.DataFrame(historical)
+        df.rename(columns={"date": "timestamp"}, inplace=True)
+        df["timestamp"] = pd.to_datetime(df["timestamp"])
+        df = df[["timestamp", "close"]]
+        return df
+    except Exception as e:  # pragma: no cover - best effort log only
+        print(f"[FMP ERROR] {e}")
+        return None
+
+
+def fetch_from_polygon(ticker: str) -> pd.DataFrame | None:
+    """Retrieve recent daily prices via Polygon."""
+    try:
+        today = datetime.today().strftime("%Y-%m-%d")
+        url = (
+            f"https://api.polygon.io/v2/aggs/ticker/{ticker}/range/1/day/2024-12-01/{today}?adjusted=true&sort=asc&limit=120&apiKey={POLYGON_API_KEY}"
+        )
+        res = requests.get(url).json()
+        results = res.get("results", [])
+        if not results:
+            return None
+        df = pd.DataFrame(results)
+        df["timestamp"] = pd.to_datetime(df["t"], unit="ms")
+        df.rename(
+            columns={"o": "open", "h": "high", "l": "low", "c": "close", "v": "volume"},
+            inplace=True,
+        )
+        df = df[["timestamp", "open", "high", "low", "close", "volume"]]
+        return df
+    except Exception as e:  # pragma: no cover - best effort log only
+        print(f"[POLYGON ERROR] {e}")
+        return None
+
+
+SOURCES = [
+    ("Yahoo Finance", fetch_from_yfinance),
+    ("Finnhub", fetch_from_finnhub),
+    ("Alpha Vantage", fetch_from_alphavantage),
+    ("FMP", fetch_from_fmp),
+    ("Polygon", fetch_from_polygon),
+]
+
+
+def fetch_historical_data(ticker: str) -> pd.DataFrame | None:
+    """Try multiple free sources until one succeeds."""
+    for name, func in SOURCES:
+        print(f"[TRYING] {name} for {ticker}...")
+        df = func(ticker)
+        if df is not None and not df.empty:
+            print(f"✅ Success with {name}, {len(df)} records for {ticker}")
+            return df
+        time.sleep(1.5 + random.uniform(0, 1.5))
+    print(f"❌ All sources failed for {ticker}")
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Backward compatibility wrappers
+# ---------------------------------------------------------------------------
+
 def fetch_yf_historical_data(
     ticker: str,
     period: str = "5y",
     interval: str = "1d",
     threads: bool = False,
-) -> pd.DataFrame:
-    """Download historical prices from Yahoo Finance and fall back to Finnhub.
-
-    Parameters are exposed so they can easily be tuned if the default call
-    returns empty dataframes. ``threads`` is disabled by default as it sometimes
-    causes connection issues in constrained environments.
-    """
-    if yf is None:
-        print("[YF ERROR] yfinance not available")
-        return None
-
-    try:
-        df = yf.download(
-            tickers=ticker,
-            period=period,
-            interval=interval,
-            progress=False,
-            auto_adjust=True,
-            threads=threads,
-            group_by="ticker",
-        )
-
-        if df.empty:
-            print(f"[YF WARNING] Empty data for {ticker} via download, retry histo"
-                  "ry API")
-            try:
-                df = yf.Ticker(ticker).history(period=period, interval=interval)
-            except Exception as e:
-                print(f"[YF ERROR] history fetch failed for {ticker}: {e}")
-                df = pd.DataFrame()
-
-        if df.empty:
-            print(f"[YF WARNING] Donnees vides pour {ticker}, fallback Finnhub")
-            df = fetch_finnhub_historical_data(ticker)
-            if df is None or df.empty:
-                return None
-            return df
-
-        # Convert index to a dedicated timestamp column regardless of its name
-        df.index = pd.to_datetime(df.index)
-        df.reset_index(inplace=True)
-        df.rename(columns={df.columns[0]: "timestamp"}, inplace=True)
-
-        # group columns if empty or multi-indexed results
-        if isinstance(df.columns, pd.MultiIndex):
-            # drop the outer ticker level
-            df.columns = df.columns.get_level_values(1)
-
-        column_map = {
-            "timestamp": "timestamp",
-            "Open": "open",
-            "High": "high",
-            "Low": "low",
-            "Close": "close",
-            "Adj Close": "close",
-            "Volume": "volume",
-        }
-        available_cols = [c for c in column_map.keys() if c in df.columns]
-        if "timestamp" not in available_cols or "Close" not in df.columns and "Adj Close" not in df.columns:
-            print(f"[YF ERROR] Colonnes manquantes pour {ticker}")
-            return None
-
-        df = df[available_cols]
-        df.rename({k: column_map[k] for k in available_cols}, axis=1, inplace=True)
-        # ensure final column order
-        ordered = [column_map[c] for c in column_map if c in available_cols]
-        df = df[ordered]
-        return df
-
-    except Exception as e:
-        # Retry specifically on Yahoo Finance rate limiting
-        if "YFRateLimitError" in type(e).__name__ or "Too Many Requests" in str(e):
-            print(f"[YF ERROR] Rate limit hit for {ticker}: {e}")
-            raise e
-        print(f"[YF ERROR] {ticker}: {e}")
-        return None
+) -> pd.DataFrame | None:
+    """Legacy wrapper that only queries Yahoo Finance."""
+    _ = period, interval, threads
+    return fetch_from_yfinance(ticker)
 
 
-def fetch_historical_with_fallback(ticker: str) -> pd.DataFrame:
-    """Attempt to fetch data from Yahoo Finance then fall back to Finnhub."""
-    df = fetch_yf_historical_data(ticker)
-    if df is not None and not df.empty:
-        return df
-
-    print(f"[INFO] Fallback Finnhub pour {ticker}")
-    df = fetch_finnhub_historical_data(ticker)
-    if df is None or df.empty:
-        return None
-
-    df = df.rename(columns={"Date": "timestamp", "Close": "close"})
-
-    if "timestamp" not in df.columns:
-        df.reset_index(inplace=True)
-        df.rename(columns={df.columns[0]: "timestamp"}, inplace=True)
-
-    if "close" not in df.columns and "Close" in df.columns:
-        df.rename(columns={"Close": "close"}, inplace=True)
-
-    if "timestamp" not in df.columns or "close" not in df.columns:
-        print(f"[Finnhub ERROR] Colonnes manquantes pour {ticker}")
-        return None
-
-    df = df[["timestamp", "close"]]
-    return df
+def fetch_historical_with_fallback(ticker: str) -> pd.DataFrame | None:
+    """Legacy wrapper that calls :func:`fetch_historical_data`."""
+    return fetch_historical_data(ticker)
