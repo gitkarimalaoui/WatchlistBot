@@ -153,7 +153,8 @@ def _process_yf_dataframe(df: pd.DataFrame, ticker: str) -> pd.DataFrame:
 
         # Handle multi-indexed columns if present
         if isinstance(df.columns, pd.MultiIndex):
-            df.columns = df.columns.get_level_values(0)
+            # drop the outer ticker level
+            df.columns = df.columns.get_level_values(1)
 
         # Standardize column names
         column_map = {
