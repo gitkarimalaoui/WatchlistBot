@@ -164,3 +164,4 @@ def fetch_yf_historical_data(
 def fetch_historical_with_fallback(ticker: str) -> Optional[pd.DataFrame]:
     """Legacy wrapper that calls :func:`fetch_historical_data`."""
     return fetch_historical_data(ticker)
+
