@@ -13,7 +13,8 @@ from datetime import datetime
 FINNHUB_TOKEN = os.getenv("FINNHUB_API_KEY")
 BASE_URL = "https://finnhub.io/api/v1/quote"
 SAVE_DIR = "data/ticks"
-INTERVAL = 15  # seconds between requests
+# Interval between API requests in seconds (reduced for finer granularity)
+INTERVAL = 5
 
 TICKERS = ["AAPL", "TSLA", "NVDA", "SPPL", "SONN"]  # You can customize
 
