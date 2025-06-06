@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import json
 import pandas as pd
+import time
 from datetime import datetime
 from realtime.build_intraday_candles import build_candles
 from realtime.utils_graph_local import plot_candles
@@ -65,6 +66,11 @@ def main():
     if selected_ticker:
         afficher_infos_ticker(selected_ticker)
         afficher_graphique_intraday(selected_ticker)
+
+    # Rafraîchissement automatique toutes les 5 secondes
+    st.write("Actualisation automatique dans 5s...")
+    time.sleep(5)
+    st.rerun()
 
 def run():
     main()
