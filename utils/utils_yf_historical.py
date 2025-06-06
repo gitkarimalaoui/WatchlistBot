@@ -24,6 +24,9 @@ def fetch_from_yfinance(ticker: str) -> Optional[pd.DataFrame]:
         df = yf.download(ticker, period="6mo", interval="1d", progress=False)
         if df.empty:
             return None
+        # yfinance may return a MultiIndex when requesting a single ticker
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = df.columns.get_level_values(0)
         df.reset_index(inplace=True)
         df.rename(
             columns={
