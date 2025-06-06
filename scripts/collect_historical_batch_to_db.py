@@ -41,15 +41,23 @@ except Exception as e:
 tickers = df_watchlist["ticker"].dropna().unique()
 print(f"[INFO] {len(tickers)} tickers à traiter.")
 
-# ─── Table cible ───────────────────────────────────────────────────────────────
-conn.execute("""
-CREATE TABLE IF NOT EXISTS historical_data (
-    ticker TEXT,
-    timestamp TEXT,
-    close REAL,
-    PRIMARY KEY (ticker, timestamp)
-)
-""")
+# ─── Table cible
+# Verifier le schema existant afin d'etre compatible avec d'anciennes bases
+cur = conn.execute("PRAGMA table_info(historical_data)")
+existing_columns = [row[1] for row in cur.fetchall()]
+
+if not existing_columns:
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS historical_data (
+            ticker TEXT,
+            timestamp TEXT,
+            close REAL,
+            PRIMARY KEY (ticker, timestamp)
+        )
+    """)
+    existing_columns = ["ticker", "timestamp", "close"]
+
+time_column = "timestamp" if "timestamp" in existing_columns else "date"
 
 # ─── Collecte et insertion ─────────────────────────────────────────────────────
 for i, ticker in enumerate(tickers, start=1):
@@ -67,7 +75,10 @@ for i, ticker in enumerate(tickers, start=1):
         print(f"[WARN] Colonnes manquantes pour {ticker}, saute : {df.columns.tolist()}")
         continue
 
-    df = df[list(required_cols) + ["ticker"]]
+    if time_column != "timestamp":
+        df.rename(columns={"timestamp": time_column}, inplace=True)
+
+    df = df[[time_column, "close", "ticker"]]
 
     try:
         df.to_sql("historical_data", conn, if_exists="append", index=False)
