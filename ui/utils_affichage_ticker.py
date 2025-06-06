@@ -7,16 +7,19 @@ from utils_graph import (
 )
 
 def afficher_ticker_panel(ticker, stock, index):
-    with st.expander(f"{index + 1}. {ticker}", expanded=False):
-        st.markdown(f"**Symbole :** {ticker}")
-        st.markdown(f"**Score :** {stock.get('score', 'N/A')}")
-        st.markdown(f"**Prix actuel :** {stock.get('price', 'N/A')}")
-        st.markdown(f"**Volume :** {stock.get('volume', 'N/A')}")
-        st.markdown(f"**% Gain :** {stock.get('percent_gain', 'N/A')}")
+    st.markdown(f"### {index + 1}. {ticker}")
+    st.markdown(f"**Score :** {stock.get('score', 'N/A')}")
+    st.markdown(f"**Prix actuel :** {stock.get('price', 'N/A')}")
+    st.markdown(f"**Volume :** {stock.get('volume', 'N/A')}")
+    st.markdown(f"**% Gain :** {stock.get('percent_gain', 'N/A')}")
 
+    key = f"show_{ticker}_{index}"
+    if st.button("Afficher détails", key=key):
+        st.session_state[key] = not st.session_state.get(key, False)
+
+    if st.session_state.get(key, False):
         df_hist = charger_historique_intelligent(ticker)
         df_intraday = charger_intraday_intelligent(ticker)
-
         if df_hist is not None and not df_hist.empty:
             plot_dual_chart(ticker, df_hist, df_intraday)
         else:
