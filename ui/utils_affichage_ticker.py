@@ -14,10 +14,11 @@ def afficher_ticker_panel(ticker, stock, index):
     st.markdown(f"**% Gain :** {stock.get('percent_gain', 'N/A')}")
 
     key = f"show_{ticker}_{index}"
+    state_key = f"{key}_state"
     if st.button("Afficher détails", key=key):
-        st.session_state[key] = not st.session_state.get(key, False)
+        st.session_state[state_key] = not st.session_state.get(state_key, False)
 
-    if st.session_state.get(key, False):
+    if st.session_state.get(state_key, False):
         df_hist = charger_historique_intelligent(ticker)
         df_intraday = charger_intraday_intelligent(ticker)
         if df_hist is not None and not df_hist.empty:
