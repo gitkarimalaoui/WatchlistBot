@@ -22,6 +22,20 @@ Ce dépôt fournit l'ensemble des scripts et de la documentation pour:
 
 Consultez `project_doc/project_structure.md` pour la vue d'ensemble du projet ainsi que les fiches spécifiques (`MODULE_1_WATCHLISTBOT.md`, `MODULE_2_LEARNING_ENGINE.md`, `04_core_database_and_logging_setup.md`, ...).
 
+## Modules principaux
+
+Plusieurs scripts en doublon (`app_unifie_watchlistbotx.py`, `ai_scorerx.py`, `order_executorx.py`…) ont été retirés. Les chemins à utiliser sont désormais :
+
+- `ui/app_unifie_watchlistbot.py` – interface Streamlit centrale
+- `ui/utils_affichage_ticker.py` – affichage détaillé des tickers
+- `intelligence/ai_scorer.py` – calcul du score IA
+- `utils/utils_graph.py` – chargement historique & intraday
+- `utils/utils_finnhub.py` – récupération des données Finnhub
+- `scripts/run_chatgpt_batch.py` – scoring GPT des news
+- `scripts/scraper_jaguar.py` – scraping des posts Jaguar
+- `scripts/load_watchlist.py` – import de la watchlist
+
+
 ## Mise en place de la base de données
 
 Le bot s'appuie sur un fichier SQLite `data/trades.db`. Pour créer les tables essentielles, exécutez par exemple :
