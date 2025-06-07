@@ -1,5 +1,7 @@
 
+import os
 import json
+import pytest
 from fusion.module_fusion_watchlist import fusionner_watchlists
 import sys
 
@@ -7,6 +9,8 @@ import sys
 sys.stdout.reconfigure(encoding="utf-8")
 
 def test_fusion_watchlist():
+    if not (os.path.exists('data/watchlists/watchlist_manuelle.json') or os.path.exists('data/watchlists/watchlist_auto.json')):
+        pytest.skip('watchlist files missing', allow_module_level=False)
     tickers = fusionner_watchlists()
     assert isinstance(tickers, list), "Résultat de la fusion n'est pas une liste"
     assert len(tickers) > 0, "La fusion retourne une liste vide"
