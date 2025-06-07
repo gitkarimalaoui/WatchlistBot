@@ -93,6 +93,7 @@ def load_watchlist():
             w.source,
             w.date,
             w.description,
+            w.float AS float,
             COALESCE(w.score, 0) AS score,
             COALESCE(ns.score, 0) AS score_gpt,
             COALESCE(ns.sentiment, 'NA') AS sentiment,
