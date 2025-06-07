@@ -88,15 +88,30 @@ def load_watchlist():
     conn = sqlite3.connect(DB_PATH)
     df = pd.read_sql_query(
         """
-        SELECT 
-            w.ticker, w.source, w.date, w.description, 
+        SELECT
+            w.ticker,
+            w.source,
+            w.date,
+            w.description,
             COALESCE(w.score, 0) AS score,
             COALESCE(ns.score, 0) AS score_gpt,
-            COALESCE(ns.sentiment, 'NA') AS sentiment
+            COALESCE(ns.sentiment, 'NA') AS sentiment,
+            i.price,
+            i.volume,
+            i.change_percent AS percent_gain
         FROM watchlist w
         LEFT JOIN news_score ns ON w.ticker = ns.symbol
+        LEFT JOIN (
+            SELECT s.ticker, s.price, s.volume, s.change_percent, s.timestamp
+            FROM intraday_smart s
+            JOIN (
+                SELECT ticker, MAX(timestamp) AS max_ts
+                FROM intraday_smart
+                GROUP BY ticker
+            ) m ON s.ticker = m.ticker AND s.timestamp = m.max_ts
+        ) i ON w.ticker = i.ticker
         """,
-        conn
+        conn,
     )
     conn.close()
     return df.to_dict(orient='records')
