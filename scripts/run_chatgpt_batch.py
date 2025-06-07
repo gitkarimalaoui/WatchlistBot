@@ -27,6 +27,10 @@ logging.basicConfig(
 
 log = logging.info
 
+# Persistent Chrome profile directory
+PROFILE_DIR = Path.home() / ".watchlistbot_chrome"
+PROFILE_DIR.mkdir(exist_ok=True)
+
 DB_PATH = Path(__file__).parent.parent / "data" / "trades.db"
 
 log(f"Chemin relatif DB utilisé : {DB_PATH}")
@@ -157,8 +161,11 @@ def is_chrome_running_with_debug():
         return False
 
 
-def kill_existing_chrome():
-    """Kill existing Chrome processes."""
+def kill_existing_chrome(force_restart: bool = False):
+    """Kill existing Chrome processes if force_restart is True."""
+    if not force_restart:
+        return
+
     log("[INFO] Fermeture des processus Chrome existants...")
     for proc in psutil.process_iter(["pid", "name"]):
         try:
@@ -169,9 +176,9 @@ def kill_existing_chrome():
             pass
 
 
-def start_chrome_with_debug():
+def start_chrome_with_debug(force_restart: bool = False):
     """Start Chrome with debugging enabled."""
-    if is_chrome_running_with_debug():
+    if is_chrome_running_with_debug() and not force_restart:
         log("[INFO] Chrome avec port de debug déjà en cours d'exécution.")
         return True
 
@@ -182,12 +189,14 @@ def start_chrome_with_debug():
 
     log(f"[INFO] Chrome trouvé: {chrome_path}")
 
-    kill_existing_chrome()
-    time.sleep(2)
+    kill_existing_chrome(force_restart)
+    if force_restart:
+        time.sleep(2)
 
     chrome_args = [
         chrome_path,
         "--remote-debugging-port=9222",
+        f"--user-data-dir={PROFILE_DIR}",
         "--no-first-run",
         "--no-default-browser-check",
         "--disable-default-apps",
@@ -213,9 +222,9 @@ def start_chrome_with_debug():
         return False
 
 
-def get_browser_websocket_url():
+def get_browser_websocket_url(force_restart: bool = False):
     """Get the WebSocket URL for browser debugging."""
-    if not start_chrome_with_debug():
+    if not start_chrome_with_debug(force_restart=force_restart):
         raise Exception("[FATAL] Impossible de démarrer Chrome avec le port de debug.")
 
     try:

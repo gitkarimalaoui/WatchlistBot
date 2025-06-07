@@ -56,17 +56,10 @@ pour valider les modules principaux.
 ## Analyse batch ChatGPT
 
 Le script `scripts/run_chatgpt_batch.py` exploite ChatGPT pour scorer les news
-de votre watchlist. Avant de l'exécuter :
-
-1. Lancez Google Chrome avec l'option `--remote-debugging-port=9222`. Par
-   exemple sous Windows :
-
-   ```bash
-   chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\tmp\chrome"
-   ```
-
-2. Connectez-vous à [https://chat.openai.com](https://chat.openai.com) dans ce
-   navigateur.
+de votre watchlist. Il démarre automatiquement Google Chrome avec un profil
+persistant stocké dans `~/.watchlistbot_chrome`.
+Lors de la première exécution, connectez-vous à
+[https://chat.openai.com](https://chat.openai.com) dans la fenêtre ouverte.
 
 Ensuite, lancez simplement :
 
