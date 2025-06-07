@@ -10,15 +10,29 @@ import psutil
 from pathlib import Path
 from playwright.async_api import async_playwright
 
-logging.basicConfig(level=logging.INFO, format='%(message)s')
+# ---- Logging configuration ----
+LOG_DIR = Path(__file__).parent.parent / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+LOG_FILE = LOG_DIR / "run_chatgpt_batch.log"
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler(LOG_FILE, mode="a", encoding="utf-8"),
+        logging.StreamHandler()
+    ],
+    force=True,
+)
+
 log = logging.info
 
 DB_PATH = Path(__file__).parent.parent / "data" / "trades.db"
 
-print("Chemin relatif DB utilisé :", DB_PATH)
-print("Chemin absolu DB :", DB_PATH.resolve())
-print("Dossier courant (cwd) :", os.getcwd())
-print("Chemin complet du script :", Path(__file__).resolve())
+log(f"Chemin relatif DB utilisé : {DB_PATH}")
+log(f"Chemin absolu DB : {DB_PATH.resolve()}")
+log(f"Dossier courant (cwd) : {os.getcwd()}")
+log(f"Chemin complet du script : {Path(__file__).resolve()}")
 
 
 def log_debug_prompt():
@@ -335,6 +349,9 @@ async def run_batch():
         log(f"[INFO] {len(symbols)} tickers à analyser")
         prompt = build_prompt(symbols)
         log("[INFO] Prompt généré")
+        log("=== PROMPT UTILISÉ ===")
+        log(prompt)
+        log("=== FIN PROMPT ===")
 
         response = await chatgpt_inject(prompt)
         if not response:
@@ -346,6 +363,7 @@ async def run_batch():
 
     except Exception as e:
         log(f"[ERROR] Erreur dans run_batch: {e}")
+        log_debug_prompt()
         raise
 
 
