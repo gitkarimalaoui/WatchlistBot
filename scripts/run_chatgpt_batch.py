@@ -307,9 +307,9 @@ async def chatgpt_inject(prompt: str):
                         log(f"[INFO] Zone de saisie trouvée: {selector}")
 
                         await element.click()
-                        await page.keyboard.key_down('Control')
+                        await page.keyboard.down('Control')
                         await page.keyboard.press('a')
-                        await page.keyboard.key_up('Control')
+                        await page.keyboard.up('Control')
                         await element.fill(prompt)
 
                         log("[INFO] Prompt injecté")
