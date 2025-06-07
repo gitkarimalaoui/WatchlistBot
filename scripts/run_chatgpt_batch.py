@@ -119,6 +119,13 @@ def save_scores_from_response(response):
                     """,
                     (sym, sc_int, sent),
                 )
+                # Also persist the score in the main watchlist table so the
+                # Streamlit UI can display the latest analysis without
+                # additional joins or logic.
+                conn.execute(
+                    "UPDATE watchlist SET score=? WHERE ticker=?",
+                    (sc_int, sym),
+                )
                 saved += 1
             except ValueError:
                 continue

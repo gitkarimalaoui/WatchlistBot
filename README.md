@@ -67,3 +67,7 @@ Ensuite, lancez simplement :
 python scripts/run_chatgpt_batch.py
 ```
 
+Les scores calculés sont enregistrés dans la table `news_score` **et** mis à
+jour dans `watchlist.score`. Ainsi, la page Streamlit reflète immédiatement
+les nouvelles analyses.
+
