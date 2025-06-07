@@ -8,7 +8,9 @@ from utils_graph import (
 
 def afficher_ticker_panel(ticker, stock, index):
     st.markdown(f"### {index + 1}. {ticker}")
+
     st.markdown(f"**Score IA :** {stock.get('score', 'N/A')}")
+    st.markdown(f"**Score global :** {stock.get('global_score', 'N/A')}")
     st.markdown(f"**Score GPT :** {stock.get('score_gpt', 'N/A')}")
     st.markdown(f"**Sentiment :** {stock.get('sentiment', 'N/A')}")
     st.markdown(f"**Source :** {stock.get('source', 'N/A')}")

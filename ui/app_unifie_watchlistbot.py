@@ -28,6 +28,7 @@ from roadmap_ui import roadmap_interface, roadmap_productivity_block, personal_i
 from query_entreprise_db import get_portfolio_modules, get_use_cases, get_revenue_sources, get_kpi_targets
 from pages.cloture_journee import cloturer_journee
 from utils_affichage_ticker import afficher_ticker_panel
+from intelligence.ai_scorer import compute_global_score
 
 # ─── Définition chemin base SQLite ──────────────────────────────────────────────
 DB_PATH = os.path.join(ROOT_DIR, "data", "trades.db")
@@ -115,6 +116,17 @@ def load_watchlist():
         conn,
     )
     conn.close()
+    df['global_score'] = df.apply(
+        lambda r: compute_global_score(
+            r.get('score'),
+            r.get('score_gpt'),
+            r.get('percent_gain'),
+            r.get('volume'),
+            r.get('float'),
+            r.get('sentiment'),
+        ),
+        axis=1,
+    )
     return df.to_dict(orient='records')
 
 # ➕ Ajout manuel
@@ -193,8 +205,8 @@ with st.expander("📥 Données marché – Historique et Intraday"):
 
 # 💼 Affichage dynamique paginé
 watchlist = load_watchlist()
-score_min = st.sidebar.slider("🎯 Score IA minimum", 0, 10, 0)
-filtered_watchlist = [w for w in watchlist if w.get("score", 0) >= score_min]
+score_min = st.sidebar.slider("🎯 Score IA minimum", 0.0, 10.0, 0.0, step=0.5)
+filtered_watchlist = [w for w in watchlist if w.get("global_score", 0) >= score_min]
 
 page_size = 10
 total = len(filtered_watchlist)
