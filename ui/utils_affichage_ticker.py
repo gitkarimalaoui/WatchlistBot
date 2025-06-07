@@ -8,11 +8,17 @@ from utils_graph import (
 
 def afficher_ticker_panel(ticker, stock, index):
     st.markdown(f"### {index + 1}. {ticker}")
+    st.markdown(f"**Score IA :** {stock.get('score', 'N/A')}")
     st.markdown(f"**Score GPT :** {stock.get('score_gpt', 'N/A')}")
     st.markdown(f"**Sentiment :** {stock.get('sentiment', 'N/A')}")
-    st.markdown(f"**Prix actuel :** {stock.get('price', 'N/A')}")
+    st.markdown(f"**Source :** {stock.get('source', 'N/A')}")
+    st.markdown(f"**Date :** {stock.get('date', 'N/A')}")
+    st.markdown(f"**Description :** {stock.get('description', 'N/A')}")
+    st.markdown(f"**Dernier prix :** {stock.get('price', 'N/A')}")
     st.markdown(f"**Volume :** {stock.get('volume', 'N/A')}")
-    st.markdown(f"**% Gain :** {stock.get('percent_gain', 'N/A')}")
+    st.markdown(
+        f"**% Gain :** {stock.get('percent_gain', stock.get('change_percent', 'N/A'))}"
+    )
     st.markdown(f"**Float :** {stock.get('float', 'N/A')}")
 
     key = f"show_{ticker}_{index}"
