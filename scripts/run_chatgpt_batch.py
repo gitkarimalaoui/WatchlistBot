@@ -4,6 +4,9 @@ import requests
 import sqlite3
 import os
 import platform
+import subprocess
+import time
+import psutil
 from pathlib import Path
 from playwright.async_api import async_playwright
 
@@ -17,6 +20,7 @@ print("Chemin absolu DB :", DB_PATH.resolve())
 print("Dossier courant (cwd) :", os.getcwd())
 print("Chemin complet du script :", Path(__file__).resolve())
 
+
 def log_debug_prompt():
     """Log useful environment details to help troubleshoot errors."""
     details = [
@@ -27,17 +31,19 @@ def log_debug_prompt():
         f"DB path: {DB_PATH.resolve()}",
         f"Script path: {Path(__file__).resolve()}",
         "Collez ce bloc lors d'une demande d'assistance pour accélérer le diagnostic.",
-        "==============================================="
+        "===============================================",
     ]
     log("\n".join(details))
 
+
 PROMPT_INSTRUCTIONS = """\
 Tu es un expert en day trading. Voici une liste de tickers avec leurs descriptions de news.
-Analyse chaque ligne et fournis un score parmi [0,1,3,5,7,10] selon l’importance du catalyseur et le sentiment associé.
+Analyse chaque ligne et fournis un score parmi [0,1,3,5,7,10] selon l'importance du catalyseur et le sentiment associé.
 Réponds UNIQUEMENT avec un tableau CSV, chaque ligne au format symbol|score|sentiment. Aucun texte supplémentaire.
 """
 
 MAX_DESC_CHARS = 200
+
 
 def load_watchlist():
     """Charge les tickers et descriptions depuis la base SQLite, tronque chaque description."""
@@ -56,20 +62,23 @@ def load_watchlist():
             unique[ticker] = text
     return [{"symbol": t, "desc": d} for t, d in unique.items()]
 
+
 def build_prompt(symbols):
     """Construit le prompt complet à injecter dans ChatGPT."""
     lines = [f"{s['symbol']}|{s['desc']}" for s in symbols]
     return PROMPT_INSTRUCTIONS + "\n" + "\n".join(lines)
+
 
 def save_chat_history(prompt, response):
     """Enregistre le prompt et la réponse dans la table chatgpt_history."""
     conn = sqlite3.connect(DB_PATH)
     conn.execute(
         "INSERT INTO chatgpt_history(prompt, response) VALUES (?, ?)",
-        (prompt, response)
+        (prompt, response),
     )
     conn.commit()
     conn.close()
+
 
 def save_scores_from_response(response):
     """Parse la réponse ligne par ligne et enregistre dans news_score."""
@@ -90,7 +99,7 @@ def save_scores_from_response(response):
                       sentiment=excluded.sentiment,
                       last_analyzed=CURRENT_TIMESTAMP
                     """,
-                    (sym, sc_int, sent)
+                    (sym, sc_int, sent),
                 )
                 saved += 1
             except ValueError:
@@ -99,100 +108,256 @@ def save_scores_from_response(response):
     conn.close()
     log(f"✅ {saved} scores enregistrés.")
 
-def get_browser_websocket_url():
+
+def find_chrome_executable():
+    """Find Chrome executable path based on OS."""
+    if platform.system() == "Windows":
+        possible_paths = [
+            r"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+            r"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+            os.path.expanduser(r"~\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe"),
+        ]
+    elif platform.system() == "Darwin":
+        possible_paths = [
+            "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        ]
+    else:
+        possible_paths = [
+            "/usr/bin/google-chrome",
+            "/usr/bin/chromium-browser",
+            "/snap/bin/chromium",
+        ]
+
+    for path in possible_paths:
+        if os.path.exists(path):
+            return path
+    return None
+
+
+def is_chrome_running_with_debug():
+    """Check if Chrome is already running with debug port."""
     try:
-        r = requests.get("http://localhost:9222/json/version")
+        response = requests.get("http://localhost:9222/json/version", timeout=2)
+        return response.status_code == 200
+    except Exception:
+        return False
+
+
+def kill_existing_chrome():
+    """Kill existing Chrome processes."""
+    log("[INFO] Fermeture des processus Chrome existants...")
+    for proc in psutil.process_iter(["pid", "name"]):
+        try:
+            if "chrome" in proc.info["name"].lower():
+                proc.kill()
+                proc.wait(timeout=3)
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.TimeoutExpired):
+            pass
+
+
+def start_chrome_with_debug():
+    """Start Chrome with debugging enabled."""
+    if is_chrome_running_with_debug():
+        log("[INFO] Chrome avec port de debug déjà en cours d'exécution.")
+        return True
+
+    chrome_path = find_chrome_executable()
+    if not chrome_path:
+        log("[ERROR] Chrome non trouvé. Veuillez installer Google Chrome.")
+        return False
+
+    log(f"[INFO] Chrome trouvé: {chrome_path}")
+
+    kill_existing_chrome()
+    time.sleep(2)
+
+    chrome_args = [
+        chrome_path,
+        "--remote-debugging-port=9222",
+        "--no-first-run",
+        "--no-default-browser-check",
+        "--disable-default-apps",
+        "--disable-popup-blocking",
+        "https://chat.openai.com/",
+    ]
+
+    try:
+        subprocess.Popen(chrome_args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        log("[INFO] Chrome démarré avec port de debug...")
+
+        for _ in range(30):
+            if is_chrome_running_with_debug():
+                log("[INFO] Chrome prêt avec port de debug!")
+                return True
+            time.sleep(1)
+
+        log("[ERROR] Chrome n'a pas pu démarrer avec le port de debug.")
+        return False
+
+    except Exception as e:
+        log(f"[ERROR] Erreur lors du démarrage de Chrome: {e}")
+        return False
+
+
+def get_browser_websocket_url():
+    """Get the WebSocket URL for browser debugging."""
+    if not start_chrome_with_debug():
+        raise Exception("[FATAL] Impossible de démarrer Chrome avec le port de debug.")
+
+    try:
+        r = requests.get("http://localhost:9222/json/version", timeout=5)
         r.raise_for_status()
         return r.json()["webSocketDebuggerUrl"]
     except Exception as e:
         raise Exception(f"[FATAL] Impossible d'obtenir WebSocket URL du navigateur: {e}")
 
+
 async def get_chatgpt_response(page, timeout_sec=90):
     """Attend et récupère la réponse ChatGPT sous forme de bloc code markdown contenant '|'."""
+    log("[INFO] Attente de la réponse ChatGPT...")
     raw = ""
-    for _ in range(timeout_sec):
+
+    for i in range(timeout_sec):
         await asyncio.sleep(1)
+
         blocks = await page.query_selector_all("div.markdown code")
         if blocks:
             candidate = await blocks[-1].inner_text()
-            if "|" in candidate:
+            if "|" in candidate and len(candidate.split('\n')) > 2:
                 raw = candidate
+                log(f"[INFO] Réponse détectée après {i+1} secondes")
                 break
+
+        if (i + 1) % 10 == 0:
+            log(f"[INFO] Attente... {i+1}/{timeout_sec} secondes")
+
+    if not raw:
+        log("[WARN] Aucune réponse valide détectée dans le délai imparti")
+
     return raw
 
+
 async def chatgpt_inject(prompt: str):
+    """Inject prompt into ChatGPT and get response."""
     ws_url = get_browser_websocket_url()
-    log(f"[INFO] Connexion au navigateur via WebSocket: {ws_url}")
+    log("[INFO] Connexion au navigateur via WebSocket")
 
     async with async_playwright() as p:
-        browser = await p.chromium.connect_over_cdp(ws_url)
+        try:
+            browser = await p.chromium.connect_over_cdp(ws_url)
+            log("[INFO] Connexion Playwright établie")
 
-        all_pages = [pg for ctx in browser.contexts for pg in ctx.pages]
-        log(f"[DEBUG] Nombre total de pages détectées : {len(all_pages)}")
+            all_pages = [pg for ctx in browser.contexts for pg in ctx.pages]
+            log(f"[DEBUG] Nombre total de pages détectées : {len(all_pages)}")
 
-        page = next((pg for pg in all_pages if "chat.openai.com" in pg.url), None)
+            page = None
+            for pg in all_pages:
+                try:
+                    if "chat.openai.com" in pg.url:
+                        page = pg
+                        break
+                except Exception:
+                    continue
 
-        if not page:
-            log("[WARN] Aucune page ChatGPT trouvée, création d'une nouvelle page...")
-            ctx = browser.contexts[0] if browser.contexts else await browser.new_context()
-            page = await ctx.new_page()
-            await page.goto("https://chat.openai.com/")
-            await page.wait_for_load_state("domcontentloaded")
-            log("[INFO] Nouvelle page ChatGPT ouverte.")
+            if not page:
+                log("[INFO] Création d'une nouvelle page ChatGPT...")
+                ctx = browser.contexts[0] if browser.contexts else await browser.new_context()
+                page = await ctx.new_page()
+                await page.goto("https://chat.openai.com/")
+                await page.wait_for_load_state("domcontentloaded")
+                log("[INFO] Page ChatGPT chargée")
 
-        # Inject prompt in the visible contenteditable div
-        await page.evaluate(f"""
-            (prompt) => {{
-                const pm = document.querySelector('#prompt-textarea');
-                if(pm) {{
-                    pm.focus();
-                    pm.innerText = prompt;
-                    const event = new InputEvent('input', {{bubbles: true}});
-                    pm.dispatchEvent(event);
-                    return true;
-                }}
-                return false;
-            }}
-        """, prompt)
+            await asyncio.sleep(3)
 
-        log("Prompt injecté dans #prompt-textarea")
+            selectors_to_try = [
+                '#prompt-textarea',
+                'div[contenteditable="true"]',
+                'textarea[placeholder*="Message"]',
+                'div[data-testid="textbox"]',
+            ]
 
-        # Simuler appui sur ENTRÉE sur le prompt textarea (élément contenteditable)
-        await page.keyboard.press("Enter")
-        log("⏎ Touche ENTRÉE simulée sur #prompt-textarea")
+            input_found = False
+            for selector in selectors_to_try:
+                try:
+                    element = await page.query_selector(selector)
+                    if element:
+                        log(f"[INFO] Zone de saisie trouvée: {selector}")
 
-        # Attente de la réponse (90 secondes)
-        raw_response = await get_chatgpt_response(page, timeout_sec=90)
-        log(f"[INFO] Réponse brute récupérée ({len(raw_response)} caractères)")
+                        await element.click()
+                        await page.keyboard.key_down('Control')
+                        await page.keyboard.press('a')
+                        await page.keyboard.key_up('Control')
+                        await element.fill(prompt)
 
-        save_chat_history(prompt, raw_response)
+                        log("[INFO] Prompt injecté")
+                        input_found = True
+                        break
+                except Exception as e:
+                    log(f"[DEBUG] Sélecteur {selector} échoué: {e}")
+                    continue
 
-        await browser.close()
-        log("✅ Fermeture du navigateur Playwright.")
+            if not input_found:
+                raise Exception("Zone de saisie ChatGPT non trouvée")
 
-        return raw_response
+            await page.keyboard.press("Enter")
+            log("[INFO] Prompt envoyé")
+
+            raw_response = await get_chatgpt_response(page, timeout_sec=120)
+
+            if raw_response:
+                log(f"[INFO] Réponse récupérée ({len(raw_response)} caractères)")
+                save_chat_history(prompt, raw_response)
+            else:
+                log("[WARN] Aucune réponse valide reçue")
+
+            await browser.close()
+            log("✅ Navigateur fermé")
+
+            return raw_response
+
+        except Exception as e:
+            log(f"[ERROR] Erreur dans chatgpt_inject: {e}")
+            try:
+                await browser.close()
+            except Exception:
+                pass
+            raise
+
 
 async def run_batch():
-    symbols = load_watchlist()
-    if not symbols:
-        log("Aucun ticker à scorer.")
-        return
+    """Main function to run the batch analysis."""
+    try:
+        symbols = load_watchlist()
+        if not symbols:
+            log("Aucun ticker à scorer.")
+            return
 
-    prompt = build_prompt(symbols)
-    log("[INFO] Prompt généré.")
+        log(f"[INFO] {len(symbols)} tickers à analyser")
+        prompt = build_prompt(symbols)
+        log("[INFO] Prompt généré")
 
-    response = await chatgpt_inject(prompt)
-    if not response:
-        log("Aucune réponse reçue.")
-        return
+        response = await chatgpt_inject(prompt)
+        if not response:
+            log("[ERROR] Aucune réponse reçue de ChatGPT")
+            return
 
-    save_scores_from_response(response)
+        save_scores_from_response(response)
+        log("✅ Analyse terminée avec succès")
+
+    except Exception as e:
+        log(f"[ERROR] Erreur dans run_batch: {e}")
+        raise
+
 
 if __name__ == "__main__":
     try:
         log_debug_prompt()
+        log("[INFO] Démarrage de l'analyse batch ChatGPT...")
         asyncio.run(run_batch())
+    except KeyboardInterrupt:
+        log("[INFO] Arrêt demandé par l'utilisateur")
     except Exception as e:
         logging.error(f"Exception non gérée: {e}")
         log_debug_prompt()
         raise
+
