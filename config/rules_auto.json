@@ -1,0 +1,5 @@
+{
+    "volume_ratio_min": 2.0,
+    "price_spike_pct": 5.0,
+    "trailing_stop_pct": 2.0
+}
