@@ -57,6 +57,12 @@ Ce script crée automatiquement les tables `watchlist` et `intraday_smart` si el
    FMP_API_KEY=<votre clé>
    POLYGON_API_KEY=<votre clé>
    ```
+   ```
+   FINNHUB_API_KEY=<votre clé>
+   ALPHA_VANTAGE_API_KEY=<votre clé>
+   FMP_API_KEY=<votre clé>
+   POLYGON_API_KEY=<votre clé>
+   ```
 4. Démarrer l'interface :
 
 ```bash
