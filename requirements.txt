@@ -13,3 +13,7 @@ yfinance
 numpy
 matplotlib
 pyqlib
+
+psutil
+playwright
+Pillow
