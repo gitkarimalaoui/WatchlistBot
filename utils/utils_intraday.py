@@ -4,16 +4,21 @@ import time
 import random
 from datetime import datetime, timedelta
 from typing import Optional
+import os
+import asyncio
+# Ensure environment variables from a local `.env` file are loaded
+from config.config_manager import _load_dotenv, config_manager
 
 try:
     from .utils_finnhub import fetch_finnhub_intraday_data
 except Exception:
     from utils_finnhub import fetch_finnhub_intraday_data
 
-FINNHUB_API_KEY = "cvs634hr01qvc2mv1e00cvs634hr01qvc2mv1e0g"
-ALPHA_VANTAGE_API_KEY = "LMIOGZ2DXX9HJ6OL"
-FMP_API_KEY = "c0uNeGCdI4sIJ060nGu5kvk1zbYxhK7R"
-POLYGON_API_KEY = "OeOiRyypszZztM1W9Hb00TF3RoNRySSX"
+_load_dotenv()
+FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY") or config_manager.get("finnhub_api")
+ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
+FMP_API_KEY = os.getenv("FMP_API_KEY")
+POLYGON_API_KEY = os.getenv("POLYGON_API_KEY")
 
 
 def fetch_from_yfinance(ticker: str) -> Optional[pd.DataFrame]:
@@ -138,6 +143,55 @@ def fetch_intraday_data(ticker: str) -> Optional[pd.DataFrame]:
 
 
 # Backward compatibility wrapper
-
 def fetch_intraday_with_fallback(ticker: str) -> Optional[pd.DataFrame]:
     return fetch_intraday_data(ticker)
+
+
+# ---------------------------------------------------------------------------
+# Async versions
+# ---------------------------------------------------------------------------
+
+async def async_fetch_from_yfinance(ticker: str) -> Optional[pd.DataFrame]:
+    return await asyncio.to_thread(fetch_from_yfinance, ticker)
+
+
+async def async_fetch_from_finnhub(ticker: str) -> Optional[pd.DataFrame]:
+    return await asyncio.to_thread(fetch_from_finnhub, ticker)
+
+
+async def async_fetch_from_alphavantage(ticker: str) -> Optional[pd.DataFrame]:
+    return await asyncio.to_thread(fetch_from_alphavantage, ticker)
+
+
+async def async_fetch_from_fmp(ticker: str) -> Optional[pd.DataFrame]:
+    return await asyncio.to_thread(fetch_from_fmp, ticker)
+
+
+async def async_fetch_from_polygon(ticker: str) -> Optional[pd.DataFrame]:
+    return await asyncio.to_thread(fetch_from_polygon, ticker)
+
+
+ASYNC_SOURCES = [
+    ("Yahoo Finance", async_fetch_from_yfinance),
+    ("Finnhub", async_fetch_from_finnhub),
+    ("Alpha Vantage", async_fetch_from_alphavantage),
+    ("FMP", async_fetch_from_fmp),
+    ("Polygon", async_fetch_from_polygon),
+]
+
+
+async def async_fetch_intraday_data(ticker: str) -> Optional[pd.DataFrame]:
+    """Asynchronously try multiple sources for intraday data."""
+    for name, func in ASYNC_SOURCES:
+        print(f"[TRYING] {name} intraday for {ticker}...")
+        df = await func(ticker)
+        if df is not None and not df.empty:
+            print(f"✅ Success with {name}, {len(df)} records for {ticker}")
+            return df
+        await asyncio.sleep(1.5 + random.uniform(0, 1.5))
+    print(f"❌ All intraday sources failed for {ticker}")
+    return None
+
+
+async def async_fetch_intraday_with_fallback(ticker: str) -> Optional[pd.DataFrame]:
+    return await async_fetch_intraday_data(ticker)

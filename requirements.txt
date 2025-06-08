@@ -17,3 +17,7 @@ pyqlib
 psutil
 playwright
 Pillow
+
+SQLAlchemy
+alembic
+
