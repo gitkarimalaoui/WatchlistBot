@@ -50,12 +50,12 @@ Ce script crée automatiquement les tables `watchlist` et `intraday_smart` si el
 
 1. Cloner le projet
 2. Installer les dépendances (ex. `pip install -r requirements.txt`)
-3. Créer un fichier `.env` avec vos clés API :
+3. Créer un fichier `.env` (voir exemple ci-dessous) et y renseigner vos clés API :
    ```
-   FINNHUB_API_KEY=<votre clé>
-   ALPHA_VANTAGE_API_KEY=<votre clé>
-   FMP_API_KEY=<votre clé>
-   POLYGON_API_KEY=<votre clé>
+   FINNHUB_API_KEY=your_finnhub_key
+   ALPHA_VANTAGE_API_KEY=your_alpha_vantage_key
+   FMP_API_KEY=your_fmp_key
+   POLYGON_API_KEY=your_polygon_key
    ```
 4. Démarrer l'interface :
 
