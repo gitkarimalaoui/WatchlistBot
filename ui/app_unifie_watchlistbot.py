@@ -29,6 +29,11 @@ from query_entreprise_db import get_portfolio_modules, get_use_cases, get_revenu
 from pages.cloture_journee import cloturer_journee
 from utils_affichage_ticker import afficher_ticker_panel
 from intelligence.ai_scorer import compute_global_score
+from progress_tracker import (
+    get_latest_progress,
+    update_roadmap_from_progress,
+    MILESTONES,
+)
 
 # ─── Définition chemin base SQLite ──────────────────────────────────────────────
 DB_PATH = os.path.join(ROOT_DIR, "data", "trades.db")
@@ -77,6 +82,18 @@ if page == "📄 Trades simulés":
 
 # ─── Watchlist ─────────────────────────────────────────────────────────────────
 st.title("📊 WatchlistBot – Version V7")
+
+# ─── Progression Capital ─────────────────────────────────────────────────────
+progress_data = get_latest_progress()
+update_roadmap_from_progress()
+if progress_data:
+    _, capital, pnl, milestone = progress_data
+    pct = min(capital / MILESTONES[-1], 1.0)
+    st.progress(pct, text=f"Capital ${capital:.2f} | PnL {pnl:+.2f}")
+    st.markdown("#### Milestones")
+    for m in MILESTONES:
+        icon = "✅" if capital >= m else "❌"
+        st.write(f"{icon} ${m}")
 
 def count_watchlist_tickers():
     conn = sqlite3.connect(DB_PATH)
