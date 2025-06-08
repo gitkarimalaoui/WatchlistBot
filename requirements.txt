@@ -17,3 +17,4 @@ pyqlib
 psutil
 playwright
 Pillow
+aiohttp
