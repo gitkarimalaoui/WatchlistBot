@@ -8,33 +8,61 @@ from datetime import datetime
 import pandas as pd
 import streamlit as st
 
-# ─── Configuration de la page ───────────────────────────────────────────────────
+# ─── Configuration de la page ───
 st.set_page_config(page_title="WatchlistBot V7", layout="wide")
 
-# ─── Définition des chemins ─────────────────────────────────────────────────────
+# ─── Définition des chemins ───
 ROOT_UI = os.path.dirname(__file__)
 ROOT_DIR = os.path.abspath(os.path.join(ROOT_UI, ".."))
 SCRIPTS = os.path.join(ROOT_DIR, "scripts")
 UTILS = os.path.join(ROOT_DIR, "utils")
 SIMULATION = os.path.join(ROOT_DIR, "simulation")
 
-# ─── Ajout des chemins au système ───────────────────────────────────────────────
+# ─── Ajout des chemins au système ───
 for path in (ROOT_DIR, SCRIPTS, ROOT_UI, UTILS, SIMULATION):
     if path not in sys.path:
         sys.path.insert(0, path)
 
-# ─── Imports locaux ─────────────────────────────────────────────────────────────
+# ─── Imports locaux ───
 from roadmap_ui import roadmap_interface, roadmap_productivity_block, personal_interface
 from query_entreprise_db import get_portfolio_modules, get_use_cases, get_revenue_sources, get_kpi_targets
 from pages.cloture_journee import cloturer_journee
 from utils_affichage_ticker import afficher_ticker_panel
 from intelligence.ai_scorer import compute_global_score
-from utils.progress_tracker import load_progress
 
-# ─── Définition chemin base SQLite ──────────────────────────────────────────────
+# ─── Progression Capital / Milestones ───
+try:
+    from progress_tracker import (
+        get_latest_progress,
+        update_roadmap_from_progress,
+        MILESTONES,
+    )
+    progress_data = get_latest_progress()
+    update_roadmap_from_progress()
+
+    if progress_data:
+        _, capital, pnl, milestone = progress_data
+        pct = min(capital / MILESTONES[-1], 1.0)
+        st.progress(pct, text=f"Capital ${capital:.2f} | PnL {pnl:+.2f}")
+        st.markdown("#### Milestones")
+        for m in MILESTONES:
+            icon = "✅" if capital >= m else "❌"
+            st.write(f"{icon} ${m}")
+
+except ImportError:
+    try:
+        from utils.progress_tracker import load_progress
+        data = load_progress()
+        last_capital = data[-1][1] if data else 3000
+        progress = min(last_capital / 100000, 1.0)
+        st.progress(progress, text=f"Capital actuel : {last_capital}$")
+    except Exception:
+        st.progress(0.0, text="Capital actuel : inconnue")
+
+# ─── Définition chemin base SQLite ───
 DB_PATH = os.path.join(ROOT_DIR, "data", "trades.db")
 
-# ─── Menu latéral ──────────────────────────────────────────────────────────────
+# ─── Menu latéral ───
 st.sidebar.markdown("## 🚀 Navigation")
 page = st.sidebar.radio("Menu principal", [
     "📊 Watchlist", 
@@ -45,7 +73,7 @@ page = st.sidebar.radio("Menu principal", [
     "📄 Trades simulés"
 ], index=0)
 
-# ─── Pages secondaires ─────────────────────────────────────────────────────────
+# ─── Pages secondaires ───
 if page == "📋 Roadmap":
     roadmap_interface()
     roadmap_productivity_block()
@@ -64,7 +92,7 @@ if page == "📦 Clôture":
     cloturer_journee()
     st.stop()
 
-# ─── Page : Trades simulés ─────────────────────────────────────────────────────
+# ─── Page : Trades simulés ───
 if page == "📄 Trades simulés":
     st.title("📄 Historique des trades simulés")
     try:
@@ -76,17 +104,8 @@ if page == "📄 Trades simulés":
         st.error(f"Erreur chargement trades : {e}")
     st.stop()
 
-# ─── Watchlist ─────────────────────────────────────────────────────────────────
+# ─── Watchlist ───
 st.title("📊 WatchlistBot – Version V7")
-
-# ─── Progression vers l'objectif 100k$ ────────────────────────────────────────
-try:
-    data = load_progress()
-    last_capital = data[-1][1] if data else 3000
-    progress = min(last_capital / 100000, 1.0)
-    st.progress(progress, text=f"Capital actuel : {last_capital}$")
-except Exception:
-    st.progress(0.0, text="Capital actuel : inconnue")
 
 def count_watchlist_tickers():
     conn = sqlite3.connect(DB_PATH)
@@ -196,8 +215,7 @@ with st.expander("📥 Scraper Jaguar et Injecter"):
         after = count_watchlist_tickers()
         st.success(f"✅ {after - before} tickers injectés dans la base.")
     if st.button("🔁 Rafraîchir la watchlist"):
-         st.rerun()
-
+        st.rerun()
 
 with st.expander("📥 Données marché – Historique et Intraday"):
     st.markdown("Génère les données depuis l’API Yahoo Finance pour tous les tickers de la base (7d/1min + 2y/daily).")
@@ -215,7 +233,7 @@ with st.expander("📥 Données marché – Historique et Intraday"):
 
 # 💼 Affichage dynamique paginé
 watchlist = load_watchlist()
-score_min = st.sidebar.slider("🎯 Score IA minimum", 0.0, 10.0, 0.0, step=0.5)
+score_min = st.sidebar.slider("🌟 Score IA minimum", 0.0, 10.0, 0.0, step=0.5)
 filtered_watchlist = [w for w in watchlist if w.get("global_score", 0) >= score_min]
 
 page_size = 10
