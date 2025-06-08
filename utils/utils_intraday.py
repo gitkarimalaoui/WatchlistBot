@@ -5,6 +5,7 @@ import random
 from datetime import datetime, timedelta
 from typing import Optional
 import os
+# Ensure environment variables from a local `.env` file are loaded
 from config.config_manager import _load_dotenv, config_manager
 
 try:
