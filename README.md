@@ -65,7 +65,16 @@ streamlit run ui/app_unifie_watchlistbot.py
 
 ## Exécuter les tests
 
-Après installation de `pytest`, lancez simplement :
+Avant de lancer la suite de tests, installez les dépendances :
+
+```bash
+pip install -r requirements.txt
+```
+
+Les tests requièrent en particulier les packages `pandas` et `SQLAlchemy`,
+en plus de `pytest`.
+
+Ensuite lancez simplement :
 
 ```bash
 pytest
