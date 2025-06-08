@@ -4,17 +4,19 @@ import time
 import random
 from datetime import datetime
 from typing import Optional
+import os
+from config.config_manager import _load_dotenv, config_manager
 
 try:
     from .utils_finnhub import fetch_finnhub_historical_data
 except Exception:
     from utils_finnhub import fetch_finnhub_historical_data
 
-# === API KEYS ===
-FINNHUB_API_KEY = "cvs634hr01qvc2mv1e00cvs634hr01qvc2mv1e0g"
-ALPHA_VANTAGE_API_KEY = "LMIOGZ2DXX9HJ6OL"
-FMP_API_KEY = "c0uNeGCdI4sIJ060nGu5kvk1zbYxhK7R"
-POLYGON_API_KEY = "OeOiRyypszZztM1W9Hb00TF3RoNRySSX"
+_load_dotenv()
+FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY") or config_manager.get("finnhub_api")
+ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
+FMP_API_KEY = os.getenv("FMP_API_KEY")
+POLYGON_API_KEY = os.getenv("POLYGON_API_KEY")
 
 
 def fetch_from_yfinance(ticker: str) -> Optional[pd.DataFrame]:
