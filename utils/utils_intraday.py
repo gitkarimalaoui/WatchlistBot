@@ -1,7 +1,6 @@
 import pandas as pd
 import requests
 import time
-import random
 from datetime import datetime, timedelta
 from typing import Optional
 import asyncio
