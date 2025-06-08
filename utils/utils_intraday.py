@@ -1,19 +1,24 @@
+import os
 import pandas as pd
 import requests
 import time
 import random
 from datetime import datetime, timedelta
 from typing import Optional
+import asyncio
+
+from config.config_manager import _load_dotenv
 
 try:
     from .utils_finnhub import fetch_finnhub_intraday_data
 except Exception:
     from utils_finnhub import fetch_finnhub_intraday_data
 
-FINNHUB_API_KEY = "cvs634hr01qvc2mv1e00cvs634hr01qvc2mv1e0g"
-ALPHA_VANTAGE_API_KEY = "LMIOGZ2DXX9HJ6OL"
-FMP_API_KEY = "c0uNeGCdI4sIJ060nGu5kvk1zbYxhK7R"
-POLYGON_API_KEY = "OeOiRyypszZztM1W9Hb00TF3RoNRySSX"
+_load_dotenv()
+FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
+ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
+FMP_API_KEY = os.getenv("FMP_API_KEY")
+POLYGON_API_KEY = os.getenv("POLYGON_API_KEY")
 
 
 def fetch_from_yfinance(ticker: str) -> Optional[pd.DataFrame]:
@@ -41,6 +46,9 @@ def fetch_from_yfinance(ticker: str) -> Optional[pd.DataFrame]:
         print(f"[YF INTRADAY ERROR] {e}")
         return None
 
+async def fetch_from_yfinance_async(ticker: str) -> Optional[pd.DataFrame]:
+    return await asyncio.to_thread(fetch_from_yfinance, ticker)
+
 
 def fetch_from_finnhub(ticker: str) -> Optional[pd.DataFrame]:
     try:
@@ -48,6 +56,9 @@ def fetch_from_finnhub(ticker: str) -> Optional[pd.DataFrame]:
     except Exception as e:  # pragma: no cover - best effort log only
         print(f"[FINNHUB INTRADAY ERROR] {e}")
         return None
+
+async def fetch_from_finnhub_async(ticker: str) -> Optional[pd.DataFrame]:
+    return await asyncio.to_thread(fetch_from_finnhub, ticker)
 
 
 def fetch_from_alphavantage(ticker: str) -> Optional[pd.DataFrame]:
@@ -77,6 +88,9 @@ def fetch_from_alphavantage(ticker: str) -> Optional[pd.DataFrame]:
         print(f"[AV INTRADAY ERROR] {e}")
         return None
 
+async def fetch_from_alphavantage_async(ticker: str) -> Optional[pd.DataFrame]:
+    return await asyncio.to_thread(fetch_from_alphavantage, ticker)
+
 
 def fetch_from_fmp(ticker: str) -> Optional[pd.DataFrame]:
     try:
@@ -92,6 +106,9 @@ def fetch_from_fmp(ticker: str) -> Optional[pd.DataFrame]:
     except Exception as e:  # pragma: no cover - best effort log only
         print(f"[FMP INTRADAY ERROR] {e}")
         return None
+
+async def fetch_from_fmp_async(ticker: str) -> Optional[pd.DataFrame]:
+    return await asyncio.to_thread(fetch_from_fmp, ticker)
 
 
 def fetch_from_polygon(ticker: str) -> Optional[pd.DataFrame]:
@@ -114,6 +131,9 @@ def fetch_from_polygon(ticker: str) -> Optional[pd.DataFrame]:
         print(f"[POLYGON INTRADAY ERROR] {e}")
         return None
 
+async def fetch_from_polygon_async(ticker: str) -> Optional[pd.DataFrame]:
+    return await asyncio.to_thread(fetch_from_polygon, ticker)
+
 
 SOURCES = [
     ("Yahoo Finance", fetch_from_yfinance),
@@ -123,16 +143,34 @@ SOURCES = [
     ("Polygon", fetch_from_polygon),
 ]
 
+ASYNC_SOURCES = [
+    ("Yahoo Finance", fetch_from_yfinance_async),
+    ("Finnhub", fetch_from_finnhub_async),
+    ("Alpha Vantage", fetch_from_alphavantage_async),
+    ("FMP", fetch_from_fmp_async),
+    ("Polygon", fetch_from_polygon_async),
+]
+
 
 def fetch_intraday_data(ticker: str) -> Optional[pd.DataFrame]:
-    """Try multiple sources for intraday data."""
-    for name, func in SOURCES:
-        print(f"[TRYING] {name} intraday for {ticker}...")
-        df = func(ticker)
+    """Try multiple sources for intraday data using asyncio."""
+    return asyncio.run(fetch_intraday_data_async(ticker))
+
+
+async def fetch_intraday_data_async(ticker: str) -> Optional[pd.DataFrame]:
+    tasks = {name: asyncio.create_task(func(ticker)) for name, func in ASYNC_SOURCES}
+    results = {}
+    for name, task in tasks.items():
+        try:
+            results[name] = await task
+        except Exception as e:  # pragma: no cover - best effort log only
+            print(f"[{name} async ERROR] {e}")
+            results[name] = None
+    for name, _ in ASYNC_SOURCES:
+        df = results.get(name)
         if df is not None and not df.empty:
             print(f"✅ Success with {name}, {len(df)} records for {ticker}")
             return df
-        time.sleep(1.5 + random.uniform(0, 1.5))
     print(f"❌ All intraday sources failed for {ticker}")
     return None
 
