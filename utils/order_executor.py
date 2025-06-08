@@ -40,9 +40,10 @@ def simuler_ordre(ticker, prix_achat, quantite, frais, prix_cible, stop_loss):
     }
 
 # Nouvelle fonction pour exécution réelle (sans confirmation utilisateur)
-def executer_ordre_reel_direct(ticker, prix_achat, quantite):
+def executer_ordre_reel_direct(ticker, prix_achat, quantite, stop_loss=None):
     try:
-        executer_ordre(ticker, prix_achat, quantite)
-        return True, f"✅ Ordre réel envoyé pour {ticker} à {prix_achat} x {quantite}"
+        executer_ordre(ticker, prix_achat, quantite, stop_loss)
+        sl_msg = f" avec stop loss {stop_loss}" if stop_loss else ""
+        return True, f"✅ Ordre réel envoyé pour {ticker} à {prix_achat} x {quantite}{sl_msg}"
     except Exception as e:
         return False, f"❌ Échec lors de l'exécution réelle : {e}"
