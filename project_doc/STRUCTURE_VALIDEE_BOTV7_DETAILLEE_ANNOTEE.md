@@ -334,7 +334,6 @@ Chaque section indique le rôle du module et les fichiers actuellement utilisés
 - ³       ³   cloture_journee.py
 - ³       ³   tickers_watchlist_US_only.txt
 - ³   Checklist_Validation_WatchlistBot_V6.2.txt
-- ³   Nouveau document texte.txt
 - ³   README for GPT .md
 - ³   README for GPT .md
 - ³   README.md
@@ -4913,8 +4912,6 @@ Chaque section indique le rôle du module et les fichiers actuellement utilisés
 - ³   ³   MODULE_7_DAILY_CLOSURE.md
 - ³   ³   MODULE_9_TELEGRAM_ALERTS.md
 - ³   ³   Models Files list.txt
-- ³   ³   Nouveau document texte.txt
-- ³   ³   Nouveau document texte.txt
 - ³   ³   README.md
 - ³   ³   README.md
 - ³   ³   README.md
