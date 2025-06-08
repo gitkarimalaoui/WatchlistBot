@@ -22,9 +22,10 @@ def test_detect_pump(monkeypatch):
         path = os.path.join(tmp, "TEST.csv")
         df.to_csv(path, index=False)
         monkeypatch.setattr(mod, "TICKS_DIR", tmp)
-        rules = {"price_spike_pct": 20, "volume_ratio_min": 2}
+        rules = {"price_spike_pct": 20, "volume_ratio_min": 2, "order_qty": 1}
         alerts = {}
         monkeypatch.setattr(mod, "envoyer_alerte_ia", lambda t, s, g: alerts.setdefault("sent", True))
+        monkeypatch.setattr(mod, "show_trade_popup", lambda *a, **k: None)
         metrics = mod.detect_pump("TEST", rules)
         assert metrics["alert_sent"] is True
         assert alerts.get("sent")

@@ -14,13 +14,15 @@ def load_config():
     with open(CONFIG_PATH, "r") as f:
         return json.load(f)
 
-def executer_ordre(ticker, prix, quantite):
+def executer_ordre(ticker, prix, quantite, stop_loss=None):
     print("⏳ Préparation... Veuillez ouvrir Moomoo maintenant (5 secondes)")
     time.sleep(5)
 
     config = load_config()
     pyautogui.FAILSAFE = True
     print(f"🚀 Envoi de l'ordre : {quantite} x {ticker} à {prix}$")
+    if stop_loss is not None:
+        print(f"🔻 Stop loss : {stop_loss}$")
 
     # Étape 0 : Clic sur le cadenas
     print("🔒 Clic sur le cadenas pour déclencher la fenêtre de code...")
@@ -89,11 +91,12 @@ def executer_ordre(ticker, prix, quantite):
 
 if __name__ == "__main__":
     if len(sys.argv) < 4:
-        print("Utilisation : python scripts/executer_ordre_moomoo.py TICKER PRIX QUANTITÉ")
+        print("Utilisation : python scripts/executer_ordre_moomoo.py TICKER PRIX QUANTITÉ [STOP_LOSS]")
         sys.exit(1)
 
     ticker = sys.argv[1]
     prix = float(sys.argv[2])
     quantite = int(sys.argv[3])
+    stop = float(sys.argv[4]) if len(sys.argv) > 4 else None
 
-    executer_ordre(ticker, prix, quantite)
+    executer_ordre(ticker, prix, quantite, stop)
