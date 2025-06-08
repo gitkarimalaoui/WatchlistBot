@@ -141,6 +141,5 @@ def fetch_intraday_data(ticker: str) -> Optional[pd.DataFrame]:
 
 
 # Backward compatibility wrapper
-
 def fetch_intraday_with_fallback(ticker: str) -> Optional[pd.DataFrame]:
     return fetch_intraday_data(ticker)
