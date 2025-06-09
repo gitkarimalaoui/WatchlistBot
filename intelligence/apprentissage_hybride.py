@@ -3,14 +3,29 @@ import json
 import os
 from datetime import datetime
 
-JOURNAL_PATH = "journal_simule.json"
+from core.db import get_session
+from core.models import TradeSimule
+
+JOURNAL_PATH = "journal_simule.json"  # deprecated
 META_PATH = "meta_ia.json"
 
 def charger_journal():
-    if not os.path.exists(JOURNAL_PATH):
-        return []
-    with open(JOURNAL_PATH, "r") as f:
-        return json.load(f)
+    """Charge les trades simulés depuis la base de données."""
+    session = get_session()
+    trades = session.query(TradeSimule).all()
+    session.close()
+    journal = []
+    for t in trades:
+        journal.append(
+            {
+                "prix_achat": t.prix_achat,
+                "prix_vente": t.exit_price,
+                "qty": t.quantite,
+                "frais": t.frais,
+                "pattern": t.provenance,
+            }
+        )
+    return journal
 
 def charger_meta():
     if not os.path.exists(META_PATH):

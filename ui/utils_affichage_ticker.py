@@ -1,7 +1,5 @@
 
-import os
-import json
-from datetime import datetime
+from simulation.execution_simulee import enregistrer_trade_simule
 
 import streamlit as st
 from utils_graph import (
@@ -11,29 +9,17 @@ from utils_graph import (
 )
 from utils.order_executor import executer_ordre_reel_direct
 
-JOURNAL_PATH = os.path.join("data", "journal_simule.json")
 
-
-def _enregistrer_trade(action, ticker, prix):
-    trade = {
-        "ticker": ticker,
-        "action": action,
-        "prix": round(prix, 2),
-        "gain_net": 0,
-        "datetime": datetime.now().isoformat(),
-        "simulation_ia": "non",
-    }
-    if os.path.exists(JOURNAL_PATH):
-        with open(JOURNAL_PATH, "r", encoding="utf-8") as f:
-            try:
-                data = json.load(f)
-            except json.JSONDecodeError:
-                data = []
-    else:
-        data = []
-    data.append(trade)
-    with open(JOURNAL_PATH, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+def _enregistrer_trade(ticker: str, prix: float, quantite: int = 1, sl=None, tp=None, exit_price=None):
+    """Enregistre un trade simulé dans la base de données."""
+    enregistrer_trade_simule(
+        ticker=ticker,
+        entry_price=prix,
+        quantity=quantite,
+        sl=sl,
+        tp=tp,
+        exit_price=exit_price,
+    )
 
 def afficher_ticker_panel(ticker, stock, index):
     label = f"{index + 1}. {ticker}"
@@ -76,10 +62,10 @@ def afficher_ticker_panel(ticker, stock, index):
         )
         c1, c2, c3, c4 = st.columns(4)
         if c1.button("Simuler l'achat", key=f"sim_buy_{ticker}_{index}"):
-            _enregistrer_trade("achat", ticker, prix)
+            _enregistrer_trade(ticker, prix, int(quantite), sl=stop_loss)
             st.success(f"Achat simulé enregistré pour {ticker} à {prix:.2f} $")
         if c2.button("Simuler la vente", key=f"sim_sell_{ticker}_{index}"):
-            _enregistrer_trade("vente", ticker, prix)
+            _enregistrer_trade(ticker, prix, int(quantite), exit_price=prix)
             st.success(f"Vente simulée enregistrée pour {ticker} à {prix:.2f} $")
         if c3.button("Achat réel", key=f"real_buy_{ticker}_{index}"):
             ok, msg = executer_ordre_reel_direct(ticker, prix, int(quantite), stop_loss)
