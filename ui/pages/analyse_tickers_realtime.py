@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
-from utils.utils_ai_predictor import charger_modele
-from utils.module_fusion_watchlist import charger_watchlists_sources
-from utils.check_tickers import analyser_ticker
+from intelligence.training.utils_ai_predictor import charger_modele
+from fusion.module_fusion_watchlist import charger_watchlists_sources
+from intelligence.features.check_tickers import analyser_ticker
 
 st.set_page_config(page_title="📊 Analyse IA des Tickers", layout="wide")
 st.title("📊 Analyse complète des tickers (IA + Watchlist Fusionnée)")
