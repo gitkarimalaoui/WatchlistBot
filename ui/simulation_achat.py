@@ -1,38 +1,19 @@
 
 import streamlit as st
-from datetime import datetime
-import json
-import os
+from simulation.execution_simulee import enregistrer_trade_simule
 
 st.set_page_config(page_title="🟢 Simulation Achat", layout="wide")
 st.title("🟢 Simulation d'achat manuel")
 
-journal_path = os.path.join("data", "journal_simule.json")
-
-def enregistrer_achat(ticker, prix, simulation_ia="non"):
-    nouveau_trade = {
-        "ticker": ticker,
-        "action": "achat",
-        "prix": round(prix, 2),
-        "gain_net": 0,
-        "datetime": datetime.now().isoformat(),
-        "simulation_ia": simulation_ia
-    }
-
-    if os.path.exists(journal_path):
-        with open(journal_path, "r", encoding="utf-8") as f:
-            try:
-                data = json.load(f)
-            except json.JSONDecodeError:
-                data = []
-    else:
-        data = []
-
-    data.append(nouveau_trade)
-
-    with open(journal_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-
+def enregistrer_achat(ticker: str, prix: float, quantite: int = 1, sl=None, tp=None):
+    """Enregistre un achat simulé directement dans la base de données."""
+    enregistrer_trade_simule(
+        ticker=ticker,
+        entry_price=prix,
+        quantity=quantite,
+        sl=sl,
+        tp=tp,
+    )
     st.success(f"Achat simulé enregistré pour `{ticker}` à {prix:.2f} $")
 
 # Interface utilisateur
