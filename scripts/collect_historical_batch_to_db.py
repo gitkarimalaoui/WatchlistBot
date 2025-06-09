@@ -1,11 +1,34 @@
 import os
 import sys
-import time
-import sqlite3
-import pandas as pd
-import traceback
 import logging
 from pathlib import Path
+
+# ─── Early logger setup to capture import failures ───────────────────────────
+ROOT_DIR = Path(__file__).resolve().parent.parent
+UTILS = ROOT_DIR / "utils"
+DATA = ROOT_DIR / "data"
+LOG_DIR = ROOT_DIR / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+log_path = LOG_DIR / "historical_batch.log"
+logger = logging.getLogger("historical_batch")
+if not logger.handlers:
+    logger.setLevel(logging.INFO)
+    formatter = logging.Formatter("%(asctime)s %(levelname)s - %(message)s")
+    fh = logging.FileHandler(log_path)
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+    logger.addHandler(logging.StreamHandler(sys.stdout))
+
+if str(UTILS) not in sys.path:
+    sys.path.insert(0, str(UTILS))
+
+try:
+    import time
+    import sqlite3
+    import pandas as pd
+except ImportError as e:  # pragma: no cover - early dependency failure
+    logger.error("Module import failed: %s", e)
+    sys.exit(1)
 
 
 def main() -> None:
@@ -16,23 +39,6 @@ def main() -> None:
         sys.stdout = open(sys.stdout.fileno(), mode="w", encoding="utf-8", buffering=1, errors="replace")
 
     # ─── Configuration des chemins ─────────────────────────────────────────────
-    ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    UTILS = os.path.join(ROOT_DIR, "utils")
-    DATA = os.path.join(ROOT_DIR, "data")
-    LOG_DIR = Path(ROOT_DIR) / "logs"
-    LOG_DIR.mkdir(exist_ok=True)
-    log_path = LOG_DIR / "historical_batch.log"
-    logger = logging.getLogger("historical_batch")
-    if not logger.handlers:
-        logger.setLevel(logging.INFO)
-        formatter = logging.Formatter("%(asctime)s %(levelname)s - %(message)s")
-        fh = logging.FileHandler(log_path)
-        fh.setFormatter(formatter)
-        logger.addHandler(fh)
-        logger.addHandler(logging.StreamHandler(sys.stdout))
-
-    if UTILS not in sys.path:
-        sys.path.insert(0, UTILS)
 
     # ─── Import sécurisé de la fonction de collecte ───────────────────────────
     try:
