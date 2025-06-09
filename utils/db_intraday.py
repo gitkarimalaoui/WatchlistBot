@@ -64,3 +64,33 @@ def load_intraday(ticker: str, start: str | None = None) -> pd.DataFrame:
             .dt.tz_localize(None)
         )
     return df
+
+
+def load_intraday_smart(ticker: str, start: str | None = None) -> pd.DataFrame:
+    """Load intraday rows from the ``intraday_smart`` table.
+
+    Parameters
+    ----------
+    ticker : str
+        Symbol to query.
+    start : str | None
+        Optional ISO formatted lower bound.
+    """
+    conn = sqlite3.connect(DB_PATH)
+    try:
+        query = "SELECT * FROM intraday_smart WHERE ticker = ?"
+        params = [ticker]
+        if start:
+            query += " AND timestamp >= ?"
+            params.append(start)
+        query += " ORDER BY timestamp"
+        df = pd.read_sql_query(query, conn, params=params)
+    finally:
+        conn.close()
+
+    if not df.empty:
+        df["timestamp"] = (
+            pd.to_datetime(df["timestamp"], utc=True, errors="coerce")
+            .dt.tz_localize(None)
+        )
+    return df
