@@ -13,8 +13,10 @@ yfinance
 numpy
 matplotlib
 pyqlib
-
+aiohttp
 psutil
 playwright
 Pillow
-aiohttp
+
+SQLAlchemy
+alembic
