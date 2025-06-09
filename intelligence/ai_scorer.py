@@ -2,6 +2,9 @@
 
 import json
 import os
+import base64
+import io
+import joblib
 
 _RULES_PATH = os.path.join(os.path.dirname(__file__), "rules_auto.json")
 
@@ -61,3 +64,27 @@ def compute_global_score(
 
     metrics = [score_ai_norm, gpt_norm, pct_norm, vol_norm, flt_norm, sent_norm]
     return round(sum(metrics) / len(metrics) * 10.0, 2)
+
+
+MODELS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models")
+
+
+def load_model_by_version(version: str):
+    """Load a model from the models directory using a version name.
+
+    Tries ``<version>.pkl`` first. If absent, looks for ``<version>.pkl.b64``,
+    decodes the base64 string and loads the model from memory.
+    """
+
+    pkl_path = os.path.join(MODELS_DIR, f"{version}.pkl")
+    if os.path.exists(pkl_path):
+        return joblib.load(pkl_path)
+
+    b64_path = pkl_path + ".b64"
+    if os.path.exists(b64_path):
+        with open(b64_path, "rb") as f:
+            encoded = f.read()
+        decoded = base64.b64decode(encoded)
+        return joblib.load(io.BytesIO(decoded))
+
+    raise FileNotFoundError(f"Model file for version '{version}' not found")
