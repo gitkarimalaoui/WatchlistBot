@@ -13,7 +13,7 @@ yfinance
 numpy
 matplotlib
 pyqlib
-
+aiohttp
 psutil
 playwright
 Pillow
