@@ -6,7 +6,12 @@ from datetime import datetime, timedelta
 from utils_yf_historical import fetch_yf_historical_data
 from utils_finnhub import fetch_finnhub_historical_data
 from utils_intraday import fetch_intraday_data
-from db_intraday import load_last_timestamp, insert_intraday, load_intraday
+from db_intraday import (
+    load_last_timestamp,
+    insert_intraday,
+    load_intraday,
+    load_intraday_smart,
+)
 from db_historical import load_historical
 import sqlite3
 from pathlib import Path
@@ -85,8 +90,10 @@ def charger_intraday_intelligent(ticker: str) -> pd.DataFrame:
             df_new = df_new[df_new["timestamp"] > last_ts]
         insert_intraday(ticker, df_new)
     df_db = load_intraday(ticker)
-    if df_db is None:
-        return pd.DataFrame()
+    if df_db is None or df_db.empty:
+        df_db = load_intraday_smart(ticker)
+        if df_db is None:
+            return pd.DataFrame()
     df_db.sort_values("timestamp", inplace=True)
     df_db.drop_duplicates(subset="timestamp", inplace=True)
     return df_db
