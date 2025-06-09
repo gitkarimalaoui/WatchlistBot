@@ -6,6 +6,7 @@ import random
 from datetime import datetime, timedelta
 from typing import Optional
 import asyncio
+from utils.async_utils import async_to_thread
 from config.config_manager import _load_dotenv, config_manager
 try:
     from .utils_finnhub import fetch_finnhub_intraday_data
@@ -47,7 +48,7 @@ def fetch_from_yfinance(ticker: str) -> Optional[pd.DataFrame]:
         return None
 
 async def fetch_from_yfinance_async(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_yfinance, ticker)
+    return await async_to_thread(fetch_from_yfinance, ticker)
 
 
 def fetch_from_finnhub(ticker: str) -> Optional[pd.DataFrame]:
@@ -58,7 +59,7 @@ def fetch_from_finnhub(ticker: str) -> Optional[pd.DataFrame]:
         return None
 
 async def fetch_from_finnhub_async(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_finnhub, ticker)
+    return await async_to_thread(fetch_from_finnhub, ticker)
 
 
 def fetch_from_alphavantage(ticker: str) -> Optional[pd.DataFrame]:
@@ -89,7 +90,7 @@ def fetch_from_alphavantage(ticker: str) -> Optional[pd.DataFrame]:
         return None
 
 async def fetch_from_alphavantage_async(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_alphavantage, ticker)
+    return await async_to_thread(fetch_from_alphavantage, ticker)
 
 
 def fetch_from_fmp(ticker: str) -> Optional[pd.DataFrame]:
@@ -108,7 +109,7 @@ def fetch_from_fmp(ticker: str) -> Optional[pd.DataFrame]:
         return None
 
 async def fetch_from_fmp_async(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_fmp, ticker)
+    return await async_to_thread(fetch_from_fmp, ticker)
 
 
 def fetch_from_polygon(ticker: str) -> Optional[pd.DataFrame]:
@@ -132,7 +133,7 @@ def fetch_from_polygon(ticker: str) -> Optional[pd.DataFrame]:
         return None
 
 async def fetch_from_polygon_async(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_polygon, ticker)
+    return await async_to_thread(fetch_from_polygon, ticker)
 
 
 SOURCES = [
@@ -185,23 +186,23 @@ def fetch_intraday_with_fallback(ticker: str) -> Optional[pd.DataFrame]:
 # ---------------------------------------------------------------------------
 
 async def async_fetch_from_yfinance(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_yfinance, ticker)
+    return await async_to_thread(fetch_from_yfinance, ticker)
 
 
 async def async_fetch_from_finnhub(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_finnhub, ticker)
+    return await async_to_thread(fetch_from_finnhub, ticker)
 
 
 async def async_fetch_from_alphavantage(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_alphavantage, ticker)
+    return await async_to_thread(fetch_from_alphavantage, ticker)
 
 
 async def async_fetch_from_fmp(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_fmp, ticker)
+    return await async_to_thread(fetch_from_fmp, ticker)
 
 
 async def async_fetch_from_polygon(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_polygon, ticker)
+    return await async_to_thread(fetch_from_polygon, ticker)
 
 
 ASYNC_SOURCES = [
