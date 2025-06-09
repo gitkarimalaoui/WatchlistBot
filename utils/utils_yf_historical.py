@@ -6,6 +6,7 @@ from datetime import datetime
 from typing import Optional
 import os
 import asyncio
+from utils.async_utils import async_to_thread
 from config.config_manager import _load_dotenv, config_manager
 
 try:
@@ -177,23 +178,23 @@ def fetch_historical_with_fallback(ticker: str) -> Optional[pd.DataFrame]:
 # ---------------------------------------------------------------------------
 
 async def async_fetch_from_yfinance(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_yfinance, ticker)
+    return await async_to_thread(fetch_from_yfinance, ticker)
 
 
 async def async_fetch_from_finnhub(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_finnhub, ticker)
+    return await async_to_thread(fetch_from_finnhub, ticker)
 
 
 async def async_fetch_from_alphavantage(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_alphavantage, ticker)
+    return await async_to_thread(fetch_from_alphavantage, ticker)
 
 
 async def async_fetch_from_fmp(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_fmp, ticker)
+    return await async_to_thread(fetch_from_fmp, ticker)
 
 
 async def async_fetch_from_polygon(ticker: str) -> Optional[pd.DataFrame]:
-    return await asyncio.to_thread(fetch_from_polygon, ticker)
+    return await async_to_thread(fetch_from_polygon, ticker)
 
 
 ASYNC_SOURCES = [

@@ -10,7 +10,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = Path(os.getenv("PROGRESS_DB_PATH", PROJECT_ROOT / "data" / "project_tracker.db"))
 ROADMAP_JSON = PROJECT_ROOT / "project_doc" / "roadmap_sync.json"
 
-MILESTONES = [1000, 5000, 10000, 20000, 50000, 100000]
+MILESTONES = [1000, 5000, 10000, 25000, 50000, 100000]
 
 # ─── Initialization ────────────────────────────────────────────────────────────
 def init_progress_table(db_path: Path = DB_PATH) -> None:
@@ -77,6 +77,27 @@ def update_roadmap_from_progress(db_path: Path = DB_PATH, json_path: Path = ROAD
 def load_progress(db_path: Path = DB_PATH):
     init_progress_table(db_path)
     conn = sqlite3.connect(db_path)
-    df = conn.execute("SELECT * FROM progress ORDER BY day").fetchall()
+    df = conn.execute(
+        "SELECT day, capital, milestone FROM progress ORDER BY day"
+    ).fetchall()
     conn.close()
     return df
+
+# Legacy API --------------------------------------------------------------
+def update_progress(capital: float, db_path: Path = DB_PATH) -> str:
+    """Backward compatible wrapper that stores milestones like ``25k``."""
+    init_progress_table(db_path)
+    day = datetime.now().date().isoformat()
+    milestone = detect_milestone(capital)
+    if milestone.isdigit() and int(milestone) >= 1000:
+        milestone_label = f"{int(milestone)//1000}k"
+    else:
+        milestone_label = milestone
+    conn = sqlite3.connect(db_path)
+    with conn:
+        conn.execute(
+            "INSERT OR REPLACE INTO progress (day, capital, pnl, milestone) VALUES (?, ?, ?, ?)",
+            (day, capital, 0, milestone_label),
+        )
+    conn.close()
+    return milestone_label
