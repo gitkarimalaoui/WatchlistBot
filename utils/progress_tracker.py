@@ -67,14 +67,12 @@ def update_roadmap_from_progress(db_path: Path = DB_PATH, json_path: Path = ROAD
     data["step"] = f"{step:02d}/100"
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
-=======
-from pathlib import Path
-from datetime import datetime
-
-DB_PATH = Path(__file__).resolve().parents[1] / "data" / "trades.db"
 
 
-def init_progress_table(db_path: Path = DB_PATH) -> None:
+TRADES_DB_PATH = Path(__file__).resolve().parents[1] / "data" / "trades.db"
+
+
+def init_progress_table(db_path: Path = TRADES_DB_PATH) -> None:
     conn = sqlite3.connect(db_path)
     conn.execute(
         """
@@ -89,9 +87,8 @@ def init_progress_table(db_path: Path = DB_PATH) -> None:
     conn.close()
 
 
-def update_progress(capital: float, db_path: Path = DB_PATH) -> None:
+def update_progress(capital: float, db_path: Path = TRADES_DB_PATH) -> None:
     init_progress_table(db_path)
-    milestone = ""
     if capital >= 100000:
         milestone = "target_reached"
     elif capital >= 75000:
@@ -112,7 +109,7 @@ def update_progress(capital: float, db_path: Path = DB_PATH) -> None:
     conn.close()
 
 
-def load_progress(db_path: Path = DB_PATH):
+def load_progress(db_path: Path = TRADES_DB_PATH):
     init_progress_table(db_path)
     conn = sqlite3.connect(db_path)
     df = conn.execute("SELECT * FROM progress ORDER BY date").fetchall()

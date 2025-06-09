@@ -46,3 +46,25 @@ def test_intraday_custom_keys(monkeypatch):
     df = mod_reload.fetch_intraday_data("TSLA")
     assert df is not None
     assert not df.empty
+
+
+def test_intraday_placeholder_key(monkeypatch):
+    monkeypatch.setenv("FINNHUB_API_KEY", "your_default_api_key_here")
+    monkeypatch.delenv("ALPHA_VANTAGE_API_KEY", raising=False)
+    monkeypatch.delenv("FMP_API_KEY", raising=False)
+    monkeypatch.delenv("POLYGON_API_KEY", raising=False)
+
+    import utils.utils_finnhub as finmod
+    importlib.reload(finmod)
+    mod_reload = importlib.reload(mod)
+    sample = pd.DataFrame({"timestamp": [pd.Timestamp("2024-01-01")], "close": [1.0]})
+    monkeypatch.setattr(mod_reload, "fetch_from_polygon", lambda t: sample)
+    monkeypatch.setattr(
+        mod_reload,
+        "SOURCES",
+        [("Finnhub", mod_reload.fetch_from_finnhub), ("Polygon", mod_reload.fetch_from_polygon)],
+    )
+
+    df = mod_reload.fetch_intraday_data("TSLA")
+    assert df is not None
+    assert not df.empty

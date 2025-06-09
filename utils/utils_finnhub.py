@@ -9,7 +9,11 @@ _load_dotenv()
 FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
 
 def _missing_key() -> bool:
-    return not FINNHUB_API_KEY or "your_real_api_key_here" in FINNHUB_API_KEY
+    return (
+        not FINNHUB_API_KEY
+        or "your_real_api_key_here" in FINNHUB_API_KEY
+        or "your_default_api_key_here" in FINNHUB_API_KEY
+    )
 
 def fetch_finnhub_historical_data(ticker: str) -> pd.DataFrame:
     if _missing_key():
