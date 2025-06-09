@@ -4,6 +4,8 @@ import time
 import sqlite3
 import pandas as pd
 import traceback
+import logging
+from pathlib import Path
 
 
 def main() -> None:
@@ -17,6 +19,17 @@ def main() -> None:
     ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     UTILS = os.path.join(ROOT_DIR, "utils")
     DATA = os.path.join(ROOT_DIR, "data")
+    LOG_DIR = Path(ROOT_DIR) / "logs"
+    LOG_DIR.mkdir(exist_ok=True)
+    log_path = LOG_DIR / "historical_batch.log"
+    logger = logging.getLogger("historical_batch")
+    if not logger.handlers:
+        logger.setLevel(logging.INFO)
+        formatter = logging.Formatter("%(asctime)s %(levelname)s - %(message)s")
+        fh = logging.FileHandler(log_path)
+        fh.setFormatter(formatter)
+        logger.addHandler(fh)
+        logger.addHandler(logging.StreamHandler(sys.stdout))
 
     if UTILS not in sys.path:
         sys.path.insert(0, UTILS)
@@ -40,7 +53,7 @@ def main() -> None:
         sys.exit(1)
 
     tickers = df_watchlist["ticker"].dropna().unique()
-    print(f"[INFO] {len(tickers)} tickers à traiter.")
+    logger.info("%d tickers à traiter", len(tickers))
 
     # ─── Table cible ──────────────────────────────────────────────────────────
     cur = conn.execute("PRAGMA table_info(historical_data)")
@@ -63,16 +76,18 @@ def main() -> None:
 
     # ─── Collecte et insertion ───────────────────────────────────────────────
     for i, ticker in enumerate(tickers, start=1):
-        print(f"🔄 [{i}/{len(tickers)}] {ticker}")
+        logger.info("Start collecting data for ticker: %s", ticker)
+        start_time = time.time()
         try:
             df = fetch_historical_with_fallback(ticker)
+            duration = time.time() - start_time
+            logger.info("Fetched %s in %.2fs", ticker, duration)
         except Exception as e:  # pragma: no cover - unexpected failure
-            print(f"[FETCH ERROR] {ticker}: {e}")
-            traceback.print_exc()
+            logger.error("Failed to collect %s: %s", ticker, e, exc_info=True)
             continue
 
         if df is None or df.empty:
-            print(f"⛔ Aucun historique pour {ticker}")
+            logger.warning("%s → Aucun historique", ticker)
             continue
 
         df["ticker"] = ticker
@@ -80,7 +95,7 @@ def main() -> None:
         # Only keep timestamp and close columns to match the table schema
         required_cols = {"timestamp", "close"}
         if not required_cols.issubset(df.columns):
-            print(f"[WARN] Colonnes manquantes pour {ticker}, saute : {df.columns.tolist()}")
+            logger.warning("Colonnes manquantes pour %s : %s", ticker, df.columns.tolist())
             continue
 
         if time_column != "timestamp":
@@ -90,22 +105,20 @@ def main() -> None:
 
         try:
             df.to_sql("historical_data", conn, if_exists="append", index=False)
-            print(f"✅ Données insérées pour {ticker}")
+            logger.info("Successfully saved data for ticker: %s", ticker)
         except Exception as e:
-            print(f"[SQL ERROR] Insertion échouée pour {ticker} : {e}")
-            traceback.print_exc()
+            logger.error("Insertion échouée pour %s: %s", ticker, e, exc_info=True)
 
         time.sleep(1.5)  # Évite le rate limiting Yahoo
 
     conn.commit()
     conn.close()
-    print("🎉 Collecte terminée.")
+    logger.info("Collecte terminée")
 
 
 if __name__ == "__main__":
     try:
         main()
     except Exception as e:  # pragma: no cover - unexpected failure
-        print(f"[FATAL] {e}")
-        traceback.print_exc()
+        logging.getLogger("historical_batch").error("Fatal error: %s", e, exc_info=True)
         sys.exit(1)
