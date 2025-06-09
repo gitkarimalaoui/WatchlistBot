@@ -3,6 +3,8 @@ import pandas as pd
 import requests
 import time
 import random
+import logging
+from pathlib import Path
 from datetime import datetime, timedelta
 from typing import Optional
 import asyncio
@@ -21,12 +23,26 @@ ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
 FMP_API_KEY = os.getenv("FMP_API_KEY")
 POLYGON_API_KEY = os.getenv("POLYGON_API_KEY")
 
+# Logging configuration
+LOG_DIR = Path(__file__).resolve().parents[1] / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+intraday_logger = logging.getLogger("intraday_fetch")
+if not intraday_logger.handlers:
+    intraday_logger.setLevel(logging.INFO)
+    formatter = logging.Formatter("%(asctime)s %(levelname)s - %(message)s")
+    fh = logging.FileHandler(LOG_DIR / "intraday_fetch.log")
+    fh.setFormatter(formatter)
+    intraday_logger.addHandler(fh)
+
 
 def fetch_from_yfinance(ticker: str) -> Optional[pd.DataFrame]:
+    start = time.time()
+    intraday_logger.info("Fetching %s from yfinance", ticker)
     try:
         import yfinance as yf
         df = yf.download(ticker, period="1d", interval="1m", progress=False)
         if df.empty:
+            intraday_logger.warning("%s → empty DataFrame from yfinance", ticker)
             return None
         if isinstance(df.columns, pd.MultiIndex):
             df.columns = df.columns.get_level_values(0)
@@ -42,9 +58,14 @@ def fetch_from_yfinance(ticker: str) -> Optional[pd.DataFrame]:
             },
             inplace=True,
         )
+        intraday_logger.info(
+            "Success fetching %s from yfinance in %.2fs",
+            ticker,
+            time.time() - start,
+        )
         return df[["timestamp", "open", "high", "low", "close", "volume"]]
     except Exception as e:  # pragma: no cover - best effort log only
-        print(f"[YF INTRADAY ERROR] {e}")
+        intraday_logger.error("Failed yfinance fetch for %s: %s", ticker, e, exc_info=True)
         return None
 
 async def fetch_from_yfinance_async(ticker: str) -> Optional[pd.DataFrame]:
@@ -52,10 +73,21 @@ async def fetch_from_yfinance_async(ticker: str) -> Optional[pd.DataFrame]:
 
 
 def fetch_from_finnhub(ticker: str) -> Optional[pd.DataFrame]:
+    start = time.time()
+    intraday_logger.info("Fetching %s from finnhub", ticker)
     try:
-        return fetch_finnhub_intraday_data(ticker)
+        df = fetch_finnhub_intraday_data(ticker)
+        if df is None or df.empty:
+            intraday_logger.warning("%s → empty DataFrame from finnhub", ticker)
+            return None
+        intraday_logger.info(
+            "Success fetching %s from finnhub in %.2fs",
+            ticker,
+            time.time() - start,
+        )
+        return df
     except Exception as e:  # pragma: no cover - best effort log only
-        print(f"[FINNHUB INTRADAY ERROR] {e}")
+        intraday_logger.error("Failed finnhub fetch for %s: %s", ticker, e, exc_info=True)
         return None
 
 async def fetch_from_finnhub_async(ticker: str) -> Optional[pd.DataFrame]:
@@ -63,6 +95,8 @@ async def fetch_from_finnhub_async(ticker: str) -> Optional[pd.DataFrame]:
 
 
 def fetch_from_alphavantage(ticker: str) -> Optional[pd.DataFrame]:
+    start = time.time()
+    intraday_logger.info("Fetching %s from alphavantage", ticker)
     try:
         url = (
             f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={ticker}&interval=1min&apikey={ALPHA_VANTAGE_API_KEY}&outputsize=compact"
@@ -70,6 +104,7 @@ def fetch_from_alphavantage(ticker: str) -> Optional[pd.DataFrame]:
         res = requests.get(url).json()
         data = res.get("Time Series (1min)", {})
         if not data:
+            intraday_logger.warning("%s → empty data from alphavantage", ticker)
             return None
         records = []
         for ts, values in data.items():
@@ -84,9 +119,16 @@ def fetch_from_alphavantage(ticker: str) -> Optional[pd.DataFrame]:
                 }
             )
         df = pd.DataFrame(records).sort_values("timestamp")
+        intraday_logger.info(
+            "Success fetching %s from alphavantage in %.2fs",
+            ticker,
+            time.time() - start,
+        )
         return df
     except Exception as e:  # pragma: no cover - best effort log only
-        print(f"[AV INTRADAY ERROR] {e}")
+        intraday_logger.error(
+            "Failed alphavantage fetch for %s: %s", ticker, e, exc_info=True
+        )
         return None
 
 async def fetch_from_alphavantage_async(ticker: str) -> Optional[pd.DataFrame]:
@@ -94,18 +136,26 @@ async def fetch_from_alphavantage_async(ticker: str) -> Optional[pd.DataFrame]:
 
 
 def fetch_from_fmp(ticker: str) -> Optional[pd.DataFrame]:
+    start = time.time()
+    intraday_logger.info("Fetching %s from fmp", ticker)
     try:
         url = f"https://financialmodelingprep.com/api/v3/historical-chart/1min/{ticker}?apikey={FMP_API_KEY}"
         res = requests.get(url).json()
         if not isinstance(res, list):
+            intraday_logger.warning("%s → empty data from fmp", ticker)
             return None
         df = pd.DataFrame(res)
         df.rename(columns={"date": "timestamp"}, inplace=True)
         df["timestamp"] = pd.to_datetime(df["timestamp"])
         df = df[["timestamp", "open", "high", "low", "close", "volume"]]
+        intraday_logger.info(
+            "Success fetching %s from fmp in %.2fs",
+            ticker,
+            time.time() - start,
+        )
         return df.sort_values("timestamp")
     except Exception as e:  # pragma: no cover - best effort log only
-        print(f"[FMP INTRADAY ERROR] {e}")
+        intraday_logger.error("Failed fmp fetch for %s: %s", ticker, e, exc_info=True)
         return None
 
 async def fetch_from_fmp_async(ticker: str) -> Optional[pd.DataFrame]:
@@ -113,6 +163,8 @@ async def fetch_from_fmp_async(ticker: str) -> Optional[pd.DataFrame]:
 
 
 def fetch_from_polygon(ticker: str) -> Optional[pd.DataFrame]:
+    start_t = time.time()
+    intraday_logger.info("Fetching %s from polygon", ticker)
     try:
         today = datetime.utcnow().strftime("%Y-%m-%d")
         start = (datetime.utcnow() - timedelta(days=2)).strftime("%Y-%m-%d")
@@ -122,14 +174,20 @@ def fetch_from_polygon(ticker: str) -> Optional[pd.DataFrame]:
         res = requests.get(url).json()
         results = res.get("results", [])
         if not results:
+            intraday_logger.warning("%s → empty data from polygon", ticker)
             return None
         df = pd.DataFrame(results)
         df["timestamp"] = pd.to_datetime(df["t"], unit="ms")
         df.rename(columns={"o": "open", "h": "high", "l": "low", "c": "close", "v": "volume"}, inplace=True)
         df = df[["timestamp", "open", "high", "low", "close", "volume"]]
+        intraday_logger.info(
+            "Success fetching %s from polygon in %.2fs",
+            ticker,
+            time.time() - start_t,
+        )
         return df.sort_values("timestamp")
     except Exception as e:  # pragma: no cover - best effort log only
-        print(f"[POLYGON INTRADAY ERROR] {e}")
+        intraday_logger.error("Failed polygon fetch for %s: %s", ticker, e, exc_info=True)
         return None
 
 async def fetch_from_polygon_async(ticker: str) -> Optional[pd.DataFrame]:
