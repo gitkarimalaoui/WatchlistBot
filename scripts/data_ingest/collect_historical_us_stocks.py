@@ -3,6 +3,10 @@ import sys
 import pandas as pd
 import yfinance as yf
 import logging
+import sqlite3
+
+from utils.db_historical import insert_historical
+from utils.db_intraday import insert_intraday
 
 # Configuration du logging
 logging.basicConfig(
@@ -28,51 +32,56 @@ INTRADAY_DIR = ROOT_DIR / "scripts" / "data" / "intraday"
 HIST_DIR.mkdir(parents=True, exist_ok=True)
 INTRADAY_DIR.mkdir(parents=True, exist_ok=True)
 
-# Charger la watchlist
-WATCHLIST_FILE = ROOT_DIR / "scripts" / "tickers_watchlist_US_only.txt"
-if not WATCHLIST_FILE.exists():
-    logging.error(f"Fichier watchlist non trouvé: {WATCHLIST_FILE}")
-    sys.exit(1)
-with WATCHLIST_FILE.open('r', encoding='utf-8') as f:
-    tickers = [line.strip().upper() for line in f if line.strip() and not line.startswith('#')]
-logging.info(f"{len(tickers)} tickers chargés: {tickers}")
+# Charger la watchlist depuis la base de données
+DB_PATH = ROOT_DIR / "data" / "trades.db"
+conn = sqlite3.connect(DB_PATH)
+try:
+    df_watchlist = pd.read_sql_query("SELECT DISTINCT ticker FROM watchlist", conn)
+finally:
+    conn.close()
+
+tickers = df_watchlist["ticker"].dropna().str.upper().tolist()
+logging.info(f"{len(tickers)} tickers chargés depuis la DB: {tickers}")
 
 # Colonnes cibles pour uniformité
 TARGET_COLS = ['Date', 'Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
 
-# Fonction de téléchargement et sauvegarde uniformisée
-def fetch_and_save(symbol: str, period: str, interval: str, out_dir: Path, suffix: str):
+# Fonction de téléchargement et insertion en base
+def fetch_and_store(symbol: str, period: str, interval: str, kind: str) -> None:
     try:
         df = yf.download(symbol, period=period, interval=interval, auto_adjust=False, threads=False)
         if df.empty:
             logging.warning(f"Aucune donnée pour {symbol} (period={period}, interval={interval})")
             return
-        # Nommer l'index pour garantir la colonne Date
         df.index.name = 'Date'
-        # Reset index pour transformer l'index en colonne Date
         df_reset = df.reset_index()
-        # Formater la colonne Date et supprimer timezone
         df_reset['Date'] = pd.to_datetime(df_reset['Date'], utc=True).dt.tz_localize(None)
         df_reset['Date'] = df_reset['Date'].dt.strftime('%Y-%m-%d %H:%M:%S')
-        # Compléter ou renommer les colonnes manquantes
         if 'Adj Close' not in df_reset.columns and 'Close' in df_reset.columns:
             df_reset['Adj Close'] = df_reset['Close']
-        # Assurer toutes les colonnes TARGET_COLS
         for col in TARGET_COLS:
             if col not in df_reset.columns:
                 df_reset[col] = pd.NA
-        # Sélection et ré-ordonnancement
         df_clean = df_reset[TARGET_COLS]
-        # Chemin de sortie
-        out_file = out_dir / f"{symbol.replace('.', '_')}_{suffix}.csv"
-        df_clean.to_csv(out_file, index=False)
-        logging.info(f"Données {suffix} pour {symbol} enregistrées: {out_file}")
+        if kind == 'historical':
+            insert_historical(symbol, df_clean.rename(columns={'Date': 'date', 'Adj Close': 'adj_close'}))
+        else:
+            df_intraday = df_clean.rename(columns={
+                'Date': 'timestamp',
+                'Open': 'open',
+                'High': 'high',
+                'Low': 'low',
+                'Close': 'close',
+                'Volume': 'volume'
+            })[['timestamp', 'open', 'high', 'low', 'close', 'volume']]
+            insert_intraday(symbol, df_intraday)
+        logging.info(f"Données {kind} insérées pour {symbol}")
     except Exception as e:
         logging.error(f"Erreur lors du fetch {symbol} ({period},{interval}): {e}")
 
 # Execution principale
 for symbol in tickers:
     logging.info(f"--- Traitement de {symbol} ---")
-    fetch_and_save(symbol, period="2y", interval="1d", out_dir=HIST_DIR, suffix="2y_daily")
-    fetch_and_save(symbol, period="7d", interval="1m", out_dir=INTRADAY_DIR, suffix="7d_1m")
+    fetch_and_store(symbol, period="2y", interval="1d", kind="historical")
+    fetch_and_store(symbol, period="7d", interval="1m", kind="intraday")
 logging.info("Traitement terminé.")
