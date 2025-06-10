@@ -38,3 +38,26 @@ def load_historical(ticker: str, start_date: str, end_date: str) -> pd.DataFrame
     if not df.empty:
         df["timestamp"] = pd.to_datetime(df["timestamp"])
     return df
+
+
+def insert_historical(ticker: str, df: pd.DataFrame) -> None:
+    """Insert historical rows for ``ticker`` into the database."""
+    if df is None or df.empty:
+        return
+    conn = sqlite3.connect(DB_PATH)
+    try:
+        cur = conn.execute("PRAGMA table_info(historical_data)")
+        cols = [row[1] for row in cur.fetchall()]
+        time_col = "timestamp" if "timestamp" in cols else "date"
+
+        df = df.copy()
+        df["ticker"] = ticker
+        if "Adj Close" in df.columns:
+            df.rename(columns={"Adj Close": "adj_close"}, inplace=True)
+        if time_col == "date" and "timestamp" in df.columns:
+            df.rename(columns={"timestamp": "date"}, inplace=True)
+        elif time_col == "timestamp" and "date" in df.columns:
+            df.rename(columns={"date": "timestamp"}, inplace=True)
+        df.to_sql("historical_data", conn, if_exists="append", index=False)
+    finally:
+        conn.close()
