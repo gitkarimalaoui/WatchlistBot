@@ -17,7 +17,8 @@ if not logger.handlers:
     fh = logging.FileHandler(log_path)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
-    logger.addHandler(logging.StreamHandler(sys.stdout))
+    # Stream logs to stderr so subprocess callers can capture errors
+    logger.addHandler(logging.StreamHandler(sys.stderr))
 
 if str(UTILS) not in sys.path:
     sys.path.insert(0, str(UTILS))
