@@ -30,8 +30,8 @@ from pages.cloture_journee import cloturer_journee
 from utils_affichage_ticker import afficher_ticker_panel
 from intelligence.ai_scorer import compute_global_score
 from utils.progress_tracker import load_progress
-from intelligence.local_llm import run_local_llm
-from scripts.run_chatgpt_batch import save_scores_from_response
+from intelligence.local_llm import run_local_llm, chunk_and_query_local_llm
+from scripts.run_chatgpt_batch import save_scores_from_response, build_prompt
 
 # ─── Progression Capital / Milestones ───
 try:
@@ -219,7 +219,8 @@ with col2:
             if not symbols:
                 st.warning("Aucun ticker à scorer.")
                 return
-            response = run_local_llm(symbols)
+            full_prompt = build_prompt(symbols)
+            response = chunk_and_query_local_llm(full_prompt)
             save_scores_from_response(response)
             st.success("✅ Analyse locale terminée.")
             conn = sqlite3.connect(DB_PATH)
