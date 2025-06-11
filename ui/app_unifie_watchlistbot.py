@@ -229,7 +229,12 @@ with col2:
             def cb(i, total):
                 progress_bar.progress(i / total, text=f"{i}/{total} chunks")
 
-            response = chunk_and_query_local_llm(full_prompt, progress_callback=cb)
+            import inspect
+            sig = inspect.signature(chunk_and_query_local_llm)
+            if "progress_callback" in sig.parameters:
+                response = chunk_and_query_local_llm(full_prompt, progress_callback=cb)
+            else:
+                response = chunk_and_query_local_llm(full_prompt)
             save_scores_from_response(response)
             st.success("✅ Analyse locale terminée.")
             conn = sqlite3.connect(DB_PATH)
