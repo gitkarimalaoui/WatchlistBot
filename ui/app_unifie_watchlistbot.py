@@ -33,8 +33,9 @@ from utils.progress_tracker import load_progress
 from intelligence.local_llm import (
     run_local_llm,
     chunk_and_query_local_llm,
+    run_local_ticker_by_ticker,
+    save_scores_from_objects,
 )
-from scripts.run_chatgpt_batch import save_scores_from_response, build_prompt
 
 # ─── Progression Capital / Milestones ───
 try:
@@ -217,25 +218,24 @@ with col2:
 
     def run_local_batch():
         try:
-            symbols = load_watchlist_full()
-            if not symbols:
+            entries = load_watchlist_full()
+            if not entries:
                 st.warning("Aucun ticker à scorer.")
                 return
-            prompts = build_prompt(symbols)
-            if isinstance(prompts, str):
-                prompts = [prompts]
-            progress_bar = st.progress(0.0, text="0/%d chunks" % len(prompts))
+
+            progress_bar = st.progress(0.0, text=f"0/{len(entries)}")
 
             def cb(i, total):
-                progress_bar.progress(i / total, text=f"{i}/{total} chunks")
+                progress_bar.progress(i / total, text=f"{i}/{total}")
 
-            import inspect
-            sig = inspect.signature(chunk_and_query_local_llm)
-            if "progress_callback" in sig.parameters:
-                response = chunk_and_query_local_llm(prompts, progress_callback=cb)
-            else:
-                response = chunk_and_query_local_llm(prompts)
-            save_scores_from_response(response)
+            results = run_local_ticker_by_ticker(entries, progress_callback=cb)
+            save_scores_from_objects(results)
+
+            returned = {r.get("symbol") for r in results}
+            for item in entries:
+                if item.get("symbol") not in returned:
+                    st.warning(f"⚠️ Échec analyse {item.get('symbol')}")
+
             st.success("✅ Analyse locale terminée.")
             conn = sqlite3.connect(DB_PATH)
             df_scores = pd.read_sql_query("SELECT * FROM news_score", conn)
