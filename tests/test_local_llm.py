@@ -30,8 +30,8 @@ def test_chunk_and_query(monkeypatch):
     calls = []
     progress = []
 
-    def fake_send(prompt):
-        calls.append(prompt)
+    def fake_send(prompt, stop=None):
+        calls.append((prompt, stop))
         return f"resp{len(calls)}"
 
     monkeypatch.setattr(local_llm, "_send_prompt", fake_send)
@@ -52,5 +52,6 @@ def test_chunk_and_query(monkeypatch):
     assert result == "resp1\nresp2\nresp3"
     assert len(calls) == 3
     assert progress == [(1, 3), (2, 3), (3, 3)]
-    for chunk in calls:
-        assert count_tokens(chunk) <= 1800
+    for prompt, stop in calls:
+        assert count_tokens(prompt) <= 1800
+        assert stop is None
