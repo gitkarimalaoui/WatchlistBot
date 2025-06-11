@@ -1,7 +1,10 @@
 """Wrapper around a local Llama model."""
 
 import logging
+import time
 from pathlib import Path
+from typing import Callable, List, Optional
+
 from llama_cpp import Llama
 from scripts.run_chatgpt_batch import build_prompt
 
@@ -38,15 +41,71 @@ def _load_model() -> Llama:
         )
     return _llama
 
-def run_local_llm(prompt):
-    """Return raw model output for the given prompt list."""
-    final_prompt = build_prompt(prompt)
+def _send_prompt(prompt: str) -> str:
+    """Send a prompt string directly to the local model and return the raw text."""
+    _logger.info("Prompt:\n%s", prompt)
     result = _load_model()(
-        prompt=final_prompt,
+        prompt=prompt,
         max_tokens=512,
         temperature=0.7,
         stop=["</s>", "|"],
     )
     text = result["choices"][0]["text"].strip()
-    _logger.info(text)
+    _logger.info("Response:\n%s", text)
     return text
+
+
+def run_local_llm(prompt):
+    """Return raw model output for the given prompt list."""
+    final_prompt = build_prompt(prompt)
+    return _send_prompt(final_prompt)
+
+
+def _split_into_chunks(text: str, max_tokens: int = 1800) -> List[str]:
+    """Split large text into chunks of roughly ``max_tokens`` words."""
+    lines = text.splitlines()
+    chunks = []
+    current: List[str] = []
+    tokens = 0
+    for line in lines:
+        line_tokens = len(line.split())
+        if tokens + line_tokens > max_tokens and current:
+            chunks.append("\n".join(current))
+            current = [line]
+            tokens = line_tokens
+        else:
+            current.append(line)
+            tokens += line_tokens
+    if current:
+        chunks.append("\n".join(current))
+    return chunks
+
+
+def chunk_and_query_local_llm(
+    full_prompt: str,
+    progress_callback: Optional[Callable[[int, int], None]] = None,
+) -> str:
+    """Split ``full_prompt`` into chunks and sequentially query the local LLM.
+
+    Parameters
+    ----------
+    full_prompt:
+        The full text to split and send to the model.
+    progress_callback:
+        Optional callback receiving ``(current_chunk, total_chunks)`` after each
+        successful call.
+    """
+    chunks = _split_into_chunks(full_prompt)
+    responses = []
+    total = len(chunks)
+    for i, chunk in enumerate(chunks, 1):
+        _logger.info("Processing chunk %s/%s", i, total)
+        try:
+            responses.append(_send_prompt(chunk))
+        except Exception as exc:  # noqa: BLE001 - log and continue
+            _logger.error("Chunk %s failed: %s", i, exc)
+            responses.append(f"[ERROR: {exc}]")
+        if progress_callback:
+            progress_callback(i, total)
+        time.sleep(1)
+    return "\n".join(responses)
