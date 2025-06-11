@@ -2,6 +2,7 @@ import asyncio
 import logging
 import requests
 import sqlite3
+import json
 import os
 import platform
 import subprocess
@@ -148,12 +149,23 @@ def save_scores_from_response(response):
     saved = 0
 
     if isinstance(response, str):
-        lines = response.splitlines()
-        items = []
-        for line in lines:
-            parts = [p.strip() for p in line.split("|")]
-            if len(parts) == 3:
-                items.append({"symbol": parts[0], "score": parts[1], "sentiment": parts[2]})
+        try:
+            parsed = json.loads(response)
+        except Exception:
+            parsed = None
+
+        if parsed is not None:
+            if isinstance(parsed, dict):
+                items = [parsed]
+            else:
+                items = list(parsed)
+        else:
+            lines = response.splitlines()
+            items = []
+            for line in lines:
+                parts = [p.strip() for p in line.split("|")]
+                if len(parts) == 3:
+                    items.append({"symbol": parts[0], "score": parts[1], "sentiment": parts[2]})
     else:
         items = list(response)
 
