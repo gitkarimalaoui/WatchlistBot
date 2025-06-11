@@ -2,10 +2,8 @@
 
 import logging
 from pathlib import Path
-
 from llama_cpp import Llama
 from scripts.run_chatgpt_batch import build_prompt
-
 
 _MODEL_PATH = (
     Path(__file__).resolve().parents[1]
@@ -28,19 +26,27 @@ if not _logger.handlers:
 
 _llama = None
 
-
 def _load_model() -> Llama:
-    """Lazily load and return the Llama instance."""
     global _llama
     if _llama is None:
-        _llama = Llama(model_path=str(_MODEL_PATH))
+        _llama = Llama(
+            model_path=str(_MODEL_PATH),
+            n_ctx=2048,
+            n_threads=4,
+            n_batch=128,
+            verbose=True
+        )
     return _llama
 
-
 def run_local_llm(prompt):
-    """Return raw model output for the given prompt."""
+    """Return raw model output for the given prompt list."""
     final_prompt = build_prompt(prompt)
-    result = _load_model()(final_prompt)
-    text = result["choices"][0]["text"]
-    _logger.info(text.strip())
+    result = _load_model()(
+        prompt=final_prompt,
+        max_tokens=512,
+        temperature=0.7,
+        stop=["</s>", "|"],
+    )
+    text = result["choices"][0]["text"].strip()
+    _logger.info(text)
     return text
