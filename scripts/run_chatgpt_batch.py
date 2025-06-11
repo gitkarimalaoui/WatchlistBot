@@ -81,10 +81,44 @@ def load_watchlist():
     return [{"symbol": t, "desc": d} for t, d in unique.items()]
 
 
-def build_prompt(symbols):
-    """Construit le prompt complet à injecter dans ChatGPT."""
+def build_prompt(symbols, max_tokens: int = 1800):
+    """Construit le prompt en plusieurs blocs de taille raisonnable.
+
+    Parameters
+    ----------
+    symbols : list | str
+        Liste de dictionnaires ``{"symbol": .., "desc": ..}`` ou chaine déjà
+        formatée. Dans ce dernier cas, l'ancien comportement est conservé.
+    max_tokens : int, optional
+        Nombre approximatif de mots maximum par bloc retourné.
+
+    Returns
+    -------
+    list[str] | str
+        Une liste de prompts ne dépassant pas ``max_tokens`` mots ou une chaine
+        unique si l'entrée était une chaine.
+    """
+
+    if isinstance(symbols, str):
+        return PROMPT_INSTRUCTIONS + "\n" + symbols
+
     lines = [f"{s['symbol']}|{s['desc']}" for s in symbols]
-    return PROMPT_INSTRUCTIONS + "\n" + "\n".join(lines)
+    chunks = []
+    current = []
+    tokens = len(PROMPT_INSTRUCTIONS.split())
+    for line in lines:
+        line_tokens = len(line.split())
+        if tokens + line_tokens > max_tokens and current:
+            chunks.append(PROMPT_INSTRUCTIONS + "\n" + "\n".join(current))
+            current = [line]
+            tokens = len(PROMPT_INSTRUCTIONS.split()) + line_tokens
+        else:
+            current.append(line)
+            tokens += line_tokens
+    if current:
+        chunks.append(PROMPT_INSTRUCTIONS + "\n" + "\n".join(current))
+
+    return chunks if len(chunks) > 1 else chunks[0]
 
 
 def save_chat_history(prompt, response):
@@ -363,7 +397,21 @@ async def run_batch():
             return
 
         log(f"[INFO] {len(symbols)} tickers à analyser")
-        prompt = build_prompt(symbols)
+        prompt_chunks = build_prompt(symbols)
+        if isinstance(prompt_chunks, list):
+            # Concatène les blocs pour ChatGPT en ne gardant les instructions qu'une fois
+            instr_lines = PROMPT_INSTRUCTIONS.splitlines()
+            all_lines = []
+            for idx, chunk in enumerate(prompt_chunks):
+                lines = chunk.splitlines()
+                if idx == 0:
+                    all_lines.extend(lines)
+                else:
+                    all_lines.extend(lines[len(instr_lines):])
+            prompt = "\n".join(all_lines)
+        else:
+            prompt = prompt_chunks
+
         log("[INFO] Prompt généré")
         log("=== PROMPT UTILISÉ ===")
         log(prompt)
