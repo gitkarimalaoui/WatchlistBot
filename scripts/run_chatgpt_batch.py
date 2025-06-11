@@ -108,13 +108,15 @@ def build_prompt(symbols, max_tokens: int = 1800):
     chunks = []
     current = []
     tokens = count_tokens(PROMPT_INSTRUCTIONS)
+    newline_token_count = count_tokens("\n")
     for line in lines:
         line_tokens = count_tokens(line)
-        if tokens + line_tokens > max_tokens and current:
+        if tokens + line_tokens + newline_token_count > max_tokens and current:
             chunks.append(PROMPT_INSTRUCTIONS + "\n" + "\n".join(current))
             current = [line]
-            tokens = count_tokens(PROMPT_INSTRUCTIONS) + line_tokens
+            tokens = count_tokens(PROMPT_INSTRUCTIONS) + newline_token_count + line_tokens
         else:
+            tokens += newline_token_count
             current.append(line)
             tokens += line_tokens
     if current:
