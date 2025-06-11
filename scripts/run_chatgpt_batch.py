@@ -10,6 +10,8 @@ import psutil
 from pathlib import Path
 from playwright.async_api import async_playwright
 
+from intelligence.token_utils import count_tokens
+
 # ---- Logging configuration ----
 LOG_DIR = Path(__file__).parent.parent / "logs"
 LOG_DIR.mkdir(exist_ok=True)
@@ -20,7 +22,7 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
         logging.FileHandler(LOG_FILE, mode="a", encoding="utf-8"),
-        logging.StreamHandler()
+        logging.StreamHandler(),
     ],
     force=True,
 )
@@ -90,12 +92,12 @@ def build_prompt(symbols, max_tokens: int = 1800):
         Liste de dictionnaires ``{"symbol": .., "desc": ..}`` ou chaine déjà
         formatée. Dans ce dernier cas, l'ancien comportement est conservé.
     max_tokens : int, optional
-        Nombre approximatif de mots maximum par bloc retourné.
+        Nombre maximum de tokens par bloc retourné.
 
     Returns
     -------
     list[str] | str
-        Une liste de prompts ne dépassant pas ``max_tokens`` mots ou une chaine
+        Une liste de prompts ne dépassant pas ``max_tokens`` tokens ou une chaine
         unique si l'entrée était une chaine.
     """
 
@@ -105,13 +107,13 @@ def build_prompt(symbols, max_tokens: int = 1800):
     lines = [f"{s['symbol']}|{s['desc']}" for s in symbols]
     chunks = []
     current = []
-    tokens = len(PROMPT_INSTRUCTIONS.split())
+    tokens = count_tokens(PROMPT_INSTRUCTIONS)
     for line in lines:
-        line_tokens = len(line.split())
+        line_tokens = count_tokens(line)
         if tokens + line_tokens > max_tokens and current:
             chunks.append(PROMPT_INSTRUCTIONS + "\n" + "\n".join(current))
             current = [line]
-            tokens = len(PROMPT_INSTRUCTIONS.split()) + line_tokens
+            tokens = count_tokens(PROMPT_INSTRUCTIONS) + line_tokens
         else:
             current.append(line)
             tokens += line_tokens
@@ -174,7 +176,9 @@ def find_chrome_executable():
         possible_paths = [
             r"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
             r"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-            os.path.expanduser(r"~\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe"),
+            os.path.expanduser(
+                r"~\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe"
+            ),
         ]
     elif platform.system() == "Darwin":
         possible_paths = [
@@ -246,7 +250,9 @@ def start_chrome_with_debug(force_restart: bool = False):
     ]
 
     try:
-        subprocess.Popen(chrome_args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.Popen(
+            chrome_args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+        )
         log("[INFO] Chrome démarré avec port de debug...")
 
         for _ in range(30):
@@ -273,7 +279,9 @@ def get_browser_websocket_url(force_restart: bool = False):
         r.raise_for_status()
         return r.json()["webSocketDebuggerUrl"]
     except Exception as e:
-        raise Exception(f"[FATAL] Impossible d'obtenir WebSocket URL du navigateur: {e}")
+        raise Exception(
+            f"[FATAL] Impossible d'obtenir WebSocket URL du navigateur: {e}"
+        )
 
 
 async def get_chatgpt_response(page, timeout_sec=90):
@@ -287,7 +295,7 @@ async def get_chatgpt_response(page, timeout_sec=90):
         blocks = await page.query_selector_all("div.markdown code")
         if blocks:
             candidate = await blocks[-1].inner_text()
-            if "|" in candidate and len(candidate.split('\n')) > 2:
+            if "|" in candidate and len(candidate.split("\n")) > 2:
                 raw = candidate
                 log(f"[INFO] Réponse détectée après {i+1} secondes")
                 break
@@ -325,7 +333,11 @@ async def chatgpt_inject(prompt: str):
 
             if not page:
                 log("[INFO] Création d'une nouvelle page ChatGPT...")
-                ctx = browser.contexts[0] if browser.contexts else await browser.new_context()
+                ctx = (
+                    browser.contexts[0]
+                    if browser.contexts
+                    else await browser.new_context()
+                )
                 page = await ctx.new_page()
                 await page.goto("https://chat.openai.com/")
                 await page.wait_for_load_state("domcontentloaded")
@@ -334,7 +346,7 @@ async def chatgpt_inject(prompt: str):
             await asyncio.sleep(3)
 
             selectors_to_try = [
-                '#prompt-textarea',
+                "#prompt-textarea",
                 'div[contenteditable="true"]',
                 'textarea[placeholder*="Message"]',
                 'div[data-testid="textbox"]',
@@ -348,9 +360,9 @@ async def chatgpt_inject(prompt: str):
                         log(f"[INFO] Zone de saisie trouvée: {selector}")
 
                         await element.click()
-                        await page.keyboard.down('Control')
-                        await page.keyboard.press('a')
-                        await page.keyboard.up('Control')
+                        await page.keyboard.down("Control")
+                        await page.keyboard.press("a")
+                        await page.keyboard.up("Control")
                         await element.fill(prompt)
 
                         log("[INFO] Prompt injecté")
@@ -407,7 +419,7 @@ async def run_batch():
                 if idx == 0:
                     all_lines.extend(lines)
                 else:
-                    all_lines.extend(lines[len(instr_lines):])
+                    all_lines.extend(lines[len(instr_lines) :])
             prompt = "\n".join(all_lines)
         else:
             prompt = prompt_chunks
@@ -442,4 +454,3 @@ if __name__ == "__main__":
         logging.error(f"Exception non gérée: {e}")
         log_debug_prompt()
         raise
-

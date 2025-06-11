@@ -5,6 +5,8 @@ import time
 from pathlib import Path
 from typing import Callable, List, Optional
 
+from .token_utils import count_tokens
+
 from llama_cpp import Llama
 from scripts.run_chatgpt_batch import build_prompt
 
@@ -29,6 +31,7 @@ if not _logger.handlers:
 
 _llama = None
 
+
 def _load_model() -> Llama:
     global _llama
     if _llama is None:
@@ -37,9 +40,10 @@ def _load_model() -> Llama:
             n_ctx=2048,
             n_threads=4,
             n_batch=128,
-            verbose=True
+            verbose=True,
         )
     return _llama
+
 
 def _send_prompt(prompt: str) -> str:
     """Send a prompt string directly to the local model and return the raw text."""
@@ -54,19 +58,21 @@ def _send_prompt(prompt: str) -> str:
     _logger.info("Response:\n%s", text)
     return text
 
+
 def run_local_llm(prompt):
     """Return raw model output for the given prompt list."""
     final_prompt = build_prompt(prompt)
     return _send_prompt(final_prompt)
 
+
 def _split_into_chunks(text: str, max_tokens: int = 1800) -> List[str]:
-    """Split large text into chunks of roughly ``max_tokens`` words."""
+    """Split large text into chunks of roughly ``max_tokens`` tokens."""
     lines = text.splitlines()
     chunks = []
     current: List[str] = []
     tokens = 0
     for line in lines:
-        line_tokens = len(line.split())
+        line_tokens = count_tokens(line)
         if tokens + line_tokens > max_tokens and current:
             chunks.append("\n".join(current))
             current = [line]
@@ -77,6 +83,7 @@ def _split_into_chunks(text: str, max_tokens: int = 1800) -> List[str]:
     if current:
         chunks.append("\n".join(current))
     return chunks
+
 
 def chunk_and_query_local_llm(
     full_prompt,
