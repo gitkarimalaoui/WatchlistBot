@@ -1,6 +1,7 @@
 import os
-import pandas as pd
 import tempfile
+import pytest
+pd = pytest.importorskip("pandas")
 
 import realtime.pump_detector as mod
 

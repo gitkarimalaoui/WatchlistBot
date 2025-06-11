@@ -5,7 +5,7 @@ import pytest
 pytest.skip("requires network access and Streamlit UI", allow_module_level=True)
 
 import streamlit as st
-import pandas as pd
+pd = pytest.importorskip("pandas")
 import requests
 import datetime
 import matplotlib.pyplot as plt
