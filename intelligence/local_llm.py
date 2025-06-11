@@ -54,12 +54,10 @@ def _send_prompt(prompt: str) -> str:
     _logger.info("Response:\n%s", text)
     return text
 
-
 def run_local_llm(prompt):
     """Return raw model output for the given prompt list."""
     final_prompt = build_prompt(prompt)
     return _send_prompt(final_prompt)
-
 
 def _split_into_chunks(text: str, max_tokens: int = 1800) -> List[str]:
     """Split large text into chunks of roughly ``max_tokens`` words."""
@@ -79,7 +77,6 @@ def _split_into_chunks(text: str, max_tokens: int = 1800) -> List[str]:
     if current:
         chunks.append("\n".join(current))
     return chunks
-
 
 def chunk_and_query_local_llm(
     full_prompt: str,
@@ -102,7 +99,7 @@ def chunk_and_query_local_llm(
         _logger.info("Processing chunk %s/%s", i, total)
         try:
             responses.append(_send_prompt(chunk))
-        except Exception as exc:  # noqa: BLE001 - log and continue
+        except Exception as exc:
             _logger.error("Chunk %s failed: %s", i, exc)
             responses.append(f"[ERROR: {exc}]")
         if progress_callback:

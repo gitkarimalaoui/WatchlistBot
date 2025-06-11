@@ -178,7 +178,6 @@ def load_watchlist():
     return df.to_dict(orient='records')
 
 def load_watchlist_full():
-    """Return symbols and full descriptions for LLM scoring."""
     conn = sqlite3.connect(DB_PATH)
     rows = conn.execute(
         "SELECT ticker, description FROM watchlist WHERE description IS NOT NULL"
