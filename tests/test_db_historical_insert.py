@@ -1,5 +1,6 @@
 import sqlite3
-import pandas as pd
+import pytest
+pd = pytest.importorskip("pandas")
 from utils import db_historical as db
 
 

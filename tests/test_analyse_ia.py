@@ -1,7 +1,7 @@
 
-import joblib
-import os
 import pytest
+joblib = pytest.importorskip("joblib")
+import os
 
 pytest.skip("model prediction requires scikit-learn model", allow_module_level=True)
 

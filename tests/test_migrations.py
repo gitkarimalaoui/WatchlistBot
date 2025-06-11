@@ -1,5 +1,7 @@
 import os
 import tempfile
+import pytest
+sqlalchemy = pytest.importorskip("sqlalchemy")
 from sqlalchemy import create_engine, inspect
 from alembic import command
 from alembic.config import Config

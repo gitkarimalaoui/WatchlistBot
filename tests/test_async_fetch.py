@@ -1,5 +1,5 @@
-import pandas as pd
 import pytest
+pd = pytest.importorskip("pandas")
 from utils import utils_intraday as intra
 from utils import utils_yf_historical as hist
 
