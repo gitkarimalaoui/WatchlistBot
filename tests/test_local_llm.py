@@ -1,7 +1,22 @@
 import os
+import sys
+import types
 import pytest
 
-local_llm = pytest.importorskip("intelligence.local_llm")
+if "llama_cpp" not in sys.modules:
+    dummy = types.ModuleType("llama_cpp")
+
+    class DummyLlama:
+        @staticmethod
+        def tokenize(data: bytes, add_bos: bool = False):
+            return data.decode().split()
+
+    dummy.Llama = DummyLlama
+    sys.modules["llama_cpp"] = dummy
+
+from intelligence import local_llm
+from intelligence.token_utils import count_tokens
+
 
 def test_run_local_llm_missing_model(tmp_path):
     model = tmp_path / "model.bin"
@@ -21,7 +36,13 @@ def test_chunk_and_query(monkeypatch):
 
     monkeypatch.setattr(local_llm, "_send_prompt", fake_send)
 
-    text = " ".join(["a"] * 1500) + "\n" + " ".join(["b"] * 1500) + "\n" + " ".join(["c"] * 1500)
+    text = (
+        " ".join(["a"] * 1500)
+        + "\n"
+        + " ".join(["b"] * 1500)
+        + "\n"
+        + " ".join(["c"] * 1500)
+    )
 
     def cb(i, total):
         progress.append((i, total))
@@ -31,3 +52,5 @@ def test_chunk_and_query(monkeypatch):
     assert result == "resp1\nresp2\nresp3"
     assert len(calls) == 3
     assert progress == [(1, 3), (2, 3), (3, 3)]
+    for chunk in calls:
+        assert count_tokens(chunk) <= 1800
