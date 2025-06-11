@@ -1,4 +1,5 @@
-import pandas as pd
+import pytest
+pd = pytest.importorskip("pandas")
 import importlib
 from utils import utils_intraday as mod
 

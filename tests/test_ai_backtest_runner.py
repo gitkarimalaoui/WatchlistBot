@@ -1,4 +1,5 @@
-import pandas as pd
+import pytest
+pd = pytest.importorskip("pandas")
 
 from backtest.ai_backtest_runner import run_backtest
 

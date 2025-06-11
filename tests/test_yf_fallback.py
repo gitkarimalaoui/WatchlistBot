@@ -1,5 +1,6 @@
-import pandas as pd
 import types
+import pytest
+pd = pytest.importorskip("pandas")
 from utils import utils_yf_historical as mod
 
 
