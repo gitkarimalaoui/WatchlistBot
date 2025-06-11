@@ -45,24 +45,26 @@ def _load_model() -> Llama:
     return _llama
 
 
-def _send_prompt(prompt: str) -> str:
+def _send_prompt(prompt: str, stop: Optional[List[str]] = None) -> str:
     """Send a prompt string directly to the local model and return the raw text."""
+    if stop is None:
+        stop = ["</s>"]
     _logger.info("Prompt:\n%s", prompt)
     result = _load_model()(
         prompt=prompt,
         max_tokens=512,
         temperature=0.7,
-        stop=["</s>", "|"],
+        stop=stop,
     )
     text = result["choices"][0]["text"].strip()
     _logger.info("Response:\n%s", text)
     return text
 
 
-def run_local_llm(prompt):
+def run_local_llm(prompt, stop: Optional[List[str]] = None, **kwargs):
     """Return raw model output for the given prompt list."""
     final_prompt = build_prompt(prompt)
-    return _send_prompt(final_prompt)
+    return _send_prompt(final_prompt, stop=stop)
 
 
 def _split_into_chunks(text: str, max_tokens: int = 1800) -> List[str]:
@@ -91,6 +93,8 @@ def _split_into_chunks(text: str, max_tokens: int = 1800) -> List[str]:
 def chunk_and_query_local_llm(
     full_prompt,
     progress_callback: Optional[Callable[[int, int], None]] = None,
+    *,
+    stop: Optional[List[str]] = None,
 ) -> str:
     """Send one or multiple prompt chunks to the local LLM.
 
@@ -111,7 +115,7 @@ def chunk_and_query_local_llm(
     for i, chunk in enumerate(chunks, 1):
         _logger.info("Processing chunk %s/%s", i, total)
         try:
-            responses.append(_send_prompt(chunk))
+            responses.append(_send_prompt(chunk, stop=stop))
         except Exception as exc:
             _logger.error("Chunk %s failed: %s", i, exc)
             responses.append(f"[ERROR: {exc}]")
