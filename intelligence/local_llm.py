@@ -79,20 +79,23 @@ def _split_into_chunks(text: str, max_tokens: int = 1800) -> List[str]:
     return chunks
 
 def chunk_and_query_local_llm(
-    full_prompt: str,
+    full_prompt,
     progress_callback: Optional[Callable[[int, int], None]] = None,
 ) -> str:
-    """Split ``full_prompt`` into chunks and sequentially query the local LLM.
+    """Send one or multiple prompt chunks to the local LLM.
 
     Parameters
     ----------
     full_prompt:
-        The full text to split and send to the model.
+        Liste de prompts déjà séparés ou texte complet à découper.
     progress_callback:
         Optional callback receiving ``(current_chunk, total_chunks)`` after each
         successful call.
     """
-    chunks = _split_into_chunks(full_prompt)
+    if isinstance(full_prompt, list):
+        chunks = full_prompt
+    else:
+        chunks = _split_into_chunks(full_prompt)
     responses = []
     total = len(chunks)
     for i, chunk in enumerate(chunks, 1):

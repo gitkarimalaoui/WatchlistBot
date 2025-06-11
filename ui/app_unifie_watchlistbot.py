@@ -33,7 +33,6 @@ from utils.progress_tracker import load_progress
 from intelligence.local_llm import (
     run_local_llm,
     chunk_and_query_local_llm,
-    _split_into_chunks,
 )
 from scripts.run_chatgpt_batch import save_scores_from_response, build_prompt
 
@@ -222,9 +221,10 @@ with col2:
             if not symbols:
                 st.warning("Aucun ticker à scorer.")
                 return
-            full_prompt = build_prompt(symbols)
-            chunks = _split_into_chunks(full_prompt)
-            progress_bar = st.progress(0.0, text="0/%d chunks" % len(chunks))
+            prompts = build_prompt(symbols)
+            if isinstance(prompts, str):
+                prompts = [prompts]
+            progress_bar = st.progress(0.0, text="0/%d chunks" % len(prompts))
 
             def cb(i, total):
                 progress_bar.progress(i / total, text=f"{i}/{total} chunks")
@@ -232,9 +232,9 @@ with col2:
             import inspect
             sig = inspect.signature(chunk_and_query_local_llm)
             if "progress_callback" in sig.parameters:
-                response = chunk_and_query_local_llm(full_prompt, progress_callback=cb)
+                response = chunk_and_query_local_llm(prompts, progress_callback=cb)
             else:
-                response = chunk_and_query_local_llm(full_prompt)
+                response = chunk_and_query_local_llm(prompts)
             save_scores_from_response(response)
             st.success("✅ Analyse locale terminée.")
             conn = sqlite3.connect(DB_PATH)
