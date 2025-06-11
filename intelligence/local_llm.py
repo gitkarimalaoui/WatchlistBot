@@ -66,18 +66,21 @@ def run_local_llm(prompt):
 
 
 def _split_into_chunks(text: str, max_tokens: int = 1800) -> List[str]:
-    """Split large text into chunks of roughly ``max_tokens`` tokens."""
+    """Split ``text`` into chunks of roughly ``max_tokens`` tokens."""
     lines = text.splitlines()
-    chunks = []
+    chunks: List[str] = []
     current: List[str] = []
     tokens = 0
     for line in lines:
         line_tokens = count_tokens(line)
-        if tokens + line_tokens > max_tokens and current:
+        newline_tokens = count_tokens("\n") if current else 0
+        if tokens + line_tokens + newline_tokens > max_tokens and current:
             chunks.append("\n".join(current))
             current = [line]
             tokens = line_tokens
         else:
+            if newline_tokens:
+                tokens += newline_tokens
             current.append(line)
             tokens += line_tokens
     if current:

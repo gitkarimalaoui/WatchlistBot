@@ -8,7 +8,8 @@ if "llama_cpp" not in sys.modules:
     class DummyLlama:
         @staticmethod
         def tokenize(data: bytes, add_bos: bool = False):
-            return data.decode().split()
+            text = data.decode().replace("\n", " \n ")
+            return text.split()
 
     dummy.Llama = DummyLlama
     sys.modules["llama_cpp"] = dummy
