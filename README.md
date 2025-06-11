@@ -102,3 +102,14 @@ Les scores calculés sont enregistrés dans la table `news_score` **et** mis à
 jour dans `watchlist.score`. Ainsi, la page Streamlit reflète immédiatement
 les nouvelles analyses.
 
+## LLM local (Mistral)
+
+WatchlistBot peut exploiter un modèle de langage local basé sur Mistral pour
+éviter les appels à l'API OpenAI. Placez le fichier
+`models/mistral/mistral-7b-instruct-v0.2.Q4_K_M.gguf` dans le dépôt puis
+installez la dépendance `llama-cpp-python`.
+
+Dans l'interface Streamlit, une case à cocher permet d'activer l'option et de
+charger le modèle local. Cette fonctionnalité sera prochainement couplée au
+script `learning_loop.py` afin d'améliorer la boucle d'apprentissage.
+
