@@ -30,6 +30,8 @@ from pages.cloture_journee import cloturer_journee
 from utils_affichage_ticker import afficher_ticker_panel
 from intelligence.ai_scorer import compute_global_score
 from utils.progress_tracker import load_progress
+from intelligence.local_llm import run_local_llm
+from scripts.run_chatgpt_batch import save_scores_from_response
 
 # ─── Progression Capital / Milestones ───
 try:
@@ -73,6 +75,9 @@ page = st.sidebar.radio("Menu principal", [
     "📦 Clôture", 
     "📄 Trades simulés"
 ], index=0)
+
+# Activation IA locale
+use_local_llm = st.sidebar.checkbox("Activer IA locale (Mistral-7B)", key="local_llm")
 
 # ─── Pages secondaires ───
 if page == "📋 Roadmap":
@@ -168,6 +173,21 @@ def load_watchlist():
     )
     return df.to_dict(orient='records')
 
+def load_watchlist_full():
+    """Return symbols and full descriptions for LLM scoring."""
+    conn = sqlite3.connect(DB_PATH)
+    rows = conn.execute(
+        "SELECT ticker, description FROM watchlist WHERE description IS NOT NULL"
+    ).fetchall()
+    conn.close()
+
+    unique = {}
+    for ticker, desc in rows:
+        text = desc.strip().replace("\n", " ")
+        if ticker not in unique and text:
+            unique[ticker] = text
+    return [{"symbol": t, "desc": d} for t, d in unique.items()]
+
 # ➕ Ajout manuel
 st.markdown("### ➕ Ajouter un ticker manuellement")
 with st.expander("Saisie manuelle"):
@@ -193,7 +213,26 @@ with col2:
     st.markdown("### 🤖 Analyse batch ChatGPT")
     auto_batch = st.checkbox("Activer analyse batch automatique", key="auto_batch")
 
+    def run_local_batch():
+        try:
+            symbols = load_watchlist_full()
+            if not symbols:
+                st.warning("Aucun ticker à scorer.")
+                return
+            response = run_local_llm(symbols)
+            save_scores_from_response(response)
+            st.success("✅ Analyse locale terminée.")
+            conn = sqlite3.connect(DB_PATH)
+            df_scores = pd.read_sql_query("SELECT * FROM news_score", conn)
+            conn.close()
+            st.dataframe(df_scores)
+        except Exception as e:
+            st.error(f"Erreur IA locale: {e}")
+
     def run_and_show():
+        if use_local_llm:
+            run_local_batch()
+            return
         proc = subprocess.run([sys.executable, os.path.join(SCRIPTS, "run_chatgpt_batch.py")], capture_output=True, text=True)
         if proc.returncode != 0:
             st.error(f"Batch failed:\n{proc.stderr}")
