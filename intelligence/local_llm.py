@@ -2,6 +2,7 @@
 
 import logging
 import time
+import json
 from pathlib import Path
 from typing import Callable, List, Optional
 
@@ -123,3 +124,57 @@ def chunk_and_query_local_llm(
             progress_callback(i, total)
         time.sleep(1)
     return "\n".join(responses)
+
+
+def run_local_ticker_by_ticker(
+    entries,
+    progress_callback: Optional[Callable[[int, int], None]] = None,
+):
+    """Analyse tickers one by one using the local model.
+
+    Parameters
+    ----------
+    entries:
+        Iterable of ``{"symbol": str, "desc": str}`` dictionaries.
+    progress_callback:
+        Optional callback receiving ``(current_index, total)`` after each
+        ticker has been processed.
+
+    Returns
+    -------
+    list[dict]
+        Parsed JSON objects returned by the model for each ticker.
+    """
+
+    items = list(entries)
+    results = []
+    total = len(items)
+    for i, item in enumerate(items, 1):
+        symbol = item.get("symbol")
+        desc = item.get("desc", "")
+        prompt = (
+            f"[INST]Analyse le catalyseur suivant pour {symbol} : {desc}\n"
+            "Réponds uniquement avec un JSON contenant les clés "
+            "symbol, sentiment, score et summary.[/INST]"
+        )
+        try:
+            raw = _send_prompt(prompt)
+            parsed = json.loads(raw)
+            if isinstance(parsed, dict):
+                results.append(parsed)
+            else:
+                raise ValueError("not a dict")
+        except Exception as exc:  # pragma: no cover - log errors
+            _logger.warning("Failed to parse response for %s: %s", symbol, exc)
+        if progress_callback:
+            progress_callback(i, total)
+        time.sleep(1)
+
+    return results
+
+
+def save_scores_from_objects(objs):
+    """Persist a list of score dictionaries using ``save_scores_from_response``."""
+    from scripts.run_chatgpt_batch import save_scores_from_response
+
+    return save_scores_from_response(objs)

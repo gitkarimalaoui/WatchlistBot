@@ -137,36 +137,54 @@ def save_chat_history(prompt, response):
 
 
 def save_scores_from_response(response):
-    """Parse la réponse ligne par ligne et enregistre dans news_score."""
+    """Enregistre des scores dans la table ``news_score``.
+
+    ``response`` peut être soit la chaîne CSV originale retournée par ChatGPT,
+    soit une liste d'objets ``{"symbol": .., "score": .., "sentiment": ..,
+    "summary": ..}`` générée par le LLM local.
+    """
+
     conn = sqlite3.connect(DB_PATH)
     saved = 0
-    for line in response.splitlines():
-        parts = [p.strip() for p in line.split("|")]
-        if len(parts) == 3:
-            sym, sc, sent = parts
-            try:
-                sc_int = int(sc)
-                conn.execute(
-                    """
-                    INSERT INTO news_score(symbol, score, sentiment, last_analyzed)
-                    VALUES (?, ?, ?, CURRENT_TIMESTAMP)
-                    ON CONFLICT(symbol) DO UPDATE SET
-                      score=excluded.score,
-                      sentiment=excluded.sentiment,
-                      last_analyzed=CURRENT_TIMESTAMP
-                    """,
-                    (sym, sc_int, sent),
-                )
-                # Also persist the score in the main watchlist table so the
-                # Streamlit UI can display the latest analysis without
-                # additional joins or logic.
-                conn.execute(
-                    "UPDATE watchlist SET score=? WHERE ticker=?",
-                    (sc_int, sym),
-                )
-                saved += 1
-            except ValueError:
-                continue
+
+    if isinstance(response, str):
+        lines = response.splitlines()
+        items = []
+        for line in lines:
+            parts = [p.strip() for p in line.split("|")]
+            if len(parts) == 3:
+                items.append({"symbol": parts[0], "score": parts[1], "sentiment": parts[2]})
+    else:
+        items = list(response)
+
+    for obj in items:
+        sym = obj.get("symbol")
+        sent = obj.get("sentiment")
+        summary = obj.get("summary")
+        try:
+            sc_int = int(obj.get("score"))
+        except (TypeError, ValueError):
+            continue
+        if not sym:
+            continue
+        conn.execute(
+            """
+            INSERT INTO news_score(symbol, summary, score, sentiment, last_analyzed)
+            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(symbol) DO UPDATE SET
+              summary=excluded.summary,
+              score=excluded.score,
+              sentiment=excluded.sentiment,
+              last_analyzed=CURRENT_TIMESTAMP
+            """,
+            (sym, summary, sc_int, sent),
+        )
+        conn.execute(
+            "UPDATE watchlist SET score=? WHERE ticker=?",
+            (sc_int, sym),
+        )
+        saved += 1
+
     conn.commit()
     conn.close()
     log(f"✅ {saved} scores enregistrés.")
