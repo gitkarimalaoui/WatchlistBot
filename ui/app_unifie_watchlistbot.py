@@ -30,7 +30,11 @@ from pages.cloture_journee import cloturer_journee
 from utils_affichage_ticker import afficher_ticker_panel
 from intelligence.ai_scorer import compute_global_score
 from utils.progress_tracker import load_progress
-from intelligence.local_llm import run_local_llm, chunk_and_query_local_llm
+from intelligence.local_llm import (
+    run_local_llm,
+    chunk_and_query_local_llm,
+    _split_into_chunks,
+)
 from scripts.run_chatgpt_batch import save_scores_from_response, build_prompt
 
 # ─── Progression Capital / Milestones ───
@@ -174,7 +178,6 @@ def load_watchlist():
     return df.to_dict(orient='records')
 
 def load_watchlist_full():
-    """Return symbols and full descriptions for LLM scoring."""
     conn = sqlite3.connect(DB_PATH)
     rows = conn.execute(
         "SELECT ticker, description FROM watchlist WHERE description IS NOT NULL"
@@ -220,7 +223,13 @@ with col2:
                 st.warning("Aucun ticker à scorer.")
                 return
             full_prompt = build_prompt(symbols)
-            response = chunk_and_query_local_llm(full_prompt)
+            chunks = _split_into_chunks(full_prompt)
+            progress_bar = st.progress(0.0, text="0/%d chunks" % len(chunks))
+
+            def cb(i, total):
+                progress_bar.progress(i / total, text=f"{i}/{total} chunks")
+
+            response = chunk_and_query_local_llm(full_prompt, progress_callback=cb)
             save_scores_from_response(response)
             st.success("✅ Analyse locale terminée.")
             conn = sqlite3.connect(DB_PATH)
