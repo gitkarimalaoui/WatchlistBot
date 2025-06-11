@@ -124,3 +124,30 @@ def test_save_scores_from_response_objects(tmp_path, monkeypatch):
     conn.close()
 
     assert row == ("ok", 7, "bullish")
+
+
+def test_save_scores_from_response_json_string(tmp_path, monkeypatch):
+    db = tmp_path / "test.db"
+    conn = sqlite3.connect(db)
+    conn.execute(
+        "CREATE TABLE news_score (symbol TEXT PRIMARY KEY, summary TEXT, score INTEGER, sentiment TEXT, last_analyzed DATETIME)"
+    )
+    conn.execute(
+        "CREATE TABLE watchlist (ticker TEXT UNIQUE, score INTEGER)"
+    )
+    conn.commit()
+    conn.close()
+
+    monkeypatch.setattr(batch, "DB_PATH", db)
+
+    json_data = "[{\"symbol\": \"AAA\", \"sentiment\": \"bullish\", \"score\": 9, \"summary\": \"ok\"}]"
+
+    batch.save_scores_from_response(json_data)
+
+    conn = sqlite3.connect(db)
+    row = conn.execute(
+        "SELECT summary, score, sentiment FROM news_score WHERE symbol='AAA'"
+    ).fetchone()
+    conn.close()
+
+    assert row == ("ok", 9, "bullish")
