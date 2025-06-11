@@ -84,7 +84,10 @@ def test_run_local_ticker_by_ticker(monkeypatch):
 
     res = local_llm.run_local_ticker_by_ticker(entries, progress_callback=cb)
 
-    assert len(res) == 2
+    assert res == [
+        {"symbol": "AAA", "sentiment": "bullish", "score": 5, "summary": "ok"},
+        {"symbol": "BBB", "sentiment": "bullish", "score": 5, "summary": "ok"},
+    ]
     assert progress == [(1, 2), (2, 2)]
     assert prompts[0].startswith("[INST]") and prompts[0].endswith("[/INST]")
 
