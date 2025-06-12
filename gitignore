@@ -1,4 +1,3 @@
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -10,33 +9,60 @@ env/
 venv/
 ENV/
 
-# Jupyter Notebook checkpoints
+# Jupyter Notebooks
 .ipynb_checkpoints/
 
 # Environment variables
 .env
 .env.*
 
-# Pytest cache
+# Pytest
 .pytest_cache/
 
-# VS Code and other IDE configs
+# IDEs / Editors
 .vscode/
 .idea/
 
-# Mac and Windows system files
+# Mac & Windows OS files
 .DS_Store
 Thumbs.db
 
 # Streamlit logs and cache
 .streamlit/
-logs/
 .cache/
+logs/
+logs/*.log
 
-# Database backups
-*.sqlite
+# Database
+*.db
 *.db-journal
+*.sqlite
 
-# WatchlistBot-specific ignored data
+# Temp & generated
 data_temp/
 __outputs__/
+*.bak
+*.tmp
+*.old
+
+# WatchlistBot specific
+models/finrl/
+models/mistral/
+qlib_integration/
+intelligence/local_llm_backup.py
+tests/test_finrl_basic.py
+backup_git_block/
+sauvegarde_git/
+
+# User-specific & system backup
+*.swp
+*.swo
+# Ignorer tous les modèles formés et convertis
+models/*.pkl
+models/*.b64
+models/converted/
+models/modele_ia*
+models/model_gain_*
+
+# Ignorer les logs même dans scripts
+scripts/logs/
