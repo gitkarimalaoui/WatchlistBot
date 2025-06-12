@@ -44,8 +44,11 @@ def main() -> None:
     # ─── Import sécurisé de la fonction de collecte ───────────────────────────
     try:
         from utils_yf_historical import fetch_historical_with_fallback
+        from utils_intraday import fetch_intraday_with_fallback
+        from db_historical import insert_historical as insert_data_to_db
+        from db_intraday import insert_intraday as insert_intraday_data_to_db
     except ImportError as e:
-        print(f"[IMPORT ERROR] Impossible d'importer utils_yf_historical: {e}")
+        print(f"[IMPORT ERROR] {e}")
         sys.exit(1)
 
     # ─── Chargement de la watchlist ───────────────────────────────────────────
@@ -79,6 +82,23 @@ def main() -> None:
         )
         existing_columns = ["ticker", "timestamp", "close"]
 
+    # Ensure intraday table exists
+    cur = conn.execute("PRAGMA table_info(intraday_data)")
+    if not cur.fetchall():
+        conn.execute(
+            """
+        CREATE TABLE IF NOT EXISTS intraday_data (
+            timestamp TEXT,
+            open REAL,
+            high REAL,
+            low REAL,
+            close REAL,
+            volume INTEGER,
+            ticker TEXT
+        )
+        """
+        )
+
     time_column = "timestamp" if "timestamp" in existing_columns else "date"
 
     # ─── Collecte et insertion ───────────────────────────────────────────────
@@ -111,10 +131,33 @@ def main() -> None:
         df = df[[time_column, "close", "ticker"]]
 
         try:
-            df.to_sql("historical_data", conn, if_exists="append", index=False)
-            logger.info("Successfully saved data for ticker: %s", ticker)
+            insert_data_to_db(ticker, df)
+            logger.info("Successfully saved historical data for ticker: %s", ticker)
         except Exception as e:
-            logger.error("Insertion échouée pour %s: %s", ticker, e, exc_info=True)
+            logger.error("Insertion historique échouée pour %s: %s", ticker, e, exc_info=True)
+
+        # ─── Intraday data ────────────────────────────────────────────────────
+        try:
+            df_intraday = fetch_intraday_with_fallback(ticker)
+            fetch_msg = "None" if df_intraday is None else len(df_intraday)
+            logger.info("Fetched intraday %s rows for %s", fetch_msg, ticker)
+        except Exception as e:
+            logger.error("Failed intraday fetch for %s: %s", ticker, e, exc_info=True)
+            df_intraday = None
+
+        if df_intraday is not None and not df_intraday.empty:
+            df_intraday = df_intraday.copy()
+            df_intraday["timestamp"] = (
+                pd.to_datetime(df_intraday["timestamp"], utc=True, errors="coerce")
+                .dt.tz_localize(None)
+            )
+            try:
+                insert_intraday_data_to_db(ticker, df_intraday)
+                logger.info("Successfully saved intraday data for ticker: %s", ticker)
+            except Exception as e:
+                logger.error("Insertion intraday échouée pour %s: %s", ticker, e, exc_info=True)
+        else:
+            logger.warning("%s → Aucun intraday", ticker)
 
         time.sleep(1.5)  # Évite le rate limiting Yahoo
 
