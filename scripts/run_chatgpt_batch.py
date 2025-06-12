@@ -8,6 +8,8 @@ import platform
 import subprocess
 import time
 import psutil
+import hashlib
+from datetime import datetime
 from pathlib import Path
 from playwright.async_api import async_playwright
 
@@ -66,22 +68,45 @@ Réponds UNIQUEMENT avec un tableau CSV, chaque ligne au format symbol|score|sen
 MAX_DESC_CHARS = 200
 
 
+def hash_desc(desc: str) -> str:
+    """Return SHA256 hash for the given description."""
+    return hashlib.sha256(desc.encode("utf-8")).hexdigest()
+
+
 def load_watchlist():
-    """Charge les tickers et descriptions depuis la base SQLite, tronque chaque description."""
+    """Return entries needing (re)analysis and count of skipped ones."""
     conn = sqlite3.connect(DB_PATH)
     rows = conn.execute(
-        "SELECT ticker, description FROM watchlist WHERE description IS NOT NULL"
+        """
+        SELECT w.ticker, w.description, n.desc_hash, n.last_analyzed
+        FROM watchlist w
+        LEFT JOIN news_score n ON n.symbol = w.ticker
+        WHERE w.description IS NOT NULL
+        """
     ).fetchall()
     conn.close()
 
-    unique = {}
-    for ticker, desc in rows:
+    to_analyze = []
+    skipped = 0
+    today = datetime.now().date()
+
+    for ticker, desc, old_hash, last_ana in rows:
         text = desc.strip().replace("\n", " ")
         if len(text) > MAX_DESC_CHARS:
             text = text[:MAX_DESC_CHARS] + "..."
-        if ticker not in unique and text:
-            unique[ticker] = text
-    return [{"symbol": t, "desc": d} for t, d in unique.items()]
+        new_hash = hash_desc(text)
+        up_to_date = (
+            old_hash == new_hash
+            and last_ana
+            and datetime.fromisoformat(last_ana).date() == today
+        )
+        if text and not up_to_date:
+            to_analyze.append({"symbol": ticker, "desc": text, "hash": new_hash})
+        else:
+            skipped += 1
+
+    log(f"[INFO] {skipped} lignes ignorées, {len(to_analyze)} à traiter")
+    return to_analyze
 
 
 def build_prompt(symbols, max_tokens: int = 1800):
@@ -137,7 +162,7 @@ def save_chat_history(prompt, response):
     conn.close()
 
 
-def save_scores_from_response(response):
+def save_scores_from_response(response, desc_hash_map=None):
     """Enregistre des scores dans la table ``news_score``.
 
     ``response`` peut être soit la chaîne CSV originale retournée par ChatGPT,
@@ -179,17 +204,19 @@ def save_scores_from_response(response):
             continue
         if not sym:
             continue
+        desc_hash = desc_hash_map.get(sym) if desc_hash_map else None
         conn.execute(
             """
-            INSERT INTO news_score(symbol, summary, score, sentiment, last_analyzed)
-            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+            INSERT INTO news_score(symbol, summary, score, sentiment, last_analyzed, desc_hash)
+            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?)
             ON CONFLICT(symbol) DO UPDATE SET
               summary=excluded.summary,
               score=excluded.score,
               sentiment=excluded.sentiment,
-              last_analyzed=CURRENT_TIMESTAMP
+              last_analyzed=CURRENT_TIMESTAMP,
+              desc_hash=excluded.desc_hash
             """,
-            (sym, summary, sc_int, sent),
+            (sym, summary, sc_int, sent, desc_hash),
         )
         conn.execute(
             "UPDATE watchlist SET score=? WHERE ticker=?",
@@ -435,13 +462,14 @@ async def chatgpt_inject(prompt: str):
 async def run_batch():
     """Main function to run the batch analysis."""
     try:
-        symbols = load_watchlist()
-        if not symbols:
+        entries = load_watchlist()
+        if not entries:
             log("Aucun ticker à scorer.")
             return
 
-        log(f"[INFO] {len(symbols)} tickers à analyser")
-        prompt_chunks = build_prompt(symbols)
+        log(f"[INFO] {len(entries)} tickers à analyser")
+        hash_map = {e["symbol"]: e.get("hash") for e in entries}
+        prompt_chunks = build_prompt([{"symbol": e["symbol"], "desc": e["desc"]} for e in entries])
         if isinstance(prompt_chunks, list):
             # Concatène les blocs pour ChatGPT en ne gardant les instructions qu'une fois
             instr_lines = PROMPT_INSTRUCTIONS.splitlines()
@@ -466,7 +494,7 @@ async def run_batch():
             log("[ERROR] Aucune réponse reçue de ChatGPT")
             return
 
-        save_scores_from_response(response)
+        save_scores_from_response(response, desc_hash_map=hash_map)
         log("✅ Analyse terminée avec succès")
 
     except Exception as e:
