@@ -1,8 +1,0 @@
-2025-05-20 02:38:24,815 - INFO - ======== Lancement du batch GPT (détection auto WebSocket) =========
-2025-05-20 02:38:24,815 - INFO - Recherche de l'onglet ChatGPT actif via CDP...
-2025-05-20 02:38:25,090 - INFO - Onglet ChatGPT détecté → WebSocket : ws://localhost:9222/devtools/page/26B43283BD59CDB28D820F363AEA54C6
-2025-05-20 02:38:25,867 - ERROR - [FATAL] Aucune page active dans le contexte. Ouvre ChatGPT manuellement.
-2025-05-20 02:39:00,808 - INFO - ======== Lancement du batch GPT (détection auto WebSocket) =========
-2025-05-20 02:39:00,808 - INFO - Recherche de l'onglet ChatGPT actif via CDP...
-2025-05-20 02:39:01,079 - INFO - Onglet ChatGPT détecté → WebSocket : ws://localhost:9222/devtools/page/31E2B53F5A52ADD627D595EF353EE122
-2025-05-20 02:39:01,821 - ERROR - [FATAL] Aucune page active dans le contexte. Ouvre ChatGPT manuellement.
