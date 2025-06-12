@@ -9,8 +9,8 @@ UTILS = ROOT_DIR / "utils"
 DATA = ROOT_DIR / "data"
 LOG_DIR = ROOT_DIR / "logs"
 LOG_DIR.mkdir(exist_ok=True)
-log_path = LOG_DIR / "historical_batch.log"
-logger = logging.getLogger("historical_batch")
+log_path = LOG_DIR / "collect_historical_batch.log"
+logger = logging.getLogger("collect_historical_batch")
 if not logger.handlers:
     logger.setLevel(logging.INFO)
     formatter = logging.Formatter("%(asctime)s %(levelname)s - %(message)s")
@@ -20,6 +20,8 @@ if not logger.handlers:
     # Stream logs to stderr so subprocess callers can capture errors
     logger.addHandler(logging.StreamHandler(sys.stderr))
 
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 if str(UTILS) not in sys.path:
     sys.path.insert(0, str(UTILS))
 
@@ -53,17 +55,22 @@ def main() -> None:
 
     # ─── Chargement de la watchlist ───────────────────────────────────────────
     watchlist_path = os.path.join(DATA, "trades.db")
+    logger.info("Using database: %s", watchlist_path)
+    if not os.path.exists(watchlist_path):
+        logger.warning("Database file missing and will be created: %s", watchlist_path)
+
     conn = sqlite3.connect(watchlist_path)
 
     try:
         df_watchlist = pd.read_sql_query("SELECT DISTINCT ticker FROM watchlist", conn)
     except Exception as e:
-        print(f"[DB ERROR] Impossible de lire la watchlist : {e}")
+        logger.error("Failed loading watchlist: %s", e, exc_info=True)
         conn.close()
         sys.exit(1)
 
     tickers = df_watchlist["ticker"].dropna().unique()
     logger.info("%d tickers à traiter", len(tickers))
+    logger.debug("Tickers: %s", ", ".join(tickers))
 
     # ─── Table cible ──────────────────────────────────────────────────────────
     cur = conn.execute("PRAGMA table_info(historical_data)")
