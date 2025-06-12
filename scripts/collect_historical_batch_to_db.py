@@ -14,7 +14,7 @@ logger = logging.getLogger("historical_batch")
 if not logger.handlers:
     logger.setLevel(logging.INFO)
     formatter = logging.Formatter("%(asctime)s %(levelname)s - %(message)s")
-    fh = logging.FileHandler(log_path)
+    fh = logging.FileHandler(log_path, encoding="utf-8")
     fh.setFormatter(formatter)
     logger.addHandler(fh)
     # Stream logs to stderr so subprocess callers can capture errors
