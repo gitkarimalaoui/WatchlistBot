@@ -1,0 +1,26 @@
+[
+  {
+    "ticker": "AIFF",
+    "action": "achat",
+    "prix": 3.67,
+    "gain_net": 0,
+    "datetime": "2025-06-08T09:56:42.404461",
+    "simulation_ia": "non"
+  },
+  {
+    "ticker": "AIFF",
+    "action": "vente",
+    "prix": 0.0,
+    "gain_net": 0,
+    "datetime": "2025-06-08T09:58:27.851340",
+    "simulation_ia": "non"
+  },
+  {
+    "ticker": "AIFF",
+    "action": "vente",
+    "prix": 3.72,
+    "gain_net": 0,
+    "datetime": "2025-06-08T09:58:59.456589",
+    "simulation_ia": "non"
+  }
+]

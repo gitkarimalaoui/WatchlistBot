@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import json
 import os
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 
 def _load_dotenv(path: str = ".env") -> None:
@@ -64,7 +64,7 @@ class ConfigManager:
                 config.update(json.load(f))
 
         # Environment variables override config file values when present
-        finnhub_key = os.getenv("FINNHUB_API_KEY")
+        finnhub_key = os.getenv("d15cklpr01qhqto50qagd15cklpr01qhqto50qb0")
         if finnhub_key is not None:
             config["finnhub_api"] = finnhub_key
         else:
@@ -87,7 +87,7 @@ class ConfigManager:
 
         return config
 
-    def get(self, key: str, default: Optional[Any] = None) -> Any:
+    def get(self, key: str, default: Any | None = None) -> Any:
         """Access nested configuration values using dot notation."""
 
         keys = key.split(".")
