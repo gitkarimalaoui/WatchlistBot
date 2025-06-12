@@ -1,5 +1,0 @@
-2025-05-20 16:22:22,352 - INFO - ======== Lancement du batch GPT (CDP attach only) =========
-2025-05-20 16:22:22,353 - INFO - Recherche de l'onglet ChatGPT actif via CDP...
-2025-05-20 16:22:22,663 - INFO - Onglet ChatGPT détecté → WebSocket : ws://localhost:9222/devtools/page/800FA161D3F792A543501F95B80C715B
-2025-05-20 16:22:33,962 - ERROR - [FATAL] Aucune page active détectée dans le contexte.
-2025-05-20 16:22:33,962 - INFO - ======== Fin du batch GPT =========
