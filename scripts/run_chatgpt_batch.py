@@ -1,17 +1,15 @@
 import asyncio
 import logging
-import requests
 import sqlite3
 import json
 import os
 import platform
 import subprocess
 import time
-import psutil
 import hashlib
 from datetime import datetime
 from pathlib import Path
-from playwright.async_api import async_playwright
+
 
 from intelligence.token_utils import count_tokens
 
@@ -258,6 +256,7 @@ def find_chrome_executable():
 
 def is_chrome_running_with_debug():
     """Check if Chrome is already running with debug port."""
+    import requests
     try:
         response = requests.get("http://localhost:9222/json/version", timeout=2)
         return response.status_code == 200
@@ -271,6 +270,7 @@ def kill_existing_chrome(force_restart: bool = False):
         return
 
     log("[INFO] Fermeture des processus Chrome existants...")
+    import psutil
     for proc in psutil.process_iter(["pid", "name"]):
         try:
             if "chrome" in proc.info["name"].lower():
@@ -334,6 +334,7 @@ def get_browser_websocket_url(force_restart: bool = False):
         raise Exception("[FATAL] Impossible de démarrer Chrome avec le port de debug.")
 
     try:
+        import requests
         r = requests.get("http://localhost:9222/json/version", timeout=5)
         r.raise_for_status()
         return r.json()["webSocketDebuggerUrl"]
@@ -370,6 +371,7 @@ async def get_chatgpt_response(page, timeout_sec=90):
 
 async def chatgpt_inject(prompt: str):
     """Inject prompt into ChatGPT and get response."""
+    from playwright.async_api import async_playwright
     ws_url = get_browser_websocket_url()
     log("[INFO] Connexion au navigateur via WebSocket")
 
