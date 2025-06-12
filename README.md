@@ -74,7 +74,7 @@ pip install -r requirements.txt
 ```
 
 Les tests requièrent en particulier les packages `pandas` et `SQLAlchemy`,
-en plus de `pytest`.
+ainsi que `finrl` et `stable-baselines3`, en plus de `pytest`.
 
 Ensuite lancez simplement :
 
@@ -112,4 +112,15 @@ installez la dépendance `llama-cpp-python`.
 Dans l'interface Streamlit, une case à cocher permet d'activer l'option et de
 charger le modèle local. Cette fonctionnalité sera prochainement couplée au
 script `learning_loop.py` afin d'améliorer la boucle d'apprentissage.
+
+## Entraînement du modèle
+
+Pour lancer l'apprentissage par renforcement, utilisez :
+
+```bash
+python intelligence/learning_loop.py
+```
+
+Cette phase nécessite les packages `finrl` et `stable-baselines3` présents dans
+`requirements.txt`.
 
