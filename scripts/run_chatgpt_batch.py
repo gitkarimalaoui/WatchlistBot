@@ -11,6 +11,15 @@ from datetime import datetime
 from pathlib import Path
 
 
+def safe_value(val):
+    """Return a DB-safe representation for ``val``."""
+    if isinstance(val, (dict, list)):
+        return json.dumps(val)
+    if val is None:
+        return ""
+    return val
+
+
 from intelligence.token_utils import count_tokens
 
 # ---- Logging configuration ----
@@ -203,24 +212,33 @@ def save_scores_from_response(response, desc_hash_map=None):
         if not sym:
             continue
         desc_hash = desc_hash_map.get(sym) if desc_hash_map else None
-        conn.execute(
-            """
-            INSERT INTO news_score(symbol, summary, score, sentiment, last_analyzed, desc_hash)
-            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?)
-            ON CONFLICT(symbol) DO UPDATE SET
-              summary=excluded.summary,
-              score=excluded.score,
-              sentiment=excluded.sentiment,
-              last_analyzed=CURRENT_TIMESTAMP,
-              desc_hash=excluded.desc_hash
-            """,
-            (sym, summary, sc_int, sent, desc_hash),
-        )
-        conn.execute(
-            "UPDATE watchlist SET score=? WHERE ticker=?",
-            (sc_int, sym),
-        )
-        saved += 1
+        try:
+            conn.execute(
+                """
+                INSERT INTO news_score(symbol, summary, score, sentiment, last_analyzed, desc_hash)
+                VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?)
+                ON CONFLICT(symbol) DO UPDATE SET
+                  summary=excluded.summary,
+                  score=excluded.score,
+                  sentiment=excluded.sentiment,
+                  last_analyzed=CURRENT_TIMESTAMP,
+                  desc_hash=excluded.desc_hash
+                """,
+                (
+                    safe_value(sym),
+                    safe_value(summary),
+                    safe_value(sc_int),
+                    safe_value(sent),
+                    safe_value(desc_hash),
+                ),
+            )
+            conn.execute(
+                "UPDATE watchlist SET score=? WHERE ticker=?",
+                (safe_value(sc_int), safe_value(sym)),
+            )
+            saved += 1
+        except Exception as exc:  # pragma: no cover - log errors
+            log(f"[WARN] Failed to save result for {sym}: {exc}")
 
     conn.commit()
     conn.close()

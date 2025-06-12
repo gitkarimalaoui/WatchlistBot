@@ -10,6 +10,14 @@ from playwright.async_api import async_playwright
 DB_PATH = Path("data/trades.db")
 USER_DATA_DIR = "C:/Users/KARIM/Desktop/chrome_profile_bot"  # same profile as Moomoo
 
+
+def safe_value(val):
+    if isinstance(val, (dict, list)):
+        return json.dumps(val)
+    if val is None:
+        return ""
+    return val
+
 def hash_desc(desc: str) -> str:
     return hashlib.sha256(desc.encode("utf-8")).hexdigest()
 
@@ -69,7 +77,9 @@ async def chatgpt_batch_score(prompt: str):
 
 def upsert_news_score(item, db_path=DB_PATH):
     conn = sqlite3.connect(db_path)
-    conn.execute("""
+    try:
+        conn.execute(
+            """
         INSERT INTO news_score(symbol, summary, score, desc_hash, last_analyzed)
         VALUES(?, ?, ?, ?, CURRENT_TIMESTAMP)
         ON CONFLICT(symbol) DO UPDATE SET
@@ -77,9 +87,19 @@ def upsert_news_score(item, db_path=DB_PATH):
             score=excluded.score,
             desc_hash=excluded.desc_hash,
             last_analyzed=CURRENT_TIMESTAMP
-    """, (item["symbol"], item["summary"], item["score"], item["hash"]))
-    conn.commit()
-    conn.close()
+        """,
+            (
+                safe_value(item.get("symbol")),
+                safe_value(item.get("summary")),
+                safe_value(item.get("score")),
+                safe_value(item.get("hash")),
+            ),
+        )
+        conn.commit()
+    except Exception as exc:
+        print(f"[WARN] Failed to insert {item}: {exc}")
+    finally:
+        conn.close()
 
 async def run_batch():
     to_analyze = await load_new_watchlist()
