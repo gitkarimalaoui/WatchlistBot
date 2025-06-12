@@ -96,7 +96,7 @@ def test_save_scores_from_response_objects(tmp_path, monkeypatch):
     db = tmp_path / "test.db"
     conn = sqlite3.connect(db)
     conn.execute(
-        "CREATE TABLE news_score (symbol TEXT PRIMARY KEY, summary TEXT, score INTEGER, sentiment TEXT, last_analyzed DATETIME)"
+        "CREATE TABLE news_score (symbol TEXT PRIMARY KEY, summary TEXT, score INTEGER, sentiment TEXT, last_analyzed DATETIME, desc_hash TEXT)"
     )
     conn.execute(
         "CREATE TABLE watchlist (ticker TEXT UNIQUE, score INTEGER)"
@@ -115,22 +115,22 @@ def test_save_scores_from_response_objects(tmp_path, monkeypatch):
         }
     ]
 
-    batch.save_scores_from_response(data)
+    batch.save_scores_from_response(data, desc_hash_map={"AAA": "h1"})
 
     conn = sqlite3.connect(db)
     row = conn.execute(
-        "SELECT summary, score, sentiment FROM news_score WHERE symbol='AAA'"
+        "SELECT summary, score, sentiment, desc_hash FROM news_score WHERE symbol='AAA'"
     ).fetchone()
     conn.close()
 
-    assert row == ("ok", 7, "bullish")
+    assert row == ("ok", 7, "bullish", "h1")
 
 
 def test_save_scores_from_response_json_string(tmp_path, monkeypatch):
     db = tmp_path / "test.db"
     conn = sqlite3.connect(db)
     conn.execute(
-        "CREATE TABLE news_score (symbol TEXT PRIMARY KEY, summary TEXT, score INTEGER, sentiment TEXT, last_analyzed DATETIME)"
+        "CREATE TABLE news_score (symbol TEXT PRIMARY KEY, summary TEXT, score INTEGER, sentiment TEXT, last_analyzed DATETIME, desc_hash TEXT)"
     )
     conn.execute(
         "CREATE TABLE watchlist (ticker TEXT UNIQUE, score INTEGER)"
@@ -142,12 +142,12 @@ def test_save_scores_from_response_json_string(tmp_path, monkeypatch):
 
     json_data = "[{\"symbol\": \"AAA\", \"sentiment\": \"bullish\", \"score\": 9, \"summary\": \"ok\"}]"
 
-    batch.save_scores_from_response(json_data)
+    batch.save_scores_from_response(json_data, desc_hash_map={"AAA": "h2"})
 
     conn = sqlite3.connect(db)
     row = conn.execute(
-        "SELECT summary, score, sentiment FROM news_score WHERE symbol='AAA'"
+        "SELECT summary, score, sentiment, desc_hash FROM news_score WHERE symbol='AAA'"
     ).fetchone()
     conn.close()
 
-    assert row == ("ok", 9, "bullish")
+    assert row == ("ok", 9, "bullish", "h2")
