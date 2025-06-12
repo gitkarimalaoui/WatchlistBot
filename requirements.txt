@@ -21,3 +21,10 @@ Pillow
 SQLAlchemy
 alembic
 
+# Reinforcement learning
+finrl
+stable-baselines3
+
+# Testing
+pytest
+
