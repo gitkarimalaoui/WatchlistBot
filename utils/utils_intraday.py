@@ -30,7 +30,7 @@ intraday_logger = logging.getLogger("intraday_fetch")
 if not intraday_logger.handlers:
     intraday_logger.setLevel(logging.INFO)
     formatter = logging.Formatter("%(asctime)s %(levelname)s - %(message)s")
-    fh = logging.FileHandler(LOG_DIR / "intraday_fetch.log")
+    fh = logging.FileHandler(LOG_DIR / "intraday_fetch.log", encoding="utf-8")
     fh.setFormatter(formatter)
     intraday_logger.addHandler(fh)
 
