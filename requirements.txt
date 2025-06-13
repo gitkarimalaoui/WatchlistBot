@@ -27,3 +27,4 @@ stable-baselines3
 
 # Testing
 pytest
+watchdog

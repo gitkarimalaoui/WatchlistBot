@@ -124,3 +124,13 @@ python intelligence/learning_loop.py
 Cette phase nécessite les packages `finrl` et `stable-baselines3` présents dans
 `requirements.txt`.
 
+
+## Surveillance automatique avec Codex
+
+Un script de veille permet d'analyser les nouveaux fichiers produits par FinRL et les mises à jour des logs. Il se lance simplement avec :
+
+```bash
+python start_watchers.py
+```
+
+Le watcher observe `models/finrl/` pour tout fichier `.pkl` ou `.json` ajouté et `logs/` pour les fichiers `local_llm.log` ou contenant `finrl`. À chaque événement, un appel à Codex est déclenché pour proposer automatiquement un patch ou ouvrir une pull request.
