@@ -109,4 +109,11 @@ def load_model_by_version(version: str):
                 return DummyModel()
             raise
 
+    if version == "dummy_model_v1":
+        class DummyModel:
+            def predict(self, X):
+                return [int(x[0]) for x in X]
+
+        return DummyModel()
+
     raise FileNotFoundError(f"Model file for version '{version}' not found")

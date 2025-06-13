@@ -216,8 +216,21 @@ def fetch_intraday_data(ticker: str) -> Optional[pd.DataFrame]:
     return asyncio.run(fetch_intraday_data_async(ticker))
 
 
+import inspect
+
+
 async def fetch_intraday_data_async(ticker: str) -> Optional[pd.DataFrame]:
-    tasks = {name: asyncio.create_task(func(ticker)) for name, func in ASYNC_SOURCES}
+    tasks = {}
+    for name, func in ASYNC_SOURCES:
+        try:
+            params = inspect.signature(func).parameters
+            if len(params) > 1:
+                task = asyncio.create_task(func(ticker, None))
+            else:
+                task = asyncio.create_task(func(ticker))
+            tasks[name] = task
+        except Exception:
+            tasks[name] = asyncio.create_task(func(ticker))
     results = {}
     for name, task in tasks.items():
         try:

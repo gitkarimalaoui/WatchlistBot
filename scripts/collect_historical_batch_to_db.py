@@ -49,6 +49,11 @@ def main() -> None:
         from utils_intraday import fetch_intraday_with_fallback
         from db_historical import insert_historical as insert_data_to_db
         from db_intraday import insert_intraday as insert_intraday_data_to_db
+        from data_completeness import (
+            ensure_table,
+            is_ticker_complete,
+            update_completeness,
+        )
     except ImportError as e:
         print(f"[IMPORT ERROR] {e}")
         sys.exit(1)
@@ -60,6 +65,7 @@ def main() -> None:
         logger.warning("Database file missing and will be created: %s", watchlist_path)
 
     conn = sqlite3.connect(watchlist_path)
+    ensure_table(conn)
 
     try:
         df_watchlist = pd.read_sql_query("SELECT DISTINCT ticker FROM watchlist", conn)
@@ -110,6 +116,10 @@ def main() -> None:
 
     # ─── Collecte et insertion ───────────────────────────────────────────────
     for i, ticker in enumerate(tickers, start=1):
+        hist_ok, intra_ok = is_ticker_complete(conn, ticker)
+        if hist_ok and intra_ok:
+            logger.info("%s already complete, skipping", ticker)
+            continue
         logger.info("Start collecting data for ticker: %s", ticker)
         start_time = time.time()
         try:
@@ -165,6 +175,17 @@ def main() -> None:
                 logger.error("Insertion intraday échouée pour %s: %s", ticker, e, exc_info=True)
         else:
             logger.warning("%s → Aucun intraday", ticker)
+
+        # Update completeness information
+        hist_rows = conn.execute(
+            "SELECT COUNT(*) FROM historical_data WHERE ticker = ?",
+            (ticker,),
+        ).fetchone()[0]
+        intra_rows = conn.execute(
+            "SELECT COUNT(*) FROM intraday_data WHERE ticker = ?",
+            (ticker,),
+        ).fetchone()[0]
+        update_completeness(conn, ticker, hist_rows, intra_rows)
 
         time.sleep(1.5)  # Évite le rate limiting Yahoo
 
