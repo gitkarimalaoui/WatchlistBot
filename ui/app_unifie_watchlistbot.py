@@ -379,17 +379,8 @@ if st.button("📣 Vérifier News PR pour la watchlist"):
         st.warning("Aucune news critique détectée.")
 
 def _ia_score(t):
-    """Return the AI score for filtering and sorting.
-
-    The watchlist rows may contain either ``score_local`` computed from
-    indicators, ``score_ia`` from a model or simply ``score`` from the
-    database. This helper tries all fields in that order.
-    """
-    if t.get("score_local") is not None:
-        return t.get("score_local")
-    if t.get("score_ia") is not None:
-        return t.get("score_ia")
-    return t.get("score", 0)
+   
+    return t.get("score_local") or t.get("score_ia") or t.get("score", 0)
 
 filtered_watchlist = [w for w in watchlist if _ia_score(w) >= score_minimum]
 filtered_watchlist = sorted(filtered_watchlist, key=_ia_score, reverse=True)
