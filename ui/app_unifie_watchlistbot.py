@@ -370,8 +370,17 @@ if st.button("📣 Vérifier News PR pour la watchlist"):
 
     if not news_detected:
         st.warning("Aucune news critique détectée.")
-score_min = st.sidebar.slider("🌟 Score IA minimum", 0.0, 10.0, 0.0, step=0.5)
-filtered_watchlist = [w for w in watchlist if w.get("global_score", 0) >= score_min]
+st.sidebar.subheader("🌟 Score IA minimum")
+score_minimum = st.sidebar.slider("Score IA minimum", 0, 100, 70)
+
+if st.sidebar.button("🎯 Voir les meilleures opportunités"):
+    score_minimum = 85
+
+def _ia_score(t):
+    return t.get("score_ia", t.get("score_local", 0))
+
+watchlist = sorted(watchlist, key=_ia_score, reverse=True)
+filtered_watchlist = [w for w in watchlist if _ia_score(w) >= score_minimum]
 
 page_size = 10
 total = len(filtered_watchlist)
