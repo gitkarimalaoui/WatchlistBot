@@ -167,6 +167,7 @@ def load_watchlist():
             w.source,
             w.date,
             w.description,
+            COALESCE(w.has_fda, 0) AS has_fda,
             w.float AS float,
             COALESCE(w.score, 0) AS score,
             COALESCE(ns.score, 0) AS score_gpt,
@@ -291,6 +292,11 @@ with col2:
         with st.spinner("Chargement des approbations…"):
             inserted = fetch_fda_data(limit=100, verbose=True, db_path=DB_PATH)
         st.success(f"✅ {inserted} approbations ajoutées")
+
+    if st.button("🧪 Vérifier FDA"):
+        with sqlite3.connect(DB_PATH) as conn:
+            enrichir_watchlist_avec_fda(conn)
+        st.success("Watchlist mise à jour avec les données FDA.")
 
 # 📥 Scraping Jaguar
 with st.expander("📥 Scraper Jaguar et Injecter"):
