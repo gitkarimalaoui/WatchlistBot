@@ -4,6 +4,7 @@ from simulation.execution_simulee import enregistrer_trade_simule
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+from typing import Optional, Dict
 
 try:  # Optional dependency, may not be installed
     from streamlit_autorefresh import st_autorefresh
@@ -18,7 +19,7 @@ from utils_graph import (
 from utils.order_executor import executer_ordre_reel_direct
 
 
-def calculer_indicateurs(df: pd.DataFrame) -> dict | None:
+def calculer_indicateurs(df: pd.DataFrame) -> Optional[Dict[str, float]]:
     """Calcule quelques indicateurs techniques simples."""
 
     if df is None or df.empty:
