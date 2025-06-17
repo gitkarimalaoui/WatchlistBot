@@ -1,8 +1,14 @@
-import requests
+import os
 from typing import List, Dict, Optional
 from datetime import datetime, timedelta
 
-FINNHUB_API_KEY = "c8e375999c6044d8ae742e9ddc19d37a"
+import requests
+from dotenv import load_dotenv
+
+load_dotenv()
+FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
+if not FINNHUB_API_KEY:
+    raise ValueError("FINNHUB_API_KEY not found in environment variables")
 DEFAULT_KEYWORDS = ["FDA", "approval", "results", "study", "PR", "clinical"]
 
 
