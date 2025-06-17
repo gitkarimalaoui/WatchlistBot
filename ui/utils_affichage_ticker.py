@@ -17,6 +17,7 @@ from utils_graph import (
     charger_intraday_intelligent,
 )
 from utils.order_executor import executer_ordre_reel_direct
+from utils_signaux import is_buy_signal
 
 
 def calculer_indicateurs(df: pd.DataFrame) -> Optional[Dict[str, float]]:
@@ -127,6 +128,17 @@ def afficher_ticker_panel(ticker, stock, index):
         price = indicateurs.get("price") if indicateurs else None
         volume = indicateurs.get("volume") if indicateurs else None
 
+        # Mise à jour du dict stock pour les évaluations de signal
+        stock["ema9"] = ema9
+        stock["ema21"] = ema21
+        stock["macd"] = macd
+        stock["macd_signal"] = macd_signal
+        stock["vwap"] = vwap
+        stock["price"] = price
+        stock["volume_ratio"] = ratio
+        stock["score_ia"] = stock.get("score", stock.get("score_ia", 0))
+        stock["has_catalyst"] = bool(catalyst)
+
         rsi_str = f"{rsi:.2f}" if rsi is not None else "N/A"
         ema9_str = f"{ema9:.2f}" if ema9 is not None else "N/A"
         ema21_str = f"{ema21:.2f}" if ema21 is not None else "N/A"
@@ -161,8 +173,22 @@ def afficher_ticker_panel(ticker, stock, index):
 - **Float** : {float_str} {float_flag}
 - **Catalyseur détecté** : {catalyst or 'Aucun'}
 - **Score IA** : {score_local}/100 {'🟢' if score_local>80 else '🟡' if score_local>60 else '🔴'}
-"""
+            """
         )
+
+        # Détection du signal d'achat fort
+        if is_buy_signal(stock):
+            st.success(
+                "\U0001F680 **Signal d'achat détecté !** Conditions techniques remplies."
+            )
+            stock["signal_level"] = "🟢"
+            if st.button(f"Recevoir alerte pour {ticker}", key=f"alert_{ticker}_{index}"):
+                st.info("Alerte activée pour ce ticker.")
+        else:
+            st.info("⏳ Pas encore toutes les conditions réunies pour entrer.")
+            stock["signal_level"] = "🟡" if stock.get("score_ia", 0) >= 60 else "🔴"
+
+        st.markdown(f"**Niveau de signal :** {stock['signal_level']}")
 
         if df_intraday is not None and not df_intraday.empty:
             df = df_intraday.copy()
