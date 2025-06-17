@@ -38,7 +38,22 @@ def _ensure_table(conn: sqlite3.Connection) -> None:
         )
         """
     )
+    conn.execute(
+        """
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_application_number
+        ON fda_approvals(application_number)
+        """
+    )
     conn.commit()
+
+
+def _application_exists(application_number: str, conn: sqlite3.Connection) -> bool:
+    """Check if an application number already exists in the database."""
+    cur = conn.execute(
+        "SELECT 1 FROM fda_approvals WHERE application_number = ?",
+        (application_number,),
+    )
+    return cur.fetchone() is not None
 
 
 def _fetch_page(params: Dict[str, Any]) -> Dict[str, Any]:
@@ -138,29 +153,30 @@ def fetch_fda_data(
         results = page.get("results", [])
         rows = _parse_results(results)
         for row in rows:
-            conn.execute(
-                """
-                INSERT OR IGNORE INTO fda_approvals (
-                    application_number, sponsor_name, substance_name,
-                    brand_name, submission_status_date, pharm_class,
-                    route, dosage_form, marketing_status, product_ndc, last_update
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                (
-                    row["application_number"],
-                    row["sponsor_name"],
-                    row["substance_name"],
-                    row["brand_name"],
-                    row["submission_status_date"],
-                    row["pharm_class"],
-                    row["route"],
-                    row["dosage_form"],
-                    row["marketing_status"],
-                    row["product_ndc"],
-                    row["last_update"],
-                ),
-            )
-            inserted += 1
+            if not _application_exists(row["application_number"], conn):
+                conn.execute(
+                    """
+                    INSERT INTO fda_approvals (
+                        application_number, sponsor_name, substance_name,
+                        brand_name, submission_status_date, pharm_class,
+                        route, dosage_form, marketing_status, product_ndc, last_update
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        row["application_number"],
+                        row["sponsor_name"],
+                        row["substance_name"],
+                        row["brand_name"],
+                        row["submission_status_date"],
+                        row["pharm_class"],
+                        row["route"],
+                        row["dosage_form"],
+                        row["marketing_status"],
+                        row["product_ndc"],
+                        row["last_update"],
+                    ),
+                )
+                inserted += 1
         conn.commit()
         if verbose:
             print(f"Fetched {min(skip + limit, total)} / {total}")
