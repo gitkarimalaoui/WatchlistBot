@@ -44,6 +44,7 @@ from pages.cloture_journee import cloturer_journee
 from utils_affichage_ticker import afficher_ticker_panel
 from intelligence.ai_scorer import compute_global_score
 from utils.progress_tracker import load_progress
+from utils.fda_fetcher import fetch_fda_data
 from intelligence.local_llm import (
     run_local_llm,
     chunk_and_query_local_llm,
@@ -281,8 +282,14 @@ with col2:
         conn.close()
         st.dataframe(df_scores)
 
+
     if st.button("🚀 Lancer analyse GPT", key="btn_batch") or auto_batch:
         run_and_show()
+
+    if st.button("🔬 Récupérer approbations FDA récentes"):
+        with st.spinner("Chargement des approbations…"):
+            inserted = fetch_fda_data(limit=100, verbose=True, db_path=DB_PATH)
+        st.success(f"✅ {inserted} approbations ajoutées")
 
 # 📥 Scraping Jaguar
 with st.expander("📥 Scraper Jaguar et Injecter"):
