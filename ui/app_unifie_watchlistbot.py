@@ -379,7 +379,8 @@ if st.button("📣 Vérifier News PR pour la watchlist"):
         st.warning("Aucune news critique détectée.")
 
 def _ia_score(t):
-    return t.get("score_local", t.get("score_ia", 0))
+   
+    return t.get("score_local") or t.get("score_ia") or t.get("score", 0)
 
 filtered_watchlist = [w for w in watchlist if _ia_score(w) >= score_minimum]
 filtered_watchlist = sorted(filtered_watchlist, key=_ia_score, reverse=True)
