@@ -5,7 +5,6 @@ import heapq
 import json
 import logging
 import os
-import sqlite3
 from dataclasses import dataclass, field, asdict
 from datetime import datetime, time, timedelta
 from enum import Enum
@@ -14,7 +13,14 @@ from typing import Any, Dict, List
 
 import requests
 
-DB_PATH = Path(__file__).resolve().parents[1] / "data" / "project_tracker.db"
+from utils.db_access import (
+    PROJECT_DB_PATH,
+    TRADES_DB_PATH,
+    fetch_tasks,
+    fetch_user_stories,
+    fetch_personal_goals,
+    fetch_trade_alerts,
+)
 VOCAL_HOURS = (8, 22)
 
 logger = logging.getLogger(__name__)
@@ -74,53 +80,57 @@ def trigger_trading_action(event: Event) -> None:
 # Event collection and analysis
 # ---------------------------------------------------------------------------
 
-def collect_events(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
-    """Load raw events from the project tracker database."""
-    if not db_path.exists():
-        return []
+def collect_events(
+    project_db: Path = PROJECT_DB_PATH, trades_db: Path = TRADES_DB_PATH
+) -> List[Dict[str, Any]]:
+    """Load raw events from available SQLite databases."""
 
     events: List[Dict[str, Any]] = []
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row
-    try:
-        for row in conn.execute(
-            "SELECT id, description, due_date, importance_score FROM tasks WHERE done = 0"
-        ):
-            events.append(
-                {
-                    "event_id": f"task_{row['id']}",
-                    "source": "tasks",
-                    "title": row["description"],
-                    "due_date": row["due_date"],
-                    "importance": row.get("importance_score", 3),
-                }
-            )
-        for row in conn.execute(
-            "SELECT id, story, priority, status FROM user_stories WHERE LOWER(status) != 'done'"
-        ):
-            events.append(
-                {
-                    "event_id": f"story_{row['id']}",
-                    "source": "user_stories",
-                    "title": row["story"],
-                    "priority_field": row["priority"],
-                    "status": row["status"],
-                }
-            )
-        for row in conn.execute(
-            "SELECT id, goal, category, target_date FROM personal_goals WHERE completed = 0"
-        ):
-            events.append(
-                {
-                    "event_id": f"goal_{row['id']}",
-                    "source": "personal_goals",
-                    "title": row["goal"],
-                    "target_date": row["target_date"],
-                    "category": row["category"],
-                }
-            )
-    finally:
-        conn.close()
+
+    for row in fetch_tasks(project_db):
+        events.append(
+            {
+                "event_id": f"task_{row['id']}",
+                "source": "tasks",
+                "title": row["description"],
+                "due_date": row.get("due_date"),
+                "importance": row.get("importance_score", 3),
+            }
+        )
+
+    for row in fetch_user_stories(project_db):
+        events.append(
+            {
+                "event_id": f"story_{row['id']}",
+                "source": "user_stories",
+                "title": row["story"],
+                "priority_field": row.get("priority"),
+                "status": row.get("status"),
+            }
+        )
+
+    for row in fetch_personal_goals(project_db):
+        events.append(
+            {
+                "event_id": f"goal_{row['id']}",
+                "source": "personal_goals",
+                "title": row["goal"],
+                "target_date": row.get("target_date"),
+                "category": row.get("category"),
+            }
+        )
+
+    for row in fetch_trade_alerts(trades_db):
+        events.append(
+            {
+                "event_id": f"trade_{row['ticker']}",
+                "source": "watchlist",
+                "title": row["ticker"],
+                "score": row.get("score", 0),
+                "change_percent": row.get("change_percent", 0.0),
+            }
+        )
+
     return events
 
 
@@ -164,6 +174,15 @@ def analyze_event_priority(event: Dict[str, Any]) -> Priority:
                     return Priority.IMPORTANT
             except ValueError:
                 pass
+        return Priority.INFO
+
+    if event["source"] == "watchlist":
+        score = float(event.get("score", 0))
+        change = float(event.get("change_percent", 0))
+        if score >= 9 or change >= 10:
+            return Priority.URGENT
+        if score >= 7:
+            return Priority.IMPORTANT
         return Priority.INFO
 
     return Priority.BACKGROUND
