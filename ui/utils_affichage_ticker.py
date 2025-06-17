@@ -136,6 +136,14 @@ def afficher_ticker_panel(ticker, stock, index):
         price_str = f"{price}" if price is not None else "N/A"
         volume_str = f"{volume}" if volume is not None else "N/A"
 
+        float_value = stock.get("float")
+        if float_value is None:
+            float_str = "N/A"
+            float_flag = ""
+        else:
+            float_str = f"{float_value/1_000_000:.0f}M"
+            float_flag = "⚡" if float_value < 20_000_000 else ""
+
         st.markdown(
             f"""
 🔎 **Indicateurs Clés**
@@ -144,7 +152,7 @@ def afficher_ticker_panel(ticker, stock, index):
 - **MACD** : {macd_str} vs Signal {macd_signal_str}
 - **VWAP** : {vwap_str} (current price: {price_str})
 - **Volume** : {volume_str} ({ratio:.2f}x)
-- **Float** : {float(stock.get('float', 0))/1_000_000:.0f}M {'⚡' if stock.get('float',0) < 20_000_000 else ''}
+- **Float** : {float_str} {float_flag}
 - **Catalyseur détecté** : {catalyst or 'Aucun'}
 - **Score IA** : {score_local}/100 {'🟢' if score_local>80 else '🟡' if score_local>60 else '🔴'}
 """
