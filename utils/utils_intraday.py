@@ -8,6 +8,7 @@ from pathlib import Path
 from datetime import datetime, timedelta
 from typing import Optional
 import asyncio
+import inspect
 from utils.async_utils import async_to_thread
 from config.config_manager import _load_dotenv, config_manager
 try:
@@ -22,6 +23,7 @@ FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY") or config_manager.get("finnhub_ap
 ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
 FMP_API_KEY = os.getenv("FMP_API_KEY")
 POLYGON_API_KEY = os.getenv("POLYGON_API_KEY")
+TWELVEDATA_API_KEY = os.getenv("TWELVEDATA_API_KEY")
 
 # Logging configuration
 LOG_DIR = Path(__file__).resolve().parents[1] / "logs"
@@ -194,12 +196,104 @@ async def fetch_from_polygon_async(ticker: str) -> Optional[pd.DataFrame]:
     return await async_to_thread(fetch_from_polygon, ticker)
 
 
+def fetch_from_twelvedata(
+    ticker: str,
+    _from: Optional[int] = None,
+    to: Optional[int] = None,
+) -> Optional[pd.DataFrame]:
+    """Retrieve intraday candles via Twelve Data."""
+    if not TWELVEDATA_API_KEY:
+        intraday_logger.info("Skipping Twelve Data, missing API key")
+        return None
+    try:
+        params = {
+            "symbol": ticker,
+            "interval": "1min",
+            "apikey": TWELVEDATA_API_KEY,
+            "format": "JSON",
+        }
+        if _from is not None:
+            params["start_date"] = datetime.utcfromtimestamp(_from).strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )
+        if to is not None:
+            params["end_date"] = datetime.utcfromtimestamp(to).strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )
+        res = requests.get("https://api.twelvedata.com/time_series", params=params)
+        data = res.json().get("values")
+        if not data:
+            intraday_logger.warning("%s → empty data from Twelve Data", ticker)
+            return None
+        df = pd.DataFrame(data)
+        df.rename(
+            columns={
+                "datetime": "timestamp",
+                "open": "open",
+                "high": "high",
+                "low": "low",
+                "close": "close",
+                "volume": "volume",
+            },
+            inplace=True,
+        )
+        df["timestamp"] = pd.to_datetime(df["timestamp"])
+        df = df[["timestamp", "open", "high", "low", "close", "volume"]]
+        return df.sort_values("timestamp")
+    except Exception as e:  # pragma: no cover - best effort log only
+        intraday_logger.error(
+            "Failed Twelve Data fetch for %s: %s", ticker, e, exc_info=True
+        )
+        return None
+
+async def fetch_from_twelvedata_async(
+    ticker: str, _from: Optional[int] = None, to: Optional[int] = None
+) -> Optional[pd.DataFrame]:
+    return await async_to_thread(fetch_from_twelvedata, ticker, _from, to)
+
+
+API_KEYS = {
+    fetch_from_finnhub: FINNHUB_API_KEY,
+    fetch_from_alphavantage: ALPHA_VANTAGE_API_KEY,
+    fetch_from_fmp: FMP_API_KEY,
+    fetch_from_polygon: POLYGON_API_KEY,
+    fetch_from_twelvedata: TWELVEDATA_API_KEY,
+}
+
+
+def get_candle_data(
+    ticker: str, _from: Optional[int] = None, to: Optional[int] = None
+) -> Optional[pd.DataFrame]:
+    """Try each provider in ``SOURCES`` until data is returned."""
+    for name, func in SOURCES:
+        key = API_KEYS.get(func)
+        if key is not None and not key:
+            intraday_logger.info("Skipping %s - missing API key", name)
+            continue
+        try:
+            params = inspect.signature(func).parameters
+            kwargs = {}
+            if "_from" in params:
+                kwargs["_from"] = _from
+            if "to" in params:
+                kwargs["to"] = to
+            df = func(ticker, **kwargs) if kwargs else func(ticker)
+            if df is not None and not df.empty:
+                intraday_logger.info("%s provided intraday data", name)
+                return df
+        except Exception as e:  # pragma: no cover - best effort log only
+            intraday_logger.error("%s provider failed for %s: %s", name, ticker, e)
+    intraday_logger.warning("All intraday providers failed for %s", ticker)
+    return None
+
+
 SOURCES = [
     ("Yahoo Finance", fetch_from_yfinance),
     ("Finnhub", fetch_from_finnhub),
     ("Alpha Vantage", fetch_from_alphavantage),
     ("FMP", fetch_from_fmp),
     ("Polygon", fetch_from_polygon),
+    ("Twelve Data", fetch_from_twelvedata),
 ]
 
 ASYNC_SOURCES = [
@@ -208,15 +302,13 @@ ASYNC_SOURCES = [
     ("Alpha Vantage", fetch_from_alphavantage_async),
     ("FMP", fetch_from_fmp_async),
     ("Polygon", fetch_from_polygon_async),
+    ("Twelve Data", fetch_from_twelvedata_async),
 ]
 
 
 def fetch_intraday_data(ticker: str) -> Optional[pd.DataFrame]:
     """Try multiple sources for intraday data using asyncio."""
     return asyncio.run(fetch_intraday_data_async(ticker))
-
-
-import inspect
 
 
 async def fetch_intraday_data_async(ticker: str) -> Optional[pd.DataFrame]:
@@ -282,6 +374,7 @@ ASYNC_SOURCES = [
     ("Alpha Vantage", async_fetch_from_alphavantage),
     ("FMP", async_fetch_from_fmp),
     ("Polygon", async_fetch_from_polygon),
+    ("Twelve Data", fetch_from_twelvedata_async),
 ]
 
 

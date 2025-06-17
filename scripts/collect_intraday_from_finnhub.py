@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from utils_finnhub import get_candle_data
+from utils.utils_intraday import get_candle_data
 from utils import load_last_timestamp
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
