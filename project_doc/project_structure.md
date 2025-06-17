@@ -27,6 +27,7 @@
 - [18. Security Guard & Stop Loss](18_security_stoploss.md)
 - [19. Streamlit UI](19_streamlit_ui.md)
 - [20. Telegram Notifications](20_telegram_notifications.md)
+- [Module 1 – Orchestrateur d'Événements](MODULE_1_ORCHESTRATEUR_EVENEMENTS.md)
 - [21. UI Project Tracker](21_ui_tracker.md)
 - [22. Journalisation des Trades](22_journalisation.md)
 - [23. Daily Closure](23_daily_closure.md)
