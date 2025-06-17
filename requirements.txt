@@ -17,6 +17,7 @@ aiohttp
 psutil
 playwright
 Pillow
+python-dotenv
 
 SQLAlchemy
 alembic
