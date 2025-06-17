@@ -1,7 +1,7 @@
 # roadmap_ui.py – Version 8.4 avec sauvegarde et barres de progression globales
 import os
-import streamlit as st
 import sqlite3
+import streamlit as st
 from roadmap_generator_tools import create_epic_md, create_bpmn_placeholder
 import task_manager
 import pandas as pd
@@ -241,3 +241,55 @@ def personal_interface():
         st.markdown("🏡 Priorités familiales & sociales")
     with tabs[5]:
         st.markdown("🤖 Assistant IA personnel en cours d'intégration...")
+
+
+def _table_exists(conn: sqlite3.Connection, name: str) -> bool:
+    return (
+        conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
+            (name,),
+        ).fetchone()
+        is not None
+    )
+
+
+def compute_watchlist_kpis(db_path: str) -> dict:
+    conn = sqlite3.connect(db_path)
+    try:
+        data = {}
+        data["total_tickers"] = conn.execute(
+            "SELECT COUNT(*) FROM watchlist"
+        ).fetchone()[0]
+        data["tickers_fda"] = conn.execute(
+            "SELECT COUNT(*) FROM watchlist WHERE has_fda = 1"
+        ).fetchone()[0]
+        data["tickers_newspr"] = conn.execute(
+            "SELECT COUNT(*) FROM watchlist WHERE source LIKE '%NewsPR%'"
+        ).fetchone()[0]
+        data["tickers_newsauto"] = conn.execute(
+            "SELECT COUNT(*) FROM watchlist WHERE source LIKE '%NewsAuto%'"
+        ).fetchone()[0]
+        if _table_exists(conn, "news_by_ticker"):
+            data["total_news"] = conn.execute(
+                "SELECT COUNT(*) FROM news_by_ticker"
+            ).fetchone()[0]
+        else:
+            data["total_news"] = 0
+    finally:
+        conn.close()
+    return data
+
+
+def watchlist_dashboard(db_path: str) -> None:
+    st.markdown("### 📈 KPIs Watchlist")
+    if "watch_kpis" not in st.session_state:
+        st.session_state["watch_kpis"] = compute_watchlist_kpis(db_path)
+    if st.button("🔁 Recalculer les KPI"):
+        st.session_state["watch_kpis"] = compute_watchlist_kpis(db_path)
+    kpis = st.session_state["watch_kpis"]
+    c1, c2, c3, c4, c5 = st.columns(5)
+    c1.metric("Tickers totaux", kpis.get("total_tickers", 0))
+    c2.metric("Tickers FDA", kpis.get("tickers_fda", 0))
+    c3.metric("NewsPR", kpis.get("tickers_newspr", 0))
+    c4.metric("NewsAuto", kpis.get("tickers_newsauto", 0))
+    c5.metric("News", kpis.get("total_news", 0))
