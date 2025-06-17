@@ -340,6 +340,13 @@ with st.expander("📥 Données marché – Historique et Intraday"):
             st.code(proc.stderr)
 
 # 💼 Affichage dynamique paginé
+st.sidebar.subheader("🌟 Score IA minimum")
+score_minimum = st.sidebar.slider("Score IA minimum", 0, 100, 70)
+
+if st.sidebar.button("🎯 Voir les meilleures opportunités"):
+    score_minimum = 85
+
+load_watchlist.clear()
 watchlist = load_watchlist()
 
 if st.button("🧠 Détection auto à partir des News"):
@@ -370,17 +377,22 @@ if st.button("📣 Vérifier News PR pour la watchlist"):
 
     if not news_detected:
         st.warning("Aucune news critique détectée.")
-st.sidebar.subheader("🌟 Score IA minimum")
-score_minimum = st.sidebar.slider("Score IA minimum", 0, 100, 70)
-
-if st.sidebar.button("🎯 Voir les meilleures opportunités"):
-    score_minimum = 85
 
 def _ia_score(t):
-    return t.get("score_ia", t.get("score_local", 0))
+    """Return the AI score for filtering and sorting.
 
-watchlist = sorted(watchlist, key=_ia_score, reverse=True)
+    The watchlist rows may contain either ``score_local`` computed from
+    indicators, ``score_ia`` from a model or simply ``score`` from the
+    database. This helper tries all fields in that order.
+    """
+    if t.get("score_local") is not None:
+        return t.get("score_local")
+    if t.get("score_ia") is not None:
+        return t.get("score_ia")
+    return t.get("score", 0)
+
 filtered_watchlist = [w for w in watchlist if _ia_score(w) >= score_minimum]
+filtered_watchlist = sorted(filtered_watchlist, key=_ia_score, reverse=True)
 
 page_size = 10
 total = len(filtered_watchlist)
