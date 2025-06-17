@@ -4,9 +4,12 @@ import subprocess
 import sqlite3
 import math
 from datetime import datetime
+import threading
+import time
 
 import pandas as pd
 import streamlit as st
+from notifications.proactive_voice import ProactiveVoiceNotifier
 
 # ─── Configuration de la page ───
 st.set_page_config(page_title="WatchlistBot V7", layout="wide")
@@ -17,6 +20,15 @@ ROOT_DIR = os.path.abspath(os.path.join(ROOT_UI, ".."))
 SCRIPTS = os.path.join(ROOT_DIR, "scripts")
 UTILS = os.path.join(ROOT_DIR, "utils")
 SIMULATION = os.path.join(ROOT_DIR, "simulation")
+
+# ─── Notifications vocales ───
+notifier = ProactiveVoiceNotifier()
+
+
+def loop_notifications() -> None:
+    while True:
+        notifier.run_pending()
+        time.sleep(5)
 
 # ─── Ajout des chemins au système ───
 for path in (ROOT_DIR, SCRIPTS, ROOT_UI, UTILS, SIMULATION):
@@ -82,6 +94,15 @@ page = st.sidebar.radio("Menu principal", [
 
 # Activation IA locale
 use_local_llm = st.sidebar.checkbox("Activer IA locale (Mistral-7B)", key="local_llm")
+
+if "voice_thread" not in st.session_state:
+    st.session_state.voice_thread = None
+
+if st.sidebar.button("🎤 Activer notifications vocales") and st.session_state.voice_thread is None:
+    thread = threading.Thread(target=loop_notifications, daemon=True)
+    thread.start()
+    st.session_state.voice_thread = thread
+    st.success("Notifications vocales activées")
 
 # ─── Pages secondaires ───
 if page == "📋 Roadmap":
