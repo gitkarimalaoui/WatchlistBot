@@ -12,7 +12,7 @@ import re
 import sqlite3
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import List, Dict
+from typing import Any, Dict, Iterable, List
 
 import requests
 import yfinance as yf
@@ -21,12 +21,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
-DB_PATH = Path(__file__).resolve().parents[1] / "data" / "trades.db"
-DEFAULT_KEYWORDS = ["fda", "approval", "results", "pr", "study"]
+DB_PATH = Path(os.getenv("DB_PATH", Path(__file__).resolve().parents[1] / "data" / "trades.db"))
+DEFAULT_KEYWORDS = ["fda", "approval", "results", "pr", "study", "clinical", "drug"]
 
 
-def get_recent_news_from_finnhub(days: int = 2) -> List[Dict]:
-    """Return recent general news articles within ``days`` days."""
+def get_recent_news_from_finnhub(days: int = 2) -> List[Dict[str, Any]]:
+    """Fetch recent general news and filter to the last ``days`` days."""
     if not FINNHUB_API_KEY:
         print("FINNHUB_API_KEY missing")
         return []
@@ -42,7 +42,7 @@ def get_recent_news_from_finnhub(days: int = 2) -> List[Dict]:
         return []
 
     cutoff = datetime.utcnow() - timedelta(days=days)
-    recent: List[Dict] = []
+    recent: List[Dict[str, Any]] = []
     for art in articles:
         ts = art.get("datetime")
         if ts is None:
@@ -52,16 +52,25 @@ def get_recent_news_from_finnhub(days: int = 2) -> List[Dict]:
         except Exception:
             continue
         if dt >= cutoff:
-            recent.append(art)
+            recent.append(
+                {
+                    "title": art.get("headline", ""),
+                    "summary": art.get("summary", ""),
+                    "date": dt.isoformat(),
+                    "url": art.get("url", ""),
+                    "source": art.get("source", ""),
+                    "related": art.get("related", ""),
+                }
+            )
     return recent
 
 
-def extract_tickers_from_news(news_list: List[Dict]) -> List[str]:
+def extract_tickers_from_news(news_list: Iterable[Dict[str, Any]]) -> List[str]:
     """Extract potential US tickers from news items."""
-    pattern = re.compile(r"(?:\$|\[)([A-Z]{1,5})(?:\]|)")
-    tickers = set()
+    pattern = re.compile(r"(?:\$|\(|\[)([A-Z]{1,5})(?:\)|\]|)")
+    tickers: set[str] = set()
     for news in news_list:
-        text = f"{news.get('headline','')} {news.get('summary','')}"
+        text = f"{news.get('title', '')} {news.get('summary', '')}"
         for match in pattern.finditer(text):
             tickers.add(match.group(1))
         related = news.get("related", "")
@@ -91,30 +100,98 @@ def validate_ticker(ticker: str) -> bool:
     return True
 
 
-def insert_news_ticker_in_watchlist(ticker: str, news_data: Dict) -> None:
-    """Upsert ticker into watchlist with provenance ``NewsAuto``."""
-    conn = sqlite3.connect(DB_PATH)
-    try:
+def _ensure_schema(conn: sqlite3.Connection) -> None:
+    """Create required tables if they don't already exist."""
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS watchlist (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ticker TEXT UNIQUE NOT NULL,
+            source TEXT,
+            date TEXT,
+            description TEXT,
+            updated_at DATETIME
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS news_by_ticker (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ticker TEXT NOT NULL,
+            date TEXT NOT NULL,
+            title TEXT,
+            summary TEXT,
+            url TEXT,
+            source TEXT,
+            UNIQUE(ticker, date)
+        )
+        """
+    )
+    conn.commit()
+
+
+def insert_news_ticker_in_watchlist(conn: sqlite3.Connection, ticker: str, news_data: Dict[str, Any]) -> bool:
+    """Insert or update a ticker in watchlist and record its news.
+
+    Parameters
+    ----------
+    conn : sqlite3.Connection
+        Active connection to the database.
+    ticker : str
+        Symbol to insert/update.
+    news_data : Dict[str, Any]
+        News dictionary with keys ``title``, ``summary``, ``date``, ``url`` and ``source``.
+
+    Returns
+    -------
+    bool
+        ``True`` if a new ticker was inserted, ``False`` otherwise.
+    """
+
+    row = conn.execute(
+        "SELECT 1 FROM watchlist WHERE ticker = ?",
+        (ticker,),
+    ).fetchone()
+    inserted = row is None
+
+    if inserted:
         conn.execute(
             """
             INSERT INTO watchlist (ticker, source, date, description, updated_at)
             VALUES (?, 'NewsAuto', ?, ?, CURRENT_TIMESTAMP)
-            ON CONFLICT(ticker) DO UPDATE SET
-                source=CASE WHEN instr(source, 'NewsAuto') > 0 THEN source
-                             ELSE COALESCE(source, '') || ' | NewsAuto' END,
-                date=excluded.date,
-                description=excluded.description,
-                updated_at=CURRENT_TIMESTAMP
             """,
-            (
-                ticker,
-                datetime.utcnow().isoformat(),
-                news_data.get("headline", "")[:200],
-            ),
+            (ticker, news_data.get("date"), news_data.get("title", "")[:200]),
         )
-        conn.commit()
-    finally:
-        conn.close()
+    else:
+        conn.execute(
+            """
+            UPDATE watchlist
+            SET source = CASE WHEN instr(COALESCE(source, ''), 'NewsAuto') > 0
+                               THEN source
+                               ELSE COALESCE(source, '') || ' | NewsAuto' END,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE ticker = ?
+            """,
+            (ticker,),
+        )
+
+    conn.execute(
+        """
+        INSERT OR IGNORE INTO news_by_ticker (ticker, date, title, summary, url, source)
+        VALUES (?, ?, ?, ?, ?, ?)
+        """,
+        (
+            ticker,
+            news_data.get("date"),
+            news_data.get("title"),
+            news_data.get("summary"),
+            news_data.get("url"),
+            news_data.get("source"),
+        ),
+    )
+    conn.commit()
+    return inserted
 
 
 def main() -> None:
@@ -123,25 +200,37 @@ def main() -> None:
         print("No recent news found")
         return
 
-    filtered = [
-        n
-        for n in news
-        if any(kw in (n.get("headline", "") + n.get("summary", "")).lower() for kw in DEFAULT_KEYWORDS)
-    ]
+    conn = sqlite3.connect(DB_PATH)
+    _ensure_schema(conn)
 
-    extracted = extract_tickers_from_news(filtered)
-    if not extracted:
-        print("No tickers detected")
-        return
+    added = 0
+    updated = 0
 
-    inserted = []
-    for t in extracted:
-        if validate_ticker(t):
-            insert_news_ticker_in_watchlist(t, filtered[0])
-            inserted.append(t)
+    for article in news:
+        text = f"{article.get('title', '')} {article.get('summary', '')}".lower()
+        if not any(kw in text for kw in DEFAULT_KEYWORDS):
+            continue
 
-    if inserted:
-        print("Inserted tickers:", ", ".join(inserted))
+        tickers = extract_tickers_from_news([article])
+        if not tickers:
+            continue
+
+        for t in tickers:
+            if not validate_ticker(t):
+                continue
+            inserted = insert_news_ticker_in_watchlist(conn, t, article)
+            if inserted:
+                added += 1
+            else:
+                updated += 1
+
+    conn.close()
+
+    if added or updated:
+        if added:
+            print(f"✅ {added} nouveaux tickers ajoutés à la watchlist")
+        if updated:
+            print(f"🔁 {updated} tickers mis à jour avec des news récentes")
     else:
         print("No valid tickers found")
 
