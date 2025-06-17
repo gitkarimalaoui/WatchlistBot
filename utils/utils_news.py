@@ -1,86 +1,46 @@
-from __future__ import annotations
-
-import os
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional
-
 import requests
+from typing import List, Dict, Optional
+from datetime import datetime, timedelta
 
-from config.config_manager import _load_dotenv, config_manager
-
-# Ensure environment variables are loaded
-_load_dotenv()
-
-FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY") or config_manager.get("finnhub_api")
-
-
-def _missing_key() -> bool:
-    return not FINNHUB_API_KEY or "your_default_api_key_here" in str(FINNHUB_API_KEY)
+FINNHUB_API_KEY = "c8e375999c6044d8ae742e9ddc19d37a"
+DEFAULT_KEYWORDS = ["FDA", "approval", "results", "study", "PR", "clinical"]
 
 
 def fetch_news_finnhub(
-    ticker: str,
-    from_days: int = 2,
-    keywords: Optional[List[str]] = None,
+    ticker: str, from_days: int = 2, keywords: Optional[List[str]] = None
 ) -> List[Dict]:
-    """Retrieve recent Finnhub news for ``ticker`` and filter by keywords.
-
-    Parameters
-    ----------
-    ticker : str
-        Stock symbol (e.g. "SNPX").
-    from_days : int, optional
-        Number of days to look back from today. Default is 2.
-    keywords : list[str], optional
-        Keywords used to filter news headlines and summaries.
-
-    Returns
-    -------
-    list[dict]
-        Filtered news entries with ``datetime``, ``headline``, ``summary``, ``url``
-        and ``source`` fields.
-    """
-
     if keywords is None:
-        keywords = ["FDA", "approval", "results", "study", "PR", "clinical"]
+        keywords = DEFAULT_KEYWORDS
 
-    if _missing_key():
+    today = datetime.utcnow()
+    from_date = (today - timedelta(days=from_days)).strftime("%Y-%m-%d")
+    to_date = today.strftime("%Y-%m-%d")
+
+    url = (
+        f"https://finnhub.io/api/v1/company-news?symbol={ticker}&from={from_date}"
+        f"&to={to_date}&token={FINNHUB_API_KEY}"
+    )
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        print(f"Erreur API Finnhub pour {ticker}: {response.status_code}")
         return []
 
-    to_date = datetime.utcnow().date()
-    from_date = to_date - timedelta(days=from_days)
+    articles = response.json()
+    filtered = []
 
-    params = {
-        "symbol": ticker,
-        "from": from_date.isoformat(),
-        "to": to_date.isoformat(),
-        "token": FINNHUB_API_KEY,
-    }
-
-    try:
-        response = requests.get(
-            "https://finnhub.io/api/v1/company-news", params=params, timeout=10
-        )
-        response.raise_for_status()
-        items = response.json()
-    except Exception:
-        return []
-
-    kw_lower = [k.lower() for k in keywords]
-    results: List[Dict] = []
-    for item in items:
-        headline = item.get("headline", "")
-        summary = item.get("summary", "")
-        text = f"{headline} {summary}".lower()
-        if any(k in text for k in kw_lower):
-            results.append(
+    for article in articles:
+        headline = article.get("headline", "").lower()
+        summary = article.get("summary", "").lower()
+        if any(kw.lower() in headline or kw.lower() in summary for kw in keywords):
+            filtered.append(
                 {
-                    "datetime": item.get("datetime"),
-                    "headline": headline,
-                    "summary": summary,
-                    "url": item.get("url"),
-                    "source": item.get("source"),
+                    "datetime": article.get("datetime"),
+                    "headline": article.get("headline"),
+                    "summary": article.get("summary"),
+                    "url": article.get("url"),
+                    "source": article.get("source"),
                 }
             )
 
-    return results
+    return filtered
