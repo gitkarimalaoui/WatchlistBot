@@ -45,6 +45,7 @@ from utils_affichage_ticker import afficher_ticker_panel
 from intelligence.ai_scorer import compute_global_score
 from utils.progress_tracker import load_progress
 from utils.fda_fetcher import fetch_fda_data
+from utils.utils_news import fetch_news_finnhub
 from intelligence.local_llm import (
     run_local_llm,
     chunk_and_query_local_llm,
@@ -327,6 +328,21 @@ with st.expander("📥 Données marché – Historique et Intraday"):
 
 # 💼 Affichage dynamique paginé
 watchlist = load_watchlist()
+
+if st.button("📣 Vérifier News PR pour la watchlist"):
+    news_detected = []
+    for item in watchlist:  # liste de dicts {'symbol': 'SNPX', ...}
+        symbol = item.get("symbol") or item.get("ticker")
+        if not symbol:
+            continue
+        news = fetch_news_finnhub(symbol)
+        if news:
+            news_detected.append((symbol, news))
+            st.markdown(
+                f"✅ **{symbol}** → {len(news)} news détectées (provenance = `NewsPR`)")
+
+    if not news_detected:
+        st.warning("Aucune news critique détectée.")
 score_min = st.sidebar.slider("🌟 Score IA minimum", 0.0, 10.0, 0.0, step=0.5)
 filtered_watchlist = [w for w in watchlist if w.get("global_score", 0) >= score_min]
 
