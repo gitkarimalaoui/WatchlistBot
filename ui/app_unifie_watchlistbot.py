@@ -9,7 +9,6 @@ import time
 
 import pandas as pd
 import streamlit as st
-from notifications.proactive_voice import ProactiveVoiceNotifier
 
 # ─── Configuration de la page ───
 st.set_page_config(page_title="WatchlistBot V7", layout="wide")
@@ -21,6 +20,14 @@ SCRIPTS = os.path.join(ROOT_DIR, "scripts")
 UTILS = os.path.join(ROOT_DIR, "utils")
 SIMULATION = os.path.join(ROOT_DIR, "simulation")
 
+# ─── Ajout des chemins au système ───
+for path in (ROOT_DIR, SCRIPTS, ROOT_UI, UTILS, SIMULATION):
+    if path not in sys.path:
+        sys.path.insert(0, path)
+
+# ─── Imports locaux ───
+from notifications.proactive_voice import ProactiveVoiceNotifier
+
 # ─── Notifications vocales ───
 notifier = ProactiveVoiceNotifier()
 
@@ -29,11 +36,6 @@ def loop_notifications() -> None:
     while True:
         notifier.run_pending()
         time.sleep(5)
-
-# ─── Ajout des chemins au système ───
-for path in (ROOT_DIR, SCRIPTS, ROOT_UI, UTILS, SIMULATION):
-    if path not in sys.path:
-        sys.path.insert(0, path)
 
 # ─── Imports locaux ───
 from roadmap_ui import roadmap_interface, roadmap_productivity_block, personal_interface
