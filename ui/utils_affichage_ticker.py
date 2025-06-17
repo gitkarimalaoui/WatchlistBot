@@ -136,19 +136,20 @@ def afficher_ticker_panel(ticker, stock, index):
         price_str = f"{price}" if price is not None else "N/A"
         volume_str = f"{volume}" if volume is not None else "N/A"
 
-# --- FLOAT : gestion robuste si None ---
-float_value = stock.get("float")
-if float_value is None:
-    float_str = "N/A"
-    float_flag = ""
-else:
-    try:
-        float_million = float(float_value) / 1_000_000
-        float_str = f"{float_million:.1f}M"
-        float_flag = "⚡" if float_value < 20_000_000 else ""
-    except Exception:
-        float_str = "N/A"
-        float_flag = ""
+        # --- FLOAT : gestion robuste si None ---
+        float_value = stock.get("float")
+        if float_value is None:
+            float_str = "N/A"
+            float_flag = ""
+        else:
+            try:
+                float_million = float(float_value) / 1_000_000
+                float_str = f"{float_million:.1f}M"
+                float_flag = "⚡" if float_value < 20_000_000 else ""
+            except Exception:
+                float_str = "N/A"
+                float_flag = ""
+        
         st.markdown(
             f"""
 🔎 **Indicateurs Clés**
