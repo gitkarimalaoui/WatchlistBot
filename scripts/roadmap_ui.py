@@ -8,6 +8,7 @@ import pandas as pd
 
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 DB_PATH = os.path.join(ROOT_DIR, 'data', 'project_tracker.db')
+TRADES_DB = os.path.join(ROOT_DIR, 'data', 'trades.db')
 DOC_PATH = os.path.join(ROOT_DIR, 'project_doc')
 IMAGES_PATH = os.path.join(DOC_PATH, 'images')
 
@@ -241,3 +242,45 @@ def personal_interface():
         st.markdown("🏡 Priorités familiales & sociales")
     with tabs[5]:
         st.markdown("🤖 Assistant IA personnel en cours d'intégration...")
+
+
+def _compute_watchlist_kpis(db_path: str = TRADES_DB) -> dict:
+    """Return watchlist KPI metrics from the trades database."""
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+    total = cur.execute("SELECT COUNT(*) FROM watchlist").fetchone()[0]
+    fda = cur.execute(
+        "SELECT COUNT(*) FROM watchlist WHERE COALESCE(has_fda,0)=1"
+    ).fetchone()[0]
+    newspr = cur.execute(
+        "SELECT COUNT(*) FROM watchlist WHERE source LIKE '%NewsPR%'"
+    ).fetchone()[0]
+    newsauto = cur.execute(
+        "SELECT COUNT(*) FROM watchlist WHERE source LIKE '%NewsAuto%'"
+    ).fetchone()[0]
+    news_total = cur.execute("SELECT COUNT(*) FROM news_by_ticker").fetchone()[0]
+    conn.close()
+    return {
+        "total": total,
+        "fda": fda,
+        "newspr": newspr,
+        "newsauto": newsauto,
+        "news_total": news_total,
+    }
+
+
+def watchlist_kpi_dashboard() -> None:
+    """Display KPI counters with refresh option."""
+    if "wl_metrics" not in st.session_state:
+        st.session_state["wl_metrics"] = _compute_watchlist_kpis()
+
+    if st.button("🔁 Recalculer les KPI"):
+        st.session_state["wl_metrics"] = _compute_watchlist_kpis()
+
+    metrics = st.session_state["wl_metrics"]
+    cols = st.columns(5)
+    cols[0].metric("Tickers", metrics["total"])
+    cols[1].metric("Avec FDA", metrics["fda"])
+    cols[2].metric("News PR", metrics["newspr"])
+    cols[3].metric("News Auto", metrics["newsauto"])
+    cols[4].metric("Total news", metrics["news_total"])
