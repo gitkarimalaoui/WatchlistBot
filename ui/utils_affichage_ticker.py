@@ -2,12 +2,83 @@
 from simulation.execution_simulee import enregistrer_trade_simule
 
 import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+
+try:  # Optional dependency, may not be installed
+    from streamlit_autorefresh import st_autorefresh
+except Exception:  # pragma: no cover - fallback when package missing
+    st_autorefresh = None  # type: ignore
+
 from utils_graph import (
     plot_dual_chart,
     charger_historique_intelligent,
     charger_intraday_intelligent,
 )
 from utils.order_executor import executer_ordre_reel_direct
+
+
+def calculer_indicateurs(df: pd.DataFrame) -> dict | None:
+    """Calcule quelques indicateurs techniques simples."""
+
+    if df is None or df.empty:
+        return None
+
+    df = df.copy()
+    close = df["close"].astype(float)
+
+    delta = close.diff()
+    gain = delta.clip(lower=0)
+    loss = -delta.clip(upper=0)
+    avg_gain = gain.rolling(14, min_periods=14).mean()
+    avg_loss = loss.rolling(14, min_periods=14).mean()
+    rs = avg_gain / avg_loss
+    rsi = 100 - (100 / (1 + rs))
+
+    ema9 = close.ewm(span=9, adjust=False).mean()
+    ema21 = close.ewm(span=21, adjust=False).mean()
+
+    ema12 = close.ewm(span=12, adjust=False).mean()
+    ema26 = close.ewm(span=26, adjust=False).mean()
+    macd = ema12 - ema26
+    macd_signal = macd.ewm(span=9, adjust=False).mean()
+
+    vwap = (df["close"] * df["volume"]).cumsum() / df["volume"].cumsum()
+
+    volume_avg = df["volume"].rolling(50, min_periods=1).mean()
+
+    return {
+        "rsi": rsi.iloc[-1],
+        "ema9": ema9.iloc[-1],
+        "ema21": ema21.iloc[-1],
+        "macd": macd.iloc[-1],
+        "macd_signal": macd_signal.iloc[-1],
+        "vwap": vwap.iloc[-1],
+        "volume": df["volume"].iloc[-1],
+        "volume_avg": volume_avg.iloc[-1],
+        "price": close.iloc[-1],
+    }
+
+
+def calculer_score_indicateurs(data: dict) -> int:
+    """Calcule un score simple basé sur plusieurs indicateurs."""
+
+    score = 0
+    if 50 < data.get("rsi", 0) < 70:
+        score += 10
+    if data.get("ema9", 0) > data.get("ema21", 0):
+        score += 15
+    if data.get("price", 0) > data.get("vwap", 0):
+        score += 15
+    if data.get("macd", 0) > data.get("macd_signal", 0):
+        score += 10
+    if data.get("volume", 0) > 1.5 * data.get("volume_avg", 0):
+        score += 10
+    if data.get("float", 0) < 20_000_000:
+        score += 5
+    if data.get("catalyst"):
+        score += 15
+    return min(score, 100)
 
 
 def _enregistrer_trade(ticker: str, prix: float, quantite: int = 1, sl=None, tp=None, exit_price=None):
@@ -24,6 +95,54 @@ def _enregistrer_trade(ticker: str, prix: float, quantite: int = 1, sl=None, tp=
 def afficher_ticker_panel(ticker, stock, index):
     label = f"{index + 1}. {ticker}"
     with st.expander(label, expanded=False):
+        if st_autorefresh:
+            st_autorefresh(interval=30 * 1000, key=f"refresh_{ticker}_{index}")
+        if st.button("🔄 Rafraîchir", key=f"btn_refresh_{ticker}_{index}"):
+            st.experimental_rerun()
+
+        df_intraday = charger_intraday_intelligent(ticker)
+        indicateurs = calculer_indicateurs(df_intraday)
+        catalyst = "FDA" if stock.get("has_fda") else ""
+        if indicateurs:
+            indicateurs["float"] = float(stock.get("float", 0) or 0)
+            indicateurs["catalyst"] = catalyst
+            score_local = calculer_score_indicateurs(indicateurs)
+        else:
+            score_local = 0
+
+        ratio = (
+            indicateurs.get("volume", 0) / indicateurs.get("volume_avg", 1)
+            if indicateurs
+            else 0
+        )
+        st.markdown(
+            f"""
+🔎 **Indicateurs Clés**
+- **RSI (14)** : {indicateurs.get('rsi', 'N/A'):.2f if indicateurs else 'N/A'} {'🟢' if indicateurs and 50 < indicateurs.get('rsi',0) < 70 else '🔴'}
+- **EMA 9 / 21** : {indicateurs.get('ema9','N/A'):.2f if indicateurs else 'N/A'} / {indicateurs.get('ema21','N/A'):.2f if indicateurs else 'N/A'} {'✅' if indicateurs and indicateurs.get('ema9',0) > indicateurs.get('ema21',0) else '❌'}
+- **MACD** : {indicateurs.get('macd','N/A'):.2f if indicateurs else 'N/A'} vs Signal {indicateurs.get('macd_signal','N/A'):.2f if indicateurs else 'N/A'}
+- **VWAP** : {indicateurs.get('vwap','N/A'):.2f if indicateurs else 'N/A'} (current price: {indicateurs.get('price','N/A')})
+- **Volume** : {indicateurs.get('volume','N/A')} ({ratio:.2f}x)
+- **Float** : {float(stock.get('float', 0))/1_000_000:.0f}M {'⚡' if stock.get('float',0) < 20_000_000 else ''}
+- **Catalyseur détecté** : {catalyst or 'Aucun'}
+- **Score IA** : {score_local}/100 {'🟢' if score_local>80 else '🟡' if score_local>60 else '🔴'}
+"""
+        )
+
+        if df_intraday is not None and not df_intraday.empty:
+            df = df_intraday.copy()
+            df["ema9"] = df["close"].ewm(span=9, adjust=False).mean()
+            df["ema21"] = df["close"].ewm(span=21, adjust=False).mean()
+            df["vwap"] = (df["close"] * df["volume"]).cumsum() / df["volume"].cumsum()
+
+            fig, ax = plt.subplots()
+            ax.plot(df["timestamp"], df["close"], label="Price")
+            ax.plot(df["timestamp"], df["vwap"], label="VWAP")
+            ax.plot(df["timestamp"], df["ema9"], label="EMA9", linestyle="--")
+            ax.plot(df["timestamp"], df["ema21"], label="EMA21", linestyle="--")
+            ax.legend()
+            st.pyplot(fig)
+
         st.markdown(f"**Score IA :** {stock.get('score', 'N/A')}")
         st.markdown(f"**Score global :** {stock.get('global_score', 'N/A')}")
         st.markdown(f"**Score GPT :** {stock.get('score_gpt', 'N/A')}")
