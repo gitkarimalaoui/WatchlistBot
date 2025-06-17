@@ -117,15 +117,42 @@ def afficher_ticker_panel(ticker, stock, index):
             if indicateurs
             else 0
         )
+
+        rsi = indicateurs.get("rsi") if indicateurs else None
+        ema9 = indicateurs.get("ema9") if indicateurs else None
+        ema21 = indicateurs.get("ema21") if indicateurs else None
+        macd = indicateurs.get("macd") if indicateurs else None
+        macd_signal = indicateurs.get("macd_signal") if indicateurs else None
+        vwap = indicateurs.get("vwap") if indicateurs else None
+        price = indicateurs.get("price") if indicateurs else None
+        volume = indicateurs.get("volume") if indicateurs else None
+
+        rsi_str = f"{rsi:.2f}" if rsi is not None else "N/A"
+        ema9_str = f"{ema9:.2f}" if ema9 is not None else "N/A"
+        ema21_str = f"{ema21:.2f}" if ema21 is not None else "N/A"
+        macd_str = f"{macd:.2f}" if macd is not None else "N/A"
+        macd_signal_str = f"{macd_signal:.2f}" if macd_signal is not None else "N/A"
+        vwap_str = f"{vwap:.2f}" if vwap is not None else "N/A"
+        price_str = f"{price}" if price is not None else "N/A"
+        volume_str = f"{volume}" if volume is not None else "N/A"
+
+        float_value = stock.get("float")
+        if float_value is None:
+            float_str = "N/A"
+            float_flag = ""
+        else:
+            float_str = f"{float_value/1_000_000:.0f}M"
+            float_flag = "⚡" if float_value < 20_000_000 else ""
+
         st.markdown(
             f"""
 🔎 **Indicateurs Clés**
-- **RSI (14)** : {indicateurs.get('rsi', 'N/A'):.2f if indicateurs else 'N/A'} {'🟢' if indicateurs and 50 < indicateurs.get('rsi',0) < 70 else '🔴'}
-- **EMA 9 / 21** : {indicateurs.get('ema9','N/A'):.2f if indicateurs else 'N/A'} / {indicateurs.get('ema21','N/A'):.2f if indicateurs else 'N/A'} {'✅' if indicateurs and indicateurs.get('ema9',0) > indicateurs.get('ema21',0) else '❌'}
-- **MACD** : {indicateurs.get('macd','N/A'):.2f if indicateurs else 'N/A'} vs Signal {indicateurs.get('macd_signal','N/A'):.2f if indicateurs else 'N/A'}
-- **VWAP** : {indicateurs.get('vwap','N/A'):.2f if indicateurs else 'N/A'} (current price: {indicateurs.get('price','N/A')})
-- **Volume** : {indicateurs.get('volume','N/A')} ({ratio:.2f}x)
-- **Float** : {float(stock.get('float', 0))/1_000_000:.0f}M {'⚡' if stock.get('float',0) < 20_000_000 else ''}
+- **RSI (14)** : {rsi_str} {'🟢' if rsi is not None and 50 < rsi < 70 else '🔴'}
+- **EMA 9 / 21** : {ema9_str} / {ema21_str} {'✅' if ema9 is not None and ema21 is not None and ema9 > ema21 else '❌'}
+- **MACD** : {macd_str} vs Signal {macd_signal_str}
+- **VWAP** : {vwap_str} (current price: {price_str})
+- **Volume** : {volume_str} ({ratio:.2f}x)
+- **Float** : {float_str} {float_flag}
 - **Catalyseur détecté** : {catalyst or 'Aucun'}
 - **Score IA** : {score_local}/100 {'🟢' if score_local>80 else '🟡' if score_local>60 else '🔴'}
 """
