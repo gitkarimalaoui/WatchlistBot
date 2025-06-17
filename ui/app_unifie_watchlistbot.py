@@ -44,7 +44,7 @@ from pages.cloture_journee import cloturer_journee
 from utils_affichage_ticker import afficher_ticker_panel
 from intelligence.ai_scorer import compute_global_score
 from utils.progress_tracker import load_progress
-from utils.fda_fetcher import fetch_fda_data
+from utils.fda_fetcher import fetch_fda_data, enrichir_watchlist_avec_fda
 from intelligence.local_llm import (
     run_local_llm,
     chunk_and_query_local_llm,
@@ -166,6 +166,7 @@ def load_watchlist():
             w.source,
             w.date,
             w.description,
+            COALESCE(w.has_fda, 0) AS has_fda,
             w.float AS float,
             COALESCE(w.score, 0) AS score,
             COALESCE(ns.score, 0) AS score_gpt,
@@ -290,6 +291,11 @@ with col2:
         with st.spinner("Chargement des approbations…"):
             inserted = fetch_fda_data(limit=100, verbose=True, db_path=DB_PATH)
         st.success(f"✅ {inserted} approbations ajoutées")
+
+    if st.button("🧪 Vérifier FDA"):
+        with sqlite3.connect(DB_PATH) as conn:
+            enrichir_watchlist_avec_fda(conn)
+        st.success("Watchlist mise à jour avec les données FDA.")
 
 # 📥 Scraping Jaguar
 with st.expander("📥 Scraper Jaguar et Injecter"):

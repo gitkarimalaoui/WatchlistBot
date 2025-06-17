@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Float, DateTime
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean
 from .db import Base
 
 
@@ -16,6 +16,7 @@ class Watchlist(Base):
     source = Column(String)
     date = Column(String)
     description = Column(String)
+    has_fda = Column(Boolean, default=False)
     updated_at = Column(DateTime)
 
 

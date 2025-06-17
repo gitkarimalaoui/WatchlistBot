@@ -31,6 +31,8 @@ def afficher_ticker_panel(ticker, stock, index):
         st.markdown(f"**Source :** {stock.get('source', 'N/A')}")
         st.markdown(f"**Date :** {stock.get('date', 'N/A')}")
         st.markdown(f"**Description :** {stock.get('description', 'N/A')}")
+        if stock.get('has_fda'):
+            st.markdown("🧬 **FDA match**", unsafe_allow_html=True)
         st.markdown(f"**Dernier prix :** {stock.get('price', 'N/A')}")
         st.markdown(f"**Volume :** {stock.get('volume', 'N/A')}")
         st.markdown(

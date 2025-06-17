@@ -107,3 +107,36 @@ def test_fetch_fda_data_incremental(monkeypatch, tmp_path: Path):
     assert first == 1
     assert second == 0
 
+
+def test_enrichir_watchlist_avec_fda(tmp_path: Path):
+    db_file = tmp_path / "test.db"
+    conn = sqlite3.connect(db_file)
+    conn.execute(
+        "CREATE TABLE watchlist (ticker TEXT, source TEXT)"
+    )
+    conn.execute(
+        "INSERT INTO watchlist (ticker, source) VALUES ('DRUGA', 'Manual')"
+    )
+    conn.execute(
+        """
+        CREATE TABLE fda_approvals (
+            application_number TEXT PRIMARY KEY,
+            sponsor_name TEXT,
+            substance_name TEXT,
+            brand_name TEXT
+        )
+        """
+    )
+    conn.execute(
+        "INSERT INTO fda_approvals (application_number, sponsor_name, substance_name, brand_name)"
+        " VALUES ('NDA1','Demo','SubstanceA','DRUGA')"
+    )
+    conn.commit()
+
+    fda.enrichir_watchlist_avec_fda(conn)
+
+    row = conn.execute("SELECT has_fda, source FROM watchlist WHERE ticker='DRUGA'").fetchone()
+    conn.close()
+    assert row[0] == 1
+    assert "FDA" in row[1]
+
