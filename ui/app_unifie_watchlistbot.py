@@ -44,7 +44,7 @@ from pages.cloture_journee import cloturer_journee
 from utils_affichage_ticker import afficher_ticker_panel
 from intelligence.ai_scorer import compute_global_score
 from utils.progress_tracker import load_progress
-from utils.fda_fetcher import fetch_fda_data
+from utils.fda_fetcher import fetch_fda_data, enrichir_watchlist_avec_fda
 from utils.utils_news import fetch_news_finnhub
 from intelligence.local_llm import (
     run_local_llm,
