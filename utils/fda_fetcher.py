@@ -209,6 +209,54 @@ def _export_to_meta(conn: sqlite3.Connection) -> None:
         json.dump(existing, f, indent=2)
 
 
+def _ensure_has_fda_column(conn: sqlite3.Connection) -> None:
+    cur = conn.execute("PRAGMA table_info(watchlist)")
+    cols = [row[1] for row in cur.fetchall()]
+    if "has_fda" not in cols:
+        conn.execute("ALTER TABLE watchlist ADD COLUMN has_fda INTEGER DEFAULT 0")
+        conn.commit()
+
+
+def get_all_watchlist_tickers(conn: sqlite3.Connection) -> List[Dict[str, str]]:
+    cur = conn.execute("SELECT ticker FROM watchlist")
+    rows = cur.fetchall()
+    return [{"symbol": r[0]} for r in rows]
+
+
+def check_fda_match(conn: sqlite3.Connection, symbol: str) -> bool:
+    cursor = conn.cursor()
+    query = (
+        "SELECT 1 FROM fda_approvals WHERE LOWER(brand_name) LIKE ?"
+        " OR LOWER(substance_name) LIKE ? OR LOWER(sponsor_name) LIKE ?"
+    )
+    like_value = f"%{symbol.lower()}%"
+    cursor.execute(query, [like_value, like_value, like_value])
+    return cursor.fetchone() is not None
+
+
+def update_watchlist_with_fda_flag(conn: sqlite3.Connection, symbol: str) -> None:
+    conn.execute(
+        """
+        UPDATE watchlist
+        SET has_fda = 1,
+            source = CASE WHEN source LIKE '%FDA%' THEN source
+                          ELSE COALESCE(source, '') || ' | FDA' END
+        WHERE ticker = ?
+        """,
+        (symbol,),
+    )
+    conn.commit()
+
+
+def enrichir_watchlist_avec_fda(conn: sqlite3.Connection) -> None:
+    _ensure_has_fda_column(conn)
+    watchlist = get_all_watchlist_tickers(conn)
+    for item in watchlist:
+        symbol = item.get("symbol")
+        if symbol and check_fda_match(conn, symbol):
+            update_watchlist_with_fda_flag(conn, symbol)
+
+
 if __name__ == "__main__":  # pragma: no cover - manual execution only
     import argparse
 
