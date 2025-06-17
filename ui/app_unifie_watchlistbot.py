@@ -38,7 +38,12 @@ def loop_notifications() -> None:
         time.sleep(5)
 
 # ─── Imports locaux ───
-from roadmap_ui import roadmap_interface, roadmap_productivity_block, personal_interface
+from roadmap_ui import (
+    roadmap_interface,
+    roadmap_productivity_block,
+    personal_interface,
+    watchlist_kpi_dashboard,
+)
 from query_entreprise_db import get_portfolio_modules, get_use_cases, get_revenue_sources, get_kpi_targets
 from pages.cloture_journee import cloturer_journee
 from utils_affichage_ticker import afficher_ticker_panel
@@ -150,6 +155,8 @@ try:
     st.progress(progress, text=f"Capital actuel : {last_capital}$")
 except Exception:
     st.progress(0.0, text="Capital actuel : inconnue")
+
+watchlist_kpi_dashboard()
 
 def count_watchlist_tickers():
     conn = sqlite3.connect(DB_PATH)
@@ -334,6 +341,20 @@ with st.expander("📥 Données marché – Historique et Intraday"):
 
 # 💼 Affichage dynamique paginé
 watchlist = load_watchlist()
+
+if st.button("🧠 Détection auto à partir des News"):
+    proc = subprocess.run(
+        [sys.executable, os.path.join(SCRIPTS, "detect_tickers_from_news.py")],
+        capture_output=True,
+        text=True,
+    )
+    if proc.returncode == 0:
+        st.success("✅ Détection terminée")
+        st.code(proc.stdout)
+        st.rerun()
+    else:
+        st.error("❌ Erreur pendant la détection")
+        st.code(proc.stderr)
 
 if st.button("📣 Vérifier News PR pour la watchlist"):
     news_detected = []

@@ -20,6 +20,7 @@ from utils.order_executor import executer_ordre_reel_direct
 
 
 def calculer_indicateurs(df: pd.DataFrame) -> Optional[Dict[str, float]]:
+
     """Calcule quelques indicateurs techniques simples."""
 
     if df is None or df.empty:
