@@ -71,6 +71,17 @@ Dependencies: `ai_scorer.py`, `app_unifie_watchlistbot.py`, database tables `wat
 - Automate continuous updates of progress metrics and integrate with backtest results.
 
 
+
+## Running the Function Audit
+
+Use the helper script to generate a Markdown table of all functions in the repository:
+
+```bash
+python3 scripts/generate_function_audit.py > function_audit.md
+```
+
+The script parses every `.py` file, checks for call sites to mark each function as **used** or not, and attempts to find documentation headings under `project_doc/` or `docs/`. When no matching heading is found, a placeholder user story is generated in the output file.
+
 ## Function Audit
 
 Run the automated audit script to list functions and their usage:
@@ -89,5 +100,6 @@ table which can be redirected to a file:
 The table reports each function signature, the module path, if it is used in the
 codebase, the matching documentation heading (when available) and a placeholder
 user story when no documentation is found.
+
 
 
