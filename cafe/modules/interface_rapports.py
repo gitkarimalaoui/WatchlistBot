@@ -5,6 +5,12 @@ from datetime import datetime
 from modules.database import get_data_by_period, get_chiffre_affaire_by_period
 
 def interface_rapports_mensuels():
+    """Display monthly reports in Streamlit.
+
+    Returns:
+        None
+    """
+
     st.header("📊 Rapports Mensuels")
     year = st.selectbox("Année", range(2020, 2031), index=5)
     month = st.selectbox("Mois", range(1, 13), index=datetime.now().month - 1)
@@ -14,6 +20,12 @@ def interface_rapports_mensuels():
     show_rapport(start_date, end_date)
 
 def interface_rapports_annuels():
+    """Display annual reports in Streamlit.
+
+    Returns:
+        None
+    """
+
     st.header("📊 Rapports Annuels")
     year = st.selectbox("Sélectionner l'année", range(2020, 2031), index=5)
     start_date = f"{year}-01-01"
@@ -21,6 +33,16 @@ def interface_rapports_annuels():
     show_rapport(start_date, end_date)
 
 def show_rapport(start_date, end_date):
+    """Render charts summarizing purchases, charges and revenue.
+
+    Args:
+        start_date (str): First day of the period.
+        end_date (str): Day after the period ends.
+
+    Returns:
+        None
+    """
+
     achats_df, charges_df = get_data_by_period(start_date, end_date)
     chiffre_df = get_chiffre_affaire_by_period(start_date, end_date)
 

@@ -29,6 +29,17 @@ logging.basicConfig(
 )
 
 def debug_prompt() -> str:
+    """Return a formatted debug block with environment information.
+
+    This helper gathers basic runtime details to assist with error
+    diagnostics. The resulting string is logged whenever an exception is
+    captured so that developers can share the context when reporting an
+    issue.
+
+    Returns:
+        str: Multi-line string containing version, OS and path details.
+    """
+
     details = [
         "=== DEBUG INFO (copy below) ===",
         f"Python: {platform.python_version()}",
@@ -44,6 +55,19 @@ logging.info(debug_prompt())
 
 # Capture uncaught exceptions
 def _handle_exception(exc_type, exc_value, exc_traceback):
+    """Log uncaught exceptions with context information.
+
+    This function is installed as ``sys.excepthook`` to intercept any
+    unexpected errors. KeyboardInterrupt exceptions are ignored so that
+    manual termination remains silent. All other exceptions are logged
+    along with the debug prompt for easier troubleshooting.
+
+    Args:
+        exc_type (type): Exception class being handled.
+        exc_value (BaseException): Exception instance.
+        exc_traceback (TracebackType): Traceback object for the exception.
+    """
+
     if issubclass(exc_type, KeyboardInterrupt):
         return
     logging.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))

@@ -2,6 +2,12 @@ import sqlite3
 import pandas as pd
 
 def init_database():
+    """Create the required tables if they do not already exist.
+
+    Returns:
+        None
+    """
+
     conn = sqlite3.connect('cafe_management.db')
     cursor = conn.cursor()
 
@@ -53,6 +59,16 @@ def init_database():
     conn.close()
 
 def insert_achat_quotidien(date_achat, achats_data):
+    """Insert or update a daily purchase record.
+
+    Args:
+        date_achat (str): Purchase date in ISO format.
+        achats_data (dict): Mapping of item names to amounts.
+
+    Returns:
+        None
+    """
+
     conn = sqlite3.connect('cafe_management.db')
     cursor = conn.cursor()
     cursor.execute('SELECT id FROM achats_quotidiens WHERE date = ?', (date_achat,))
@@ -72,6 +88,17 @@ def insert_achat_quotidien(date_achat, achats_data):
     conn.close()
 
 def insert_charges_fixes(date_charge, type_charge, charges_data):
+    """Insert or update a fixed charge record.
+
+    Args:
+        date_charge (str): Charge date in ISO format.
+        type_charge (str): Category of the charge.
+        charges_data (dict): Mapping of charge fields to amounts.
+
+    Returns:
+        None
+    """
+
     conn = sqlite3.connect('cafe_management.db')
     cursor = conn.cursor()
     cursor.execute('SELECT id FROM charges_fixes WHERE date = ? AND type_charge = ?', (date_charge, type_charge))
@@ -91,6 +118,16 @@ def insert_charges_fixes(date_charge, type_charge, charges_data):
     conn.close()
 
 def get_data_by_period(start_date, end_date):
+    """Return purchases and charges between two dates.
+
+    Args:
+        start_date (str): Beginning of the period in ISO format.
+        end_date (str): End of the period in ISO format.
+
+    Returns:
+        tuple[pd.DataFrame, pd.DataFrame]: DataFrames for purchases and charges.
+    """
+
     conn = sqlite3.connect('cafe_management.db')
     achats_df = pd.read_sql_query('''
         SELECT * FROM achats_quotidiens 
@@ -109,6 +146,16 @@ def get_data_by_period(start_date, end_date):
 
 
 def get_chiffre_affaire_by_period(start_date, end_date):
+    """Return turnover records for the given period.
+
+    Args:
+        start_date (str): Beginning of the period in ISO format.
+        end_date (str): End of the period in ISO format.
+
+    Returns:
+        pd.DataFrame: DataFrame containing turnover values.
+    """
+
     conn = sqlite3.connect('cafe_management.db')
     df = pd.read_sql_query('''
         SELECT * FROM chiffre_affaire

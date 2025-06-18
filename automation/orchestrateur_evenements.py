@@ -58,7 +58,11 @@ EVENT_QUEUE: List[tuple[float, Event]] = []
 # ---------------------------------------------------------------------------
 
 def send_telegram(text: str) -> None:
-    """Send a Telegram message if credentials are available."""
+    """Send a Telegram message if credentials are available.
+
+    Args:
+        text (str): Message body to send.
+    """
     token = os.getenv("TELEGRAM_TOKEN")
     chat_id = os.getenv("TELEGRAM_CHAT_ID")
     if not token or not chat_id:
@@ -71,7 +75,14 @@ def send_telegram(text: str) -> None:
 
 
 def trigger_trading_action(event: Event) -> None:
-    """Placeholder for a trading API call."""
+    """Trigger a trading order based on the provided event.
+
+    See ``project_doc/MODULE_1_ORCHESTRATEUR_EVENEMENTS.md`` for the
+    sequence of operations leading to this call.
+
+    Args:
+        event (Event): Planned event potentially containing trading tags.
+    """
     if "trading" in event.context_tags:
         logger.info("[TRADING] Action triggered for %s", event.title)
 
@@ -83,7 +94,18 @@ def trigger_trading_action(event: Event) -> None:
 def collect_events(
     project_db: Path = PROJECT_DB_PATH, trades_db: Path = TRADES_DB_PATH
 ) -> List[Dict[str, Any]]:
-    """Load raw events from available SQLite databases."""
+    """Load raw events from available SQLite databases.
+
+    Detailed steps for this process are described in
+    ``project_doc/MODULE_1_ORCHESTRATEUR_EVENEMENTS.md``.
+
+    Args:
+        project_db (Path): Path to the project database.
+        trades_db (Path): Path to the trades database.
+
+    Returns:
+        List[Dict[str, Any]]: Unprocessed event dictionaries.
+    """
 
     events: List[Dict[str, Any]] = []
 
@@ -135,7 +157,17 @@ def collect_events(
 
 
 def analyze_event_priority(event: Dict[str, Any]) -> Priority:
-    """Return the priority for the provided raw event."""
+    """Return the priority for the provided raw event.
+
+    The logic mirrors the description in
+    ``project_doc/MODULE_1_ORCHESTRATEUR_EVENEMENTS.md``.
+
+    Args:
+        event (Dict[str, Any]): Raw event data.
+
+    Returns:
+        Priority: Computed priority level.
+    """
     now = datetime.now()
 
     if event["source"] == "tasks":
@@ -202,6 +234,17 @@ class SmartScheduler:
 
 
 def schedule_events(events: List[Event], scheduler: SmartScheduler | None = None) -> List[Event]:
+    """Assign execution slots to events and sort them.
+
+    Args:
+        events (List[Event]): Events whose ``time_to_run`` should be set.
+        scheduler (SmartScheduler | None): Custom scheduler, defaults to a
+            :class:`SmartScheduler` instance.
+
+    Returns:
+        List[Event]: The list sorted by run time and priority.
+    """
+
     now = datetime.now()
     scheduler = scheduler or SmartScheduler()
     for ev in events:

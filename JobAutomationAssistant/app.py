@@ -9,6 +9,15 @@ import plotly.express as px
 DB_PATH = "jobtracker.db"
 
 def save_offer_to_db(offer):
+    """Persist a scraped job offer in the database.
+
+    Args:
+        offer (dict): Normalized job offer structure.
+
+    Returns:
+        None
+    """
+
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("""
@@ -23,6 +32,15 @@ def save_offer_to_db(offer):
     conn.close()
 
 def save_application_to_db(application):
+    """Save an application entry to the database.
+
+    Args:
+        application (dict): Application details with nested job info.
+
+    Returns:
+        None
+    """
+
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("""
@@ -36,6 +54,15 @@ def save_application_to_db(application):
     conn.close()
 
 def save_meeting_to_db(meeting):
+    """Store an upcoming meeting in the database.
+
+    Args:
+        meeting (dict): Meeting information to persist.
+
+    Returns:
+        None
+    """
+
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("""
@@ -49,6 +76,12 @@ def save_meeting_to_db(meeting):
     conn.close()
 
 def load_data_from_db():
+    """Load offers, applications and meetings into session state.
+
+    Returns:
+        None
+    """
+
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
 
