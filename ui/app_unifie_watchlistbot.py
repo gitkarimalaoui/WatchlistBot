@@ -404,6 +404,7 @@ def _ia_score(t):
 
     return 0
 
+
 filtered_watchlist = [w for w in watchlist if _ia_score(w) >= score_minimum]
 filtered_watchlist = sorted(filtered_watchlist, key=_ia_score, reverse=True)
 
