@@ -14,6 +14,7 @@ from data.indicateurs import (
     get_catalyseur_score,
     check_breakout_sustain,
 )
+from data.stream_data_manager import get_latest_data
 from utils.execution_reelle import executer_ordre_reel
 from notifications.telegram_bot import envoyer_alerte_ia
 from db.trades import get_nb_trades_du_jour, enregistrer_trade_auto
@@ -24,9 +25,14 @@ def _compute_score(ticker: str) -> Optional[dict]:
     emas = get_ema(ticker, [9, 21])
     vwap = get_vwap(ticker)
     macd, macd_signal = get_macd(ticker)
-    volume_now = get_volume(ticker, "1m")
+    tick_data = get_latest_data(ticker)
+    if tick_data.get("status") != "ERR":
+        volume_now = tick_data.get("volume")
+        last_price = tick_data.get("price")
+    else:
+        volume_now = get_volume(ticker, "1m")
+        last_price = get_last_price(ticker)
     volume_5min_ago = get_volume(ticker, "5m")
-    last_price = get_last_price(ticker)
     price_prev = get_price_5s_ago(ticker)
     float_val = get_float(ticker)
     catalyst = get_catalyseur_score(ticker)
@@ -64,6 +70,7 @@ def _compute_score(ticker: str) -> Optional[dict]:
         "price": last_price,
         "momentum": momentum,
         "volume": volume_now,
+        "source": tick_data.get("source", "FALLBACK"),
     }
 
 
