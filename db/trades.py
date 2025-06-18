@@ -67,15 +67,62 @@ def enregistrer_trade_ia(
     momentum: float,
     source: str,
 ) -> None:
+    """Insère un trade IA enrichi dans la base ``trades``."""
+
     conn = sqlite3.connect("data/trades.db")
-    cursor = conn.cursor()
-    cursor.execute(
-        """
-        INSERT INTO trades (datetime, ticker, action, prix, montant, score_at_entry,
-        pump_pct_60s, rsi_at_entry, ema9, ema21, momentum, source_data)
-        VALUES (datetime('now'), ?, 'achat', ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """,
-        (ticker, prix, montant, score, pump_pct, rsi, ema9, ema21, momentum, source),
-    )
-    conn.commit()
-    conn.close()
+    try:
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS trades (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                datetime TEXT,
+                ticker TEXT,
+                action TEXT,
+                prix REAL,
+                montant REAL,
+                score_at_entry INTEGER,
+                pump_pct_60s REAL,
+                rsi_at_entry REAL,
+                ema9 REAL,
+                ema21 REAL,
+                momentum REAL,
+                source_data TEXT
+            )
+            """,
+        )
+
+        conn.execute(
+            """
+            INSERT INTO trades (
+                datetime,
+                ticker,
+                action,
+                prix,
+                montant,
+                score_at_entry,
+                pump_pct_60s,
+                rsi_at_entry,
+                ema9,
+                ema21,
+                momentum,
+                source_data
+            ) VALUES (?, ?, 'achat', ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                datetime.utcnow().isoformat(),
+                ticker,
+                prix,
+                montant,
+                score,
+                pump_pct,
+                rsi,
+                ema9,
+                ema21,
+                momentum,
+                source,
+            ),
+        )
+
+        conn.commit()
+    finally:
+        conn.close()
