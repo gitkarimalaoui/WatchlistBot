@@ -2,6 +2,7 @@ import json
 import os
 import threading
 from datetime import datetime
+from typing import Dict, List, Optional
 
 import websocket
 import yfinance as yf
@@ -12,13 +13,13 @@ load_dotenv()
 FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
 WATCHLIST = ["TSLA", "AAPL", "NVDA"]
 
-latest_data: dict[str, dict] = {}
+latest_data: Dict[str, Dict] = {}
 connected = False
-ws_app: websocket.WebSocketApp | None = None
+ws_app: Optional[websocket.WebSocketApp] = None
 _data_lock = threading.Lock()
 
 
-def set_watchlist(tickers: list[str]) -> None:
+def set_watchlist(tickers: List[str]) -> None:
     """Update the list of tickers subscribed to the WebSocket."""
     global WATCHLIST
     WATCHLIST = [t.upper() for t in tickers]
