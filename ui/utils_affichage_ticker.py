@@ -84,6 +84,84 @@ def calculer_score_indicateurs(data: dict) -> int:
     return min(score, 100)
 
 
+def _ia_score(t: dict, return_breakdown: bool = False):
+    """Calcule un score pondéré basé sur les indicateurs fournis.
+
+    Parameters
+    ----------
+    t : dict
+        Dictionnaire contenant au moins ``rsi``, ``ema9``, ``ema21``, ``vwap``,
+        ``price`` et ``volume_ratio``.
+    return_breakdown : bool, optional
+        Retourne un tuple ``(score, details)`` lorsque ``True``.
+
+    Returns
+    -------
+    float or tuple
+        Score entre 0 et 100 ou ``(score, details)``.
+    """
+
+    score = 0
+    details = {}
+
+    # RSI (pondération : 20)
+    rsi = t.get("rsi", 0)
+    comp = 0
+    if 50 < rsi < 70:
+        comp = 15
+    elif rsi >= 70:
+        comp = 5
+    score += comp
+    details["RSI"] = comp
+
+    # EMA crossover (pondération : 25)
+    ema9 = t.get("ema9")
+    ema21 = t.get("ema21")
+    comp = 0
+    if ema9 is not None and ema21 is not None:
+        if ema9 > ema21:
+            comp = 25
+        elif ema9 == ema21:
+            comp = 10
+    score += comp
+    details["EMA"] = comp
+
+    # VWAP (pondération : 15)
+    price = t.get("price")
+    vwap = t.get("vwap")
+    comp = 0
+    if price and vwap:
+        if price > vwap:
+            comp = 15
+        else:
+            comp = 5
+    score += comp
+    details["VWAP"] = comp
+
+    # Volume ratio (pondération : 15)
+    volume_ratio = t.get("volume_ratio", 1.0)
+    comp = 0
+    if volume_ratio > 1.5:
+        comp = 15
+    elif volume_ratio > 1.2:
+        comp = 10
+    score += comp
+    details["Vol"] = comp
+
+    # FDA / PR / news catalyst (pondération : 25)
+    catalyst = str(t.get("source", "")).lower()
+    comp = 0
+    if "fda" in catalyst or "newspr" in catalyst:
+        comp = 25
+    score += comp
+    details["FDA"] = comp
+
+    final_score = min(score, 100)
+    if return_breakdown:
+        return final_score, details
+    return final_score
+
+
 def _enregistrer_trade(ticker: str, prix: float, quantite: int = 1, sl=None, tp=None, exit_price=None):
     """Enregistre un trade simulé dans la base de données."""
     enregistrer_trade_simule(
@@ -109,15 +187,19 @@ def afficher_ticker_panel(ticker, stock, index):
         if indicateurs:
             indicateurs["float"] = float(stock.get("float", 0) or 0)
             indicateurs["catalyst"] = catalyst
-            score_local = calculer_score_indicateurs(indicateurs)
+            stock.update(indicateurs)
         else:
-            score_local = 0
+            stock.update({})
 
         ratio = (
             indicateurs.get("volume", 0) / indicateurs.get("volume_avg", 1)
             if indicateurs
             else 0
         )
+        stock["volume_ratio"] = ratio
+        stock["source"] = stock.get("source", "")
+
+        score_local, details = _ia_score(stock, return_breakdown=True)
 
         rsi = indicateurs.get("rsi") if indicateurs else None
         ema9 = indicateurs.get("ema9") if indicateurs else None
@@ -135,7 +217,6 @@ def afficher_ticker_panel(ticker, stock, index):
         stock["macd_signal"] = macd_signal
         stock["vwap"] = vwap
         stock["price"] = price
-        stock["volume_ratio"] = ratio
         stock["score_ia"] = stock.get("score", stock.get("score_ia", 0))
         stock["has_catalyst"] = bool(catalyst)
 
@@ -162,6 +243,7 @@ def afficher_ticker_panel(ticker, stock, index):
                 float_str = "N/A"
                 float_flag = ""
         
+        details_str = ", ".join(f"{k}:{v}" for k, v in details.items())
         st.markdown(
             f"""
 🔎 **Indicateurs Clés**
@@ -172,7 +254,7 @@ def afficher_ticker_panel(ticker, stock, index):
 - **Volume** : {volume_str} ({ratio:.2f}x)
 - **Float** : {float_str} {float_flag}
 - **Catalyseur détecté** : {catalyst or 'Aucun'}
-- **Score IA** : {score_local}/100 {'🟢' if score_local>80 else '🟡' if score_local>60 else '🔴'}
+- **Score IA** : {score_local}/100 [{details_str}]
             """
         )
 
@@ -204,7 +286,7 @@ def afficher_ticker_panel(ticker, stock, index):
             ax.legend()
             st.pyplot(fig)
 
-        st.markdown(f"**Score IA :** {stock.get('score', 'N/A')}")
+        st.markdown(f"**Score pondéré :** {score_local}/100 [{details_str}]")
         st.markdown(f"**Score global :** {stock.get('global_score', 'N/A')}")
         st.markdown(f"**Score GPT :** {stock.get('score_gpt', 'N/A')}")
         st.markdown(f"**Sentiment :** {stock.get('sentiment', 'N/A')}")
