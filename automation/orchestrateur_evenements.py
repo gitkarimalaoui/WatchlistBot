@@ -9,7 +9,7 @@ from dataclasses import dataclass, field, asdict
 from datetime import datetime, time, timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import requests
 
@@ -233,7 +233,9 @@ class SmartScheduler:
         return slot if slot > now else now + timedelta(hours=1)
 
 
-def schedule_events(events: List[Event], scheduler: SmartScheduler | None = None) -> List[Event]:
+def schedule_events(
+    events: List[Event], scheduler: Optional[SmartScheduler] = None
+) -> List[Event]:
     """Assign execution slots to events and sort them.
 
     Args:
