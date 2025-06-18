@@ -65,6 +65,7 @@ from query_entreprise_db import get_portfolio_modules, get_use_cases, get_revenu
 from pages.cloture_journee import cloturer_journee
 from utils_affichage_ticker import afficher_ticker_panel, _ia_score
 from utils.execution_reelle import executer_ordre_reel
+from execution.strategie_scalping import executer_strategie_scalping
 from intelligence.ai_scorer import compute_global_score
 from utils.progress_tracker import load_progress
 from utils.fda_fetcher import fetch_fda_data, enrichir_watchlist_avec_fda
@@ -410,6 +411,13 @@ if st.sidebar.button("🎯 Voir les meilleures opportunités"):
 
 load_watchlist.clear()
 watchlist = load_watchlist()
+
+scalp_auto = st.sidebar.checkbox("Mode scalping auto")
+if scalp_auto:
+    for tick in watchlist:
+        resultat = executer_strategie_scalping(tick.get('ticker') or tick.get('symbol'))
+        if resultat:
+            st.write(f"{tick.get('ticker') or tick.get('symbol')} — SCALPING lancé : {resultat}")
 
 if st.session_state.get("watchdog_alert"):
     alert = st.session_state["watchdog_alert"]
