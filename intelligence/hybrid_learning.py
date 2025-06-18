@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Iterable, Dict, Any
+from typing import Iterable, Dict, Any, Union
 
 import pandas as pd
 
@@ -62,7 +62,7 @@ def run_hybrid_learning(
     end: str,
     model_version: str = DEFAULT_MODEL,
     db_path: str = "data/trades.db",
-    meta_path: Path | str = DEFAULT_META_PATH,
+    meta_path: Union[Path, str] = DEFAULT_META_PATH,
 ) -> Dict[str, Any]:
     """Execute backtest and realtime analysis then update meta file."""
     meta_path = Path(meta_path)

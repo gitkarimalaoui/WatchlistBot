@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Union
 
 import pandas as pd
 
@@ -36,7 +36,7 @@ def run_backtest(
     start: str = DEFAULT_START,
     end: str = DEFAULT_END,
     model_version: str = DEFAULT_MODEL,
-    report_path: Path | str = DEFAULT_REPORT,
+    report_path: Union[Path, str] = DEFAULT_REPORT,
 ) -> pd.DataFrame:
     """Evaluate the model on historical data and save a CSV report."""
 
