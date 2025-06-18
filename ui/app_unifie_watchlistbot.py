@@ -340,6 +340,13 @@ with st.expander("📥 Données marché – Historique et Intraday"):
             st.code(proc.stderr)
 
 # 💼 Affichage dynamique paginé
+st.sidebar.subheader("🌟 Score IA minimum")
+score_minimum = st.sidebar.slider("Score IA minimum", 0, 100, 70)
+
+if st.sidebar.button("🎯 Voir les meilleures opportunités"):
+    score_minimum = 85
+
+load_watchlist.clear()
 watchlist = load_watchlist()
 
 if st.button("🧠 Détection auto à partir des News"):
@@ -370,17 +377,35 @@ if st.button("📣 Vérifier News PR pour la watchlist"):
 
     if not news_detected:
         st.warning("Aucune news critique détectée.")
-st.sidebar.subheader("🌟 Score IA minimum")
-score_minimum = st.sidebar.slider("Score IA minimum", 0, 100, 70)
-
-if st.sidebar.button("🎯 Voir les meilleures opportunités"):
-    score_minimum = 85
 
 def _ia_score(t):
-    return t.get("score_ia", t.get("score_local", 0))
+    """Return the AI score for filtering and sorting.
 
-watchlist = sorted(watchlist, key=_ia_score, reverse=True)
+    The watchlist rows may contain either ``score_local`` computed from
+    indicators, ``score_ia`` from a model, ``score`` from the database
+    or ``global_score`` computed on the fly. This helper tries all
+    fields in that order. ``global_score`` is on a 0-10 scale so it is
+    converted to the 0-100 range used for the slider.
+    """
+    for key in ("score_local", "score_ia", "score"):
+        value = t.get(key)
+        if value is not None:
+            try:
+                return float(value)
+            except Exception:
+                continue
+
+    gscore = t.get("global_score")
+    if gscore is not None:
+        try:
+            return float(gscore) * 10
+        except Exception:
+            pass
+
+    return 0
+
 filtered_watchlist = [w for w in watchlist if _ia_score(w) >= score_minimum]
+filtered_watchlist = sorted(filtered_watchlist, key=_ia_score, reverse=True)
 
 page_size = 10
 total = len(filtered_watchlist)
