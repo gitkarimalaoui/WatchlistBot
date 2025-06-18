@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, List
 
 import pandas as pd
 
@@ -108,7 +108,7 @@ class TrailingStop:
         return price <= self.stop
 
 
-def simulate_trailing_trade(ticker: str, prices: list[float], trail_pct: float = 2.0, qty: int = 1) -> Optional[dict]:
+def simulate_trailing_trade(ticker: str, prices: List[float], trail_pct: float = 2.0, qty: int = 1) -> Optional[dict]:
     if not prices:
         return None
     ts = TrailingStop(prices[0], trail_pct)
