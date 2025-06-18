@@ -20,7 +20,7 @@ Ce dépôt fournit l'ensemble des scripts et de la documentation pour:
 - `tests/` – Suite de tests PyTest.
 - `utils/`, `models/`, `simulation/` – Modules utilisés par le bot et la partie IA.
 
-Consultez `project_doc/project_structure.md` pour la vue d'ensemble du projet ainsi que les fiches spécifiques (`MODULE_1_WATCHLISTBOT.md`, `MODULE_2_LEARNING_ENGINE.md`, `04_core_database_and_logging_setup.md`, ...).
+Consultez `project_doc/project_structure.md` pour la vue d'ensemble du projet ainsi que les fiches spécifiques (`MODULE_1_WATCHLISTBOT.md`, `MODULE_1_ORCHESTRATEUR_EVENEMENTS.md`, `MODULE_2_LEARNING_ENGINE.md`, `04_core_database_and_logging_setup.md`, ...).
 
 ## Modules principaux
 
