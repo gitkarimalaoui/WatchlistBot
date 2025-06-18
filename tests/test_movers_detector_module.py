@@ -1,5 +1,6 @@
 import time
 from movers_detector import update_price, get_pump_pct, get_top_movers
+from data.stream_data_manager import latest_data
 
 
 def test_get_top_movers(monkeypatch):
@@ -17,3 +18,4 @@ def test_get_top_movers(monkeypatch):
     assert res
     assert res[0]["ticker"] == "ABC"
     assert res[0]["pump_pct_60s"] >= 1.5
+    assert latest_data["ABC"]["pump_pct_60s"] >= 1.5

@@ -63,6 +63,14 @@ fig = px.imshow(
 )
 st.plotly_chart(fig, use_container_width=True)
 
+st.markdown("### Dernières variations > 1.5%")
+for tic in tickers:
+    data = get_latest_data(tic)
+    pct = data.get("pump_pct_60s", 0)
+    if pct > 1.5:
+        color = "🟢" if pct > 2.5 else "🟠"
+        st.write(f"{color} {tic} +{pct:.2f}% (60s)")
+
 st.markdown("### Dernières données")
 for tic in tickers:
     data = get_latest_data(tic)
