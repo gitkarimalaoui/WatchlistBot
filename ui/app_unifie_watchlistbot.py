@@ -29,6 +29,7 @@ for path in (ROOT_DIR, SCRIPTS, ROOT_UI, UTILS, SIMULATION):
 
 # ─── Imports locaux ───
 from notifications.proactive_voice import ProactiveVoiceNotifier
+from monitoring.watchdog_conditions import start_watchdog_thread
 
 # ─── Notifications vocales ───
 notifier = ProactiveVoiceNotifier()
@@ -124,12 +125,18 @@ use_local_llm = st.sidebar.checkbox("Activer IA locale (Mistral-7B)", key="local
 
 if "voice_thread" not in st.session_state:
     st.session_state.voice_thread = None
+if "watchdog_thread" not in st.session_state:
+    st.session_state.watchdog_thread = None
 
 if st.sidebar.button("🎤 Activer notifications vocales") and st.session_state.voice_thread is None:
     thread = threading.Thread(target=loop_notifications, daemon=True)
     thread.start()
     st.session_state.voice_thread = thread
     st.success("Notifications vocales activées")
+
+if st.sidebar.button("🛡️ Activer surveillance IA"):
+    start_watchdog_thread()
+    st.sidebar.success("Surveillance IA activée")
 
 # ─── Pages secondaires ───
 if page == "📋 Roadmap":
@@ -403,6 +410,19 @@ if st.sidebar.button("🎯 Voir les meilleures opportunités"):
 
 load_watchlist.clear()
 watchlist = load_watchlist()
+
+if st.session_state.get("watchdog_alert"):
+    alert = st.session_state["watchdog_alert"]
+    with st.container():
+        st.markdown("### 📢 OPPORTUNITÉ DETECTÉE")
+        st.markdown(
+            f"Ticker : {alert['ticker']}\n\nPrix d’achat : {alert['prix']}$\nQuantité : {alert['quantite']}\nStop loss : {alert['stop_loss']}$"
+        )
+        c1, c2, c3 = st.columns(3)
+        c1.button("✅ Acheter maintenant", key="wd_buy")
+        c2.button("✏️ Modifier", key="wd_edit")
+        if c3.button("🚫 Ignorer", key="wd_ignore"):
+            st.session_state.pop("watchdog_alert", None)
 
 if st.button("🧠 Détection auto à partir des News"):
     proc = subprocess.run(

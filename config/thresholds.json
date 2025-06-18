@@ -1,0 +1,11 @@
+{
+    "rsi_min": 65,
+    "ema_short": 9,
+    "ema_long": 21,
+    "score_ai_min": 70,
+    "volume_ratio_min": 1.5,
+    "check_fda": true,
+    "watch_interval": 60,
+    "order_qty": 500,
+    "stop_loss_pct": 10
+}
