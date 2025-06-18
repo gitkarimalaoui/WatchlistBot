@@ -3,7 +3,7 @@ from datetime import datetime
 import json
 import os
 
-from utils.order_executor import executer_ordre_reel_direct
+from utils.execution_reelle import executer_ordre_reel
 
 st.set_page_config(page_title="🛠️ Trading manuel", layout="wide")
 st.title("🛠️ Trading manuel")
@@ -71,8 +71,8 @@ if col2.button("Simuler la vente") and ticker and prix > 0:
     enregistrer_vente(ticker, prix)
 
 if col3.button("Achat réel") and ticker and prix > 0 and quantite > 0:
-    ok, msg = executer_ordre_reel_direct(ticker, prix, int(quantite), stop_loss)
-    if ok:
-        st.success(msg)
+    result = executer_ordre_reel(ticker, prix, int(quantite), "achat")
+    if result["success"]:
+        st.success(result["message"])
     else:
-        st.error(msg)
+        st.error(result["message"])

@@ -51,3 +51,15 @@ class TradeSimule(Base):
     date = Column(DateTime, default=datetime.utcnow)
     provenance = Column(String)
     note = Column(String)
+
+
+class TradeReel(Base):
+    __tablename__ = "trades_reels"
+
+    id = Column(Integer, primary_key=True)
+    symbol = Column(String)
+    price = Column(Float)
+    qty = Column(Integer)
+    side = Column(String)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+    source = Column(String)
