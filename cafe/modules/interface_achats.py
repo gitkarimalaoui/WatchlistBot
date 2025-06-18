@@ -8,6 +8,16 @@ from modules.database import insert_achat_quotidien
 DB_PATH = 'cafe_management.db'
 
 def get_achats_by_month(year, month):
+    """Return purchases for the specified month.
+
+    Args:
+        year (int): Year of interest.
+        month (int): Month number (1-12).
+
+    Returns:
+        pd.DataFrame: DataFrame of purchase records.
+    """
+
     start_date = f"{year}-{month:02d}-01"
     end_date = f"{year + 1 if month == 12 else year}-{(month % 12) + 1:02d}-01"
     conn = sqlite3.connect(DB_PATH)
@@ -20,6 +30,12 @@ def get_achats_by_month(year, month):
     return df
 
 def interface_achats():
+    """Streamlit UI for recording and viewing purchases.
+
+    Returns:
+        None
+    """
+
     st.header("🛒 Gestion des Achats Quotidiens")
     tab1, tab2 = st.tabs(["📝 Saisie des Achats", "📊 Consultation Mensuelle"])
 

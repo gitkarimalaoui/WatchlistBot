@@ -3,6 +3,12 @@ from datetime import date
 from modules.database import insert_charges_fixes
 
 def interface_charges():
+    """Streamlit UI for fixed charge entry.
+
+    Returns:
+        None
+    """
+
     st.header("💼 Saisie des Charges Fixes")
     date_charge = st.date_input("Date", value=date.today())
     type_charge = st.selectbox("Type de charge", ["Hebdomadaire", "Mensuelle", "Annuelle"])

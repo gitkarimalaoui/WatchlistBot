@@ -7,6 +7,12 @@ from datetime import date, datetime
 DB_PATH = 'cafe_management.db'
 
 def init_table():
+    """Create the ``chiffre_affaire`` table if needed.
+
+    Returns:
+        None
+    """
+
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute('''
@@ -23,6 +29,19 @@ def init_table():
     conn.close()
 
 def insert_chiffre_affaire(entry_date, total=None, chaud=None, froid=None, autres=None):
+    """Insert or update daily revenue values.
+
+    Args:
+        entry_date (str): Date of the entry.
+        total (float | None): Total revenue amount.
+        chaud (float | None): Hot drinks revenue.
+        froid (float | None): Cold drinks revenue.
+        autres (float | None): Other sales revenue.
+
+    Returns:
+        None
+    """
+
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute('SELECT id FROM chiffre_affaire WHERE date = ?', (entry_date,))
@@ -42,6 +61,16 @@ def insert_chiffre_affaire(entry_date, total=None, chaud=None, froid=None, autre
     conn.close()
 
 def get_chiffre_affaire_by_month(year, month):
+    """Return revenue records for the specified month.
+
+    Args:
+        year (int): Year of interest.
+        month (int): Month number (1-12).
+
+    Returns:
+        pd.DataFrame: DataFrame containing turnover entries.
+    """
+
     start_date = f"{year}-{month:02d}-01"
     end_date = f"{year + 1 if month == 12 else year}-{(month % 12) + 1:02d}-01"
     conn = sqlite3.connect(DB_PATH)
@@ -54,6 +83,12 @@ def get_chiffre_affaire_by_month(year, month):
     return df
 
 def interface_chiffre_affaire():
+    """Streamlit UI to manage daily turnover entries.
+
+    Returns:
+        None
+    """
+
     st.header("💵 Chiffre d'Affaire Journalier")
     init_table()
 
