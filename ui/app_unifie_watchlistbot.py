@@ -375,8 +375,8 @@ if st.button("📣 Vérifier News PR pour la watchlist"):
             st.markdown(
                 f"✅ **{symbol}** → {len(news)} news détectées (provenance = `NewsPR`)")
 
-if not news_detected:
-    st.warning("Aucune news critique détectée.")
+    if not news_detected:
+        st.warning("Aucune news critique détectée.")
 
 
 filtered_watchlist = [w for w in watchlist if _ia_score(w) >= score_minimum]
