@@ -7,7 +7,7 @@ import time
 from collections import deque
 from typing import Deque, Dict, List, Optional
 
-from data.stream_data_manager import get_latest_data, WATCHLIST
+from data.stream_data_manager import get_latest_data, WATCHLIST, latest_data
 
 _WINDOW = 60.0  # seconds
 _PUMP_THRESHOLD = 1.5  # percent
@@ -71,6 +71,8 @@ def get_top_movers(tickers: Optional[List[str]] = None) -> List[dict]:
         volume = data.get("volume", 0)
         update_price(tic, float(price))
         pct = get_pump_pct(tic)
+        data["pump_pct_60s"] = round(pct, 2)
+        latest_data.setdefault(tic, {}).update({"pump_pct_60s": round(pct, 2)})
         if pct >= _PUMP_THRESHOLD:
             movers.append(
                 {

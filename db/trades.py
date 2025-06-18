@@ -53,3 +53,29 @@ def enregistrer_trade_auto(
         conn.commit()
     finally:
         conn.close()
+
+
+def enregistrer_trade_ia(
+    ticker: str,
+    prix: float,
+    montant: float,
+    score: int,
+    pump_pct: float,
+    rsi: float,
+    ema9: float,
+    ema21: float,
+    momentum: float,
+    source: str,
+) -> None:
+    conn = sqlite3.connect("data/trades.db")
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        INSERT INTO trades (datetime, ticker, action, prix, montant, score_at_entry,
+        pump_pct_60s, rsi_at_entry, ema9, ema21, momentum, source_data)
+        VALUES (datetime('now'), ?, 'achat', ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (ticker, prix, montant, score, pump_pct, rsi, ema9, ema21, momentum, source),
+    )
+    conn.commit()
+    conn.close()
