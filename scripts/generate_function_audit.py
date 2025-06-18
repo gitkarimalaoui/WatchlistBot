@@ -1,152 +1,113 @@
-#!/usr/bin/env python3
-"""Generate a simple audit of functions in the repository.
-
-This script walks through all Python files and extracts top-level functions
-with their signatures using the ``ast`` module. It then performs a naive
-search across the repository to determine if each function is used
-(called or imported). If no matching heading is found in ``project_doc`` or
-``docs`` for a given function, a placeholder user story is produced.
-
-Output is printed as a Markdown table.
-"""
-
-from __future__ import annotations
-
-import ast
 import os
+import ast
 import re
-from typing import List, Tuple
+from typing import List, Dict, Optional
 
-REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 
 
-def list_python_files(root: str) -> List[str]:
-    """Return a list of all ``.py`` files under ``root``."""
+def list_python_files() -> List[str]:
     files = []
-    for dirpath, dirnames, filenames in os.walk(root):
-        # Skip hidden directories such as .git
-        dirnames[:] = [d for d in dirnames if not d.startswith(".")]
+    for root, dirs, filenames in os.walk(REPO_ROOT):
+        if '.git' in dirs:
+            dirs.remove('.git')
+        if '__pycache__' in dirs:
+            dirs.remove('__pycache__')
         for filename in filenames:
-            if filename.endswith(".py"):
-                files.append(os.path.join(dirpath, filename))
+            if filename.endswith('.py'):
+                files.append(os.path.join(root, filename))
     return files
 
 
-def path_to_module(path: str) -> str:
-    """Convert a file path to a module path."""
-    rel = os.path.relpath(path, REPO_ROOT)
-    if rel.endswith("__init__.py"):
-        rel = rel[: -len("__init__.py")]
-    else:
-        rel = rel[: -3]
-    return rel.replace(os.sep, ".").strip(".")
-
-
-def extract_functions(path: str) -> List[Tuple[str, str, str]]:
-    """Return a list of ``(name, signature, docstring)`` for each top-level function."""
+def parse_functions(path: str) -> List[Dict[str, Optional[str]]]:
     try:
-        with open(path, "r", encoding="utf-8") as f:
+        with open(path, 'r', encoding='utf-8') as f:
             source = f.read()
-    except OSError:
-        return []
-
-    try:
-        tree = ast.parse(source)
-    except SyntaxError:
+        tree = ast.parse(source, filename=path)
+    except Exception:
         return []
 
     functions = []
     for node in tree.body:
-        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            signature = ast.unparse(node.args)
-            docstring = ast.get_docstring(node) or ""
-            functions.append((node.name, signature, docstring))
+        if isinstance(node, ast.FunctionDef):
+            signature = f"{node.name}{ast.unparse(node.args)}"
+            doc = ast.get_docstring(node)
+            functions.append({'name': node.name, 'signature': signature, 'doc': doc})
     return functions
 
 
-def is_function_used(name: str, module: str, files: List[str], definition_path: str) -> bool:
-    """Search other files for calls/imports of ``name``."""
-    call_pattern = re.compile(r"\b" + re.escape(name) + r"\s*\(")
-    import_pattern = re.compile(
-        rf"from\s+{re.escape(module)}\s+import[^\n]*\b{re.escape(name)}\b"
-    )
+def load_all_text(files: List[str]) -> Dict[str, str]:
+    texts = {}
     for path in files:
-        if path == definition_path:
-            continue
         try:
-            with open(path, "r", encoding="utf-8") as f:
-                text = f.read()
-        except OSError:
+            with open(path, 'r', encoding='utf-8') as f:
+                texts[path] = f.read()
+        except Exception:
+            texts[path] = ''
+    return texts
+
+
+def is_used(func_name: str, current_file: str, texts: Dict[str, str]) -> bool:
+    pattern_call = re.compile(rf"\b{re.escape(func_name)}\s*\(")
+    for path, text in texts.items():
+        if path == current_file:
             continue
-        if call_pattern.search(text) or import_pattern.search(text):
+        if pattern_call.search(text):
+            return True
+        import_pattern = re.compile(rf"from\s+.*\s+import.*\b{re.escape(func_name)}\b")
+        if import_pattern.search(text):
             return True
     return False
 
 
-def load_doc_headings() -> List[Tuple[str, str]]:
-    """Collect markdown headings from ``project_doc`` and ``docs``."""
-    headings = []
-    for docs_dir in ("project_doc", "docs"):
-        full_dir = os.path.join(REPO_ROOT, docs_dir)
-        if not os.path.isdir(full_dir):
+def find_doc_heading(func_name: str) -> Optional[str]:
+    heading_pattern = re.compile(rf"^#+.*{re.escape(func_name)}.*", re.IGNORECASE)
+    for base in ('project_doc', 'docs'):
+        folder = os.path.join(REPO_ROOT, base)
+        if not os.path.isdir(folder):
             continue
-        for root, _, files in os.walk(full_dir):
-            for fname in files:
-                if fname.endswith(".md"):
-                    path = os.path.join(root, fname)
-                    try:
-                        with open(path, "r", encoding="utf-8") as f:
-                            for line in f:
-                                if line.startswith("#"):
-                                    headings.append((line.strip().lstrip("# "), path))
-                    except OSError:
-                        continue
-    return headings
-
-
-def find_heading(name: str, headings: List[Tuple[str, str]]) -> str | None:
-    name_lower = name.lower()
-    for title, path in headings:
-        if name_lower in title.lower():
-            return f"{os.path.relpath(path, REPO_ROOT)}: {title}"
+        for root, _, files in os.walk(folder):
+            for file in files:
+                if not file.endswith(('.md', '.txt')):
+                    continue
+                path = os.path.join(root, file)
+                try:
+                    with open(path, 'r', encoding='utf-8') as f:
+                        for line in f:
+                            if heading_pattern.search(line):
+                                return f"{line.strip()} ({os.path.relpath(path, REPO_ROOT)})"
+                except Exception:
+                    continue
     return None
 
 
-def placeholder_story(name: str, module: str) -> str:
-    return (
-        f"As a developer, I want `{name}` in `{module}` documented so that its "
-        "purpose is clear."
-    )
-
-
-def main() -> None:
-    py_files = list_python_files(REPO_ROOT)
-    headings = load_doc_headings()
-
+def generate_audit() -> List[List[str]]:
     rows = []
-    for path in py_files:
-        module = path_to_module(path)
-        for func_name, signature, docstring in extract_functions(path):
-            used = is_function_used(func_name, module, py_files, path)
-            heading = find_heading(func_name, headings)
-            user_story = "" if heading else placeholder_story(func_name, module)
-            rows.append(
-                (
-                    f"{func_name}({signature})",
-                    module,
-                    "Yes" if used else "No",
-                    heading or "Missing",
-                    user_story,
-                )
-            )
+    files = list_python_files()
+    texts = load_all_text(files)
+    for path in files:
+        rel_path = os.path.relpath(path, REPO_ROOT)
+        functions = parse_functions(path)
+        for func in functions:
+            used = 'Yes' if is_used(func['name'], path, texts) else 'No'
+            doc = find_doc_heading(func['name'])
+            user_story = ''
+            if not doc:
+                doc = ''
+                user_story = f"As a developer, I want `{func['name']}` documented so that its purpose is clear."
+            rows.append([func['signature'], rel_path, used, doc, user_story])
+    return rows
 
+
+def print_markdown(rows: List[List[str]]):
     print("| Function | Module | Used? | Documentation | User Story |")
     print("| --- | --- | --- | --- | --- |")
-    for func, mod, used, doc, story in rows:
-        print(
-            f"| `{func}` | `{mod}` | {used} | {doc} | {story} |"
-        )
+    for func, module, used, doc, story in rows:
+        doc = doc.replace('|', '\\|') if doc else ''
+        story = story.replace('|', '\\|') if story else ''
+        print(f"| {func} | {module} | {used} | {doc} | {story} |")
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    rows = generate_audit()
+    print_markdown(rows)
