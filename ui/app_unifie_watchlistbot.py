@@ -46,7 +46,7 @@ from roadmap_ui import (
 )
 from query_entreprise_db import get_portfolio_modules, get_use_cases, get_revenue_sources, get_kpi_targets
 from pages.cloture_journee import cloturer_journee
-from utils_affichage_ticker import afficher_ticker_panel
+from utils_affichage_ticker import afficher_ticker_panel, _ia_score
 from intelligence.ai_scorer import compute_global_score
 from utils.progress_tracker import load_progress
 from utils.fda_fetcher import fetch_fda_data, enrichir_watchlist_avec_fda
@@ -375,34 +375,8 @@ if st.button("📣 Vérifier News PR pour la watchlist"):
             st.markdown(
                 f"✅ **{symbol}** → {len(news)} news détectées (provenance = `NewsPR`)")
 
-    if not news_detected:
-        st.warning("Aucune news critique détectée.")
-
-def _ia_score(t):
-    """Return the AI score for filtering and sorting.
-
-    The watchlist rows may contain either ``score_local`` computed from
-    indicators, ``score_ia`` from a model, ``score`` from the database
-    or ``global_score`` computed on the fly. This helper tries all
-    fields in that order. ``global_score`` is on a 0-10 scale so it is
-    converted to the 0-100 range used for the slider.
-    """
-    for key in ("score_local", "score_ia", "score"):
-        value = t.get(key)
-        if value is not None:
-            try:
-                return float(value)
-            except Exception:
-                continue
-
-    gscore = t.get("global_score")
-    if gscore is not None:
-        try:
-            return float(gscore) * 10
-        except Exception:
-            pass
-
-    return 0
+if not news_detected:
+    st.warning("Aucune news critique détectée.")
 
 
 filtered_watchlist = [w for w in watchlist if _ia_score(w) >= score_minimum]
