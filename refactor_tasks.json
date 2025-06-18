@@ -1,0 +1,23 @@
+[
+  {
+    "id": "TASK_001",
+    "description": "Remove archive ZIPs from JobAutomationAssistant",
+    "module": "JobAutomationAssistant/*.zip",
+    "priority": "High",
+    "status": "Todo"
+  },
+  {
+    "id": "TASK_002",
+    "description": "Delete unused assistant_emploi_quebec1.py",
+    "module": "JobAutomationAssistant/",
+    "priority": "High",
+    "status": "Todo"
+  },
+  {
+    "id": "TASK_003",
+    "description": "Remove deprecated execution_simulee_x.py",
+    "module": "simulation/",
+    "priority": "High",
+    "status": "Todo"
+  }
+]
