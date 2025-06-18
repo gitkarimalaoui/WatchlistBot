@@ -70,3 +70,12 @@ Dependencies: `ai_scorer.py`, `app_unifie_watchlistbot.py`, database tables `wat
 - Provide a diagram linking `ui`, `intelligence`, `automation`, and `scripts` for newcomers.
 - Automate continuous updates of progress metrics and integrate with backtest results.
 
+
+## Function Audit
+
+Run the automated audit script to list functions and their usage:
+```bash
+python scripts/generate_function_audit.py > function_audit.md
+```
+The command also creates `function_audit.csv` with the same information in CSV format.
+
