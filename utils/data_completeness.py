@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import sqlite3
 from pathlib import Path
+from typing import Tuple
 
 DB_PATH = Path(__file__).resolve().parents[1] / "data" / "trades.db"
 MIN_HISTORICAL_ROWS = 250
@@ -24,7 +25,7 @@ def ensure_table(conn: sqlite3.Connection) -> None:
     conn.commit()
 
 
-def is_ticker_complete(conn: sqlite3.Connection, ticker: str) -> tuple[bool, bool]:
+def is_ticker_complete(conn: sqlite3.Connection, ticker: str) -> Tuple[bool, bool]:
     """Return completeness flags for ``ticker``."""
     cur = conn.execute(
         "SELECT hist_complete, intra_complete FROM data_completeness WHERE ticker = ?",
