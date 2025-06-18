@@ -153,6 +153,13 @@ try:
     last_capital = data[-1][1] if data else 3000
     progress = min(last_capital / 100000, 1.0)
     st.progress(progress, text=f"Capital actuel : {last_capital}$")
+    daily_gain = st.number_input("Gain moyen par jour ($)", value=0.0, key="gain_journalier")
+    if daily_gain > 0:
+        from utils.progress_tracker import project_target_date
+        target_date = project_target_date(last_capital, daily_gain)
+        if target_date:
+            days = (target_date - datetime.now().date()).days
+            st.write(f"Objectif 100k estimé dans ~{days} jours (le {target_date})")
 except Exception:
     st.progress(0.0, text="Capital actuel : inconnue")
 

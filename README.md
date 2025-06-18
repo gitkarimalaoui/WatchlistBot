@@ -124,6 +124,22 @@ python intelligence/learning_loop.py
 Cette phase nécessite les packages `finrl` et `stable-baselines3` présents dans
 `requirements.txt`.
 
+## Projection 100k – Exemple
+
+La fonction `project_target_date` du module `progress_tracker` calcule la date
+prévisionnelle pour atteindre 100 000 $ selon un gain moyen journalier.
+
+Supposons un capital initial de 20 000 $ et cinq trades par jour rapportant en
+moyenne 50 $ chacun (soit 250 $ de profit quotidien). Le nombre de jours requis
+est :
+
+```python
+days = math.ceil((100000 - 20000) / 250)  # 320 jours
+```
+
+Dans ce scénario, l'objectif serait atteint environ 320 jours après le début de
+l'activité, tant que ce rythme reste constant.
+
 
 ## Surveillance automatique avec Codex
 
