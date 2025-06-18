@@ -179,7 +179,7 @@ def afficher_ticker_panel(ticker, stock, index):
         if st_autorefresh:
             st_autorefresh(interval=30 * 1000, key=f"refresh_{ticker}_{index}")
         if st.button("🔄 Rafraîchir", key=f"btn_refresh_{ticker}_{index}"):
-            st.experimental_rerun()
+            st.rerun()
 
         df_intraday = charger_intraday_intelligent(ticker)
         indicateurs = calculer_indicateurs(df_intraday)

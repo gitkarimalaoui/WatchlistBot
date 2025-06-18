@@ -294,7 +294,7 @@ with st.expander("Saisie manuelle"):
             conn.commit()
             conn.close()
             st.success(f"{new_tic.upper()} ajouté !")
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.warning("Veuillez renseigner ticker et description.")
 
