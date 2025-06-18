@@ -20,7 +20,7 @@ Ce dépôt fournit l'ensemble des scripts et de la documentation pour:
 - `tests/` – Suite de tests PyTest.
 - `utils/`, `models/`, `simulation/` – Modules utilisés par le bot et la partie IA.
 
-Consultez `project_doc/project_structure.md` pour la vue d'ensemble du projet ainsi que les fiches spécifiques (`MODULE_1_WATCHLISTBOT.md`, `MODULE_2_LEARNING_ENGINE.md`, `04_core_database_and_logging_setup.md`, ...).
+Consultez `project_doc/project_structure.md` pour la vue d'ensemble du projet ainsi que les fiches spécifiques (`MODULE_1_WATCHLISTBOT.md`, `MODULE_1_ORCHESTRATEUR_EVENEMENTS.md`, `MODULE_2_LEARNING_ENGINE.md`, `04_core_database_and_logging_setup.md`, ...).
 
 ## Modules principaux
 
@@ -123,6 +123,22 @@ python intelligence/learning_loop.py
 
 Cette phase nécessite les packages `finrl` et `stable-baselines3` présents dans
 `requirements.txt`.
+
+## Projection 100k – Exemple
+
+La fonction `project_target_date` du module `progress_tracker` calcule la date
+prévisionnelle pour atteindre 100 000 $ selon un gain moyen journalier.
+
+Supposons un capital initial de 20 000 $ et cinq trades par jour rapportant en
+moyenne 50 $ chacun (soit 250 $ de profit quotidien). Le nombre de jours requis
+est :
+
+```python
+days = math.ceil((100000 - 20000) / 250)  # 320 jours
+```
+
+Dans ce scénario, l'objectif serait atteint environ 320 jours après le début de
+l'activité, tant que ce rythme reste constant.
 
 
 ## Surveillance automatique avec Codex

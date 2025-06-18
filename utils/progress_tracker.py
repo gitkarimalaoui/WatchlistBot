@@ -2,7 +2,8 @@ import os
 import json
 import sqlite3
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
+import math
 from typing import Optional
 
 # ─── Paths and Constants ───────────────────────────────────────────────────────
@@ -11,6 +12,7 @@ DB_PATH = Path(os.getenv("PROGRESS_DB_PATH", PROJECT_ROOT / "data" / "project_tr
 ROADMAP_JSON = PROJECT_ROOT / "project_doc" / "roadmap_sync.json"
 
 MILESTONES = [1000, 5000, 10000, 25000, 50000, 100000]
+TARGET_CAPITAL = 100000
 
 # ─── Initialization ────────────────────────────────────────────────────────────
 def init_progress_table(db_path: Path = DB_PATH) -> None:
@@ -82,6 +84,17 @@ def load_progress(db_path: Path = DB_PATH):
     ).fetchall()
     conn.close()
     return df
+
+def project_target_date(capital: float, daily_gain: float, target: float = TARGET_CAPITAL):
+    """Return the estimated date to reach ``target`` assuming ``daily_gain`` profit.
+
+    If ``daily_gain`` is non-positive the function returns ``None``.
+    """
+    if daily_gain <= 0:
+        return None
+    remaining = max(target - capital, 0)
+    days = math.ceil(remaining / daily_gain)
+    return datetime.now().date() + timedelta(days=days)
 
 # Legacy API --------------------------------------------------------------
 def update_progress(capital: float, db_path: Path = DB_PATH) -> str:
