@@ -3,6 +3,7 @@ import sys
 import subprocess
 import sqlite3
 import math
+import json
 from datetime import datetime
 import threading
 import time
@@ -19,6 +20,7 @@ ROOT_DIR = os.path.abspath(os.path.join(ROOT_UI, ".."))
 SCRIPTS = os.path.join(ROOT_DIR, "scripts")
 UTILS = os.path.join(ROOT_DIR, "utils")
 SIMULATION = os.path.join(ROOT_DIR, "simulation")
+TASKS_JSON_PATH = os.path.join(ROOT_DIR, "refactor_tasks.json")
 
 # ─── Ajout des chemins au système ───
 for path in (ROOT_DIR, SCRIPTS, ROOT_UI, UTILS, SIMULATION):
@@ -36,6 +38,20 @@ def loop_notifications() -> None:
     while True:
         notifier.run_pending()
         time.sleep(5)
+
+# ─── Gestion des tâches de refactor ───
+def load_refactor_tasks(path: str = TASKS_JSON_PATH):
+    """Load refactor tasks from ``path`` if the file exists."""
+    if os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def save_refactor_tasks(tasks, path: str = TASKS_JSON_PATH) -> None:
+    """Save ``tasks`` list of dicts to ``path`` in JSON format."""
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(tasks, f, indent=2)
 
 # ─── Imports locaux ───
 from roadmap_ui import (
@@ -93,11 +109,12 @@ DB_PATH = os.path.join(ROOT_DIR, "data", "trades.db")
 # ─── Menu latéral ───
 st.sidebar.markdown("## 🚀 Navigation")
 page = st.sidebar.radio("Menu principal", [
-    "📊 Watchlist", 
-    "📋 Roadmap", 
-    "🏢 Entreprise", 
-    "🧘 Personal", 
-    "📦 Clôture", 
+    "📊 Watchlist",
+    "📋 Roadmap",
+    "📋 Refactor Tasks",
+    "🏢 Entreprise",
+    "🧘 Personal",
+    "📦 Clôture",
     "📄 Trades simulés"
 ], index=0)
 
@@ -117,6 +134,36 @@ if st.sidebar.button("🎤 Activer notifications vocales") and st.session_state.
 if page == "📋 Roadmap":
     roadmap_interface()
     roadmap_productivity_block()
+    st.stop()
+
+if page == "📋 Refactor Tasks":
+    st.title("📋 Refactor Tracker")
+    if "refactor_tasks" not in st.session_state:
+        st.session_state["refactor_tasks"] = load_refactor_tasks()
+
+    df = pd.DataFrame(st.session_state["refactor_tasks"])
+
+    status_options = ["Todo", "In Progress", "Done", "Blocked"]
+
+    priorities = sorted(df["priority"].unique()) if not df.empty else []
+    selected_status = st.multiselect("Filtrer par statut", status_options, default=status_options)
+    selected_priority = st.multiselect("Filtrer par priorité", priorities, default=priorities)
+
+    filtered_df = df[df["status"].isin(selected_status) & df["priority"].isin(selected_priority)] if not df.empty else df
+
+    def _save_tasks():
+        st.session_state["refactor_tasks"] = st.session_state["task_editor"]
+        save_refactor_tasks(st.session_state["refactor_tasks"])
+        st.toast("Sauvegardé", icon="💾")
+
+    st.data_editor(
+        filtered_df,
+        key="task_editor",
+        num_rows="dynamic",
+        on_change=_save_tasks,
+        disabled=False,
+        use_container_width=True,
+    )
     st.stop()
 
 if page == "🏢 Entreprise":
