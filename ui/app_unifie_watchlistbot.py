@@ -379,13 +379,26 @@ if st.button("📣 Vérifier News PR pour la watchlist"):
         st.warning("Aucune news critique détectée.")
 
 def _ia_score(t):
-   
-    return t.get("score_local") or t.get("score_ia") or t.get("score", 0)
+    indicators, ``score_ia`` from a model, ``score`` from the database
+    or ``global_score`` computed on the fly. This helper tries all
+    fields in that order. ``global_score`` is on a 0-10 scale so it is
+    converted to the 0-100 range used for the slider.
+    for key in ("score_local", "score_ia", "score"):
+        value = t.get(key)
+        if value is not None:
+            try:
+                return float(value)
+            except Exception:
+                continue
 
-filtered_watchlist = [w for w in watchlist if _ia_score(w) >= score_minimum]
-filtered_watchlist = sorted(filtered_watchlist, key=_ia_score, reverse=True)
+    gscore = t.get("global_score")
+    if gscore is not None:
+        try:
+            return float(gscore) * 10
+        except Exception:
+            pass
 
-page_size = 10
+    return 0
 total = len(filtered_watchlist)
 page_num = st.sidebar.number_input("Page", min_value=1, max_value=(total // page_size + 1), value=1)
 start = (page_num - 1) * page_size
