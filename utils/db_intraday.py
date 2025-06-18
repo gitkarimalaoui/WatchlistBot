@@ -2,10 +2,11 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 import pandas as pd
+from typing import Optional
 
 DB_PATH = Path(__file__).resolve().parents[1] / "data" / "trades.db"
 
-def load_last_timestamp(ticker: str) -> pd.Timestamp | None:
+def load_last_timestamp(ticker: str) -> Optional[pd.Timestamp]:
     """Return the most recent timestamp stored for ``ticker`` in either
     ``intraday_data`` or ``intraday_smart`` tables."""
 
@@ -46,7 +47,7 @@ def insert_intraday(ticker: str, df: pd.DataFrame) -> None:
         conn.close()
 
 
-def load_intraday(ticker: str, start: str | None = None) -> pd.DataFrame:
+def load_intraday(ticker: str, start: Optional[str] = None) -> pd.DataFrame:
     """Load intraday rows for ``ticker`` from the database."""
     conn = sqlite3.connect(DB_PATH)
     try:
@@ -67,7 +68,7 @@ def load_intraday(ticker: str, start: str | None = None) -> pd.DataFrame:
     return df
 
 
-def load_intraday_smart(ticker: str, start: str | None = None) -> pd.DataFrame:
+def load_intraday_smart(ticker: str, start: Optional[str] = None) -> pd.DataFrame:
     """Load intraday rows from the ``intraday_smart`` table."""
 
     conn = sqlite3.connect(DB_PATH)
