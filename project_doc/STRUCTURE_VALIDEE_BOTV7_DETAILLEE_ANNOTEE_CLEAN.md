@@ -599,14 +599,14 @@ Chaque section indique le rôle du module et les fichiers actuellement utilisés
 - ³   ³   MODULE_2_LEARNING_ENGINE.md
 - ³   ³   MODULE_7_DAILY_CLOSURE.md
 - ³   ³   MODULE_9_TELEGRAM_ALERTS.md
-- ³   ³   Models Files list.txt
+- ³   ³   models_files_list.txt
 - ³   ³   README.md
 - ³   ³   README_FR.md
 - ³   ³   RESTRUCTURED_PLAN_BOTV7.txt
 - ³   ³   SECURITY.md
 - ³   ³   SESSION_TRACKER.md
 - ³   ³   STRUCTURE_REGENEREE_HISTORIQUE.md
-- ³   ³   Streamlit Entreprise View.py
+- ³   ³   streamlit_entreprise_view.py
 - ³   ³   __init__.py
 - ³   ³   _archived_app.py.py
 - ³   ³   agent scraper_jaguar.py
@@ -683,8 +683,8 @@ Chaque section indique le rôle du module et les fichiers actuellement utilisés
 - ³   ³   prompt.txt
 - ³   ³   qlib_loader.py
 - ³   ³   query_entreprise_db.py
-- ³   ³   readme organisation.txt
-- ³   ³   readme structure.txt
+- ³   ³   readme_organisation.txt
+- ³   ³   readme_structure.txt
 - ³   ³   real_time_tick_collector.py
 - ³   ³   repickle_model.py
 - ³   ³   roadmap_sync.json
@@ -703,7 +703,7 @@ Chaque section indique le rôle du module et les fichiers actuellement utilisés
 - ³   ³   scraper_jaguar.py
 - ³   ³   setup.py
 - ³   ³   structure.txt
-- ³   ³   task_manager ancienne table.py
+- ³   ³   task_manager_ancienne_table.py
 - ³   ³   task_manager.py
 - ³   ³   telegram_ai_alerts.py
 - ³   ³   telegram_alerts.py
@@ -1150,7 +1150,7 @@ Chaque section indique le rôle du module et les fichiers actuellement utilisés
 
 - ³   ³       training.py
 - ³   ³       ³   ³   ³   ³   dirtools.py
-- ³   ³   intelligence file list.txt
+- ³   ³   intelligence_file_list.txt
 - ³   ³   roadmap_generator_tools.py
 - ³   ³   training.py
 - ³   ³   us_db_tools.py
@@ -1179,7 +1179,7 @@ Chaque section indique le rôle du module et les fichiers actuellement utilisés
 > 📌 **Description :** Collecteurs et analyseurs de données en temps réel.
 
 - ³       ³   analyse_tickers_realtime.py
-- ³   ³   realtime file list.txt
+- ³   ³   realtime_file_list.txt
 
 
 
