@@ -10,6 +10,7 @@ pyautogui
 pyperclip
 joblib
 yfinance
+websocket-client
 numpy
 matplotlib
 pyqlib
