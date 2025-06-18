@@ -108,6 +108,45 @@ def print_markdown(rows: List[List[str]]):
         print(f"| {func} | {module} | {used} | {doc} | {story} |")
 
 
+def export_to_csv(rows, filename="audit_report.csv"):
+    import csv
+    with open(filename, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(["Function", "Module", "Used?", "Documentation", "User Story"])
+        writer.writerows(rows)
+
+
+def export_to_md(rows, filename="audit_report.md"):
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write("| Function | Module | Used? | Documentation | User Story |\n")
+        f.write("| --- | --- | --- | --- | --- |\n")
+        for func, module, used, doc, story in rows:
+            doc = doc.replace('|', '\\|') if doc else ''
+            story = story.replace('|', '\\|') if story else ''
+            f.write(f"| {func} | {module} | {used} | {doc} | {story} |\n")
+
+
+def print_unused(rows: List[List[str]]):
+    unused = [row for row in rows if row[2] == 'No']
+    print("\n--- UNUSED FUNCTIONS ---\n")
+    print_markdown(unused)
+
+
 if __name__ == '__main__':
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Generate function usage audit")
+    parser.add_argument('--only-unused', action='store_true', help='Display only unused functions')
+    parser.add_argument('--csv', default='audit_report.csv', help='CSV export filename')
+    parser.add_argument('--md', default='audit_report.md', help='Markdown export filename')
+    args = parser.parse_args()
+
     rows = generate_audit()
-    print_markdown(rows)
+
+    if args.only_unused:
+        print_unused(rows)
+    else:
+        print_markdown(rows)
+
+    export_to_csv(rows, args.csv)
+    export_to_md(rows, args.md)
