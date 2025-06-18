@@ -63,6 +63,7 @@ from roadmap_ui import (
 from query_entreprise_db import get_portfolio_modules, get_use_cases, get_revenue_sources, get_kpi_targets
 from pages.cloture_journee import cloturer_journee
 from utils_affichage_ticker import afficher_ticker_panel, _ia_score
+from utils.execution_reelle import executer_ordre_reel
 from intelligence.ai_scorer import compute_global_score
 from utils.progress_tracker import load_progress
 from utils.fda_fetcher import fetch_fda_data, enrichir_watchlist_avec_fda

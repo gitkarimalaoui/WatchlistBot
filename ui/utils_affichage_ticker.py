@@ -16,7 +16,7 @@ from utils_graph import (
     charger_historique_intelligent,
     charger_intraday_intelligent,
 )
-from utils.order_executor import executer_ordre_reel_direct
+from utils.execution_reelle import executer_ordre_reel
 from utils_signaux import is_buy_signal
 
 
@@ -332,10 +332,14 @@ def afficher_ticker_panel(ticker, stock, index):
             _enregistrer_trade(ticker, prix, int(quantite), exit_price=prix)
             st.success(f"Vente simulée enregistrée pour {ticker} à {prix:.2f} $")
         if c3.button("Achat réel", key=f"real_buy_{ticker}_{index}"):
-            ok, msg = executer_ordre_reel_direct(ticker, prix, int(quantite), stop_loss)
-            if ok:
-                st.success(msg)
+            result = executer_ordre_reel(ticker, prix, int(quantite), "achat")
+            if result["success"]:
+                st.success(result["message"])
             else:
-                st.error(msg)
+                st.error(result["message"])
         if c4.button("Vente réelle", key=f"real_sell_{ticker}_{index}"):
-            st.warning("Fonction vente réelle non implémentée")
+            result = executer_ordre_reel(ticker, prix, int(quantite), "vente")
+            if result["success"]:
+                st.success(result["message"])
+            else:
+                st.error(result["message"])
