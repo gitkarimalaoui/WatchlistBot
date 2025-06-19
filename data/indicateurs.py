@@ -85,6 +85,27 @@ def get_price_5s_ago(ticker: str) -> Optional[float]:
     return float(df["Close"].iloc[-2])
 
 
+def get_atr(ticker: str, period: int = 14) -> Optional[float]:
+    """Return the Average True Range over ``period`` days."""
+    df = _download(ticker, "2mo", "1d")
+    if df.empty or len(df) < period + 1:
+        return None
+    high = df["High"].astype(float)
+    low = df["Low"].astype(float)
+    close = df["Close"].astype(float)
+    prev_close = close.shift(1)
+    tr = pd.concat(
+        [
+            (high - low).abs(),
+            (high - prev_close).abs(),
+            (low - prev_close).abs(),
+        ],
+        axis=1,
+    ).max(axis=1)
+    atr = tr.rolling(period).mean().iloc[-1]
+    return float(atr) if pd.notna(atr) else None
+
+
 def get_float(ticker: str) -> Optional[float]:
     if not os.path.exists(DB_PATH):
         return None

@@ -1,0 +1,31 @@
+import os
+import sqlite3
+
+DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "trades.db")
+
+
+def ensure_schema(db_path: str = DB_PATH) -> None:
+    if not os.path.exists(db_path):
+        return
+    conn = sqlite3.connect(db_path)
+    try:
+        table = conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='trades'"
+        ).fetchone()
+        if not table:
+            return
+        rows = conn.execute("PRAGMA table_info(trades)").fetchall()
+        existing = {r[1] for r in rows}
+        columns = [
+            ("atr", "REAL"),
+            ("gap_pct", "REAL"),
+            ("stop_loss", "REAL"),
+            ("take_profit", "REAL"),
+            ("entry_time", "TEXT"),
+        ]
+        for col, typ in columns:
+            if col not in existing:
+                conn.execute(f"ALTER TABLE trades ADD COLUMN {col} {typ};")
+        conn.commit()
+    finally:
+        conn.close()
