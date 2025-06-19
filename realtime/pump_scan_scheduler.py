@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import os
 import time
-from typing import Dict, Any, Iterable
+from typing import Dict, Any, Iterable, List
 
 import aiohttp
 
@@ -15,7 +15,7 @@ _API_KEY = os.getenv("FINNHUB_API_KEY", "")
 _CACHE: Dict[str, float] = {}
 
 
-def _dedup(symbols: Iterable[str]) -> list[str]:
+def _dedup(symbols: Iterable[str]) -> List[str]:
     seen = set()
     result = []
     for sym in symbols:

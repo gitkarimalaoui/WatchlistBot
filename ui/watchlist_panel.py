@@ -1,6 +1,7 @@
 import os
 import requests
 import streamlit as st
+from typing import List, Dict
 
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 
@@ -40,7 +41,7 @@ def _inject_css() -> None:
     st.session_state["_watchlist_css_injected"] = True
 
 
-def _fetch_live() -> list[dict]:
+def _fetch_live() -> List[Dict]:
     try:
         resp = requests.get(f"{API_URL}/watchlist/live", timeout=10)
         if resp.status_code == 200:
