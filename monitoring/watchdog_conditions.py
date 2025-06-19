@@ -7,7 +7,7 @@ import os
 import sqlite3
 import threading
 import time
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 from intelligence.ai_scorer import score_ai
 from utils.utils_graph import charger_intraday_intelligent
@@ -37,7 +37,7 @@ def load_thresholds(path: str = THRESHOLDS_PATH) -> Dict[str, Any]:
     }
 
 
-def verifier_conditions_achat(ticker: str, thresholds: Dict[str, Any] | None = None) -> Dict[str, Any]:
+def verifier_conditions_achat(ticker: str, thresholds: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """Check if all trading conditions are met for ``ticker``."""
     thresholds = thresholds or load_thresholds()
 
@@ -128,7 +128,7 @@ def _telegram_message(res: Dict[str, Any]) -> str:
     )
 
 
-def surveiller_tickers(interval: int | None = None) -> None:
+def surveiller_tickers(interval: Optional[int] = None) -> None:
     """Background loop checking all tickers."""
     thresholds = load_thresholds()
     wait = interval or thresholds.get("watch_interval", 60)
