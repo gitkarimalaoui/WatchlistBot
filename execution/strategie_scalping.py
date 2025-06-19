@@ -2,6 +2,8 @@ import time
 from datetime import datetime
 from typing import Optional
 
+import pandas as pd
+
 from data.indicateurs import (
     get_rsi,
     get_ema,
@@ -33,6 +35,12 @@ def _compute_score(ticker: str) -> Optional[dict]:
     else:
         volume_now = get_volume(ticker, "1m")
         last_price = get_last_price(ticker)
+
+    # Ensure scalar values to avoid pandas truth ambiguity
+    if isinstance(last_price, pd.Series):
+        last_price = last_price.squeeze()
+    if isinstance(vwap, pd.Series):
+        vwap = vwap.squeeze()
     volume_5min_ago = get_volume(ticker, "5m")
     price_prev = get_price_5s_ago(ticker)
     float_val = get_float(ticker)
