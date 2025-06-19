@@ -9,7 +9,7 @@ from dataclasses import dataclass, field, asdict
 from datetime import datetime, time, timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import requests
 
@@ -50,7 +50,7 @@ class Event:
         self.sort_index = self.priority.value
 
 
-EVENT_QUEUE: List[tuple[float, Event]] = []
+EVENT_QUEUE: List[Tuple[float, Event]] = []
 
 
 # ---------------------------------------------------------------------------

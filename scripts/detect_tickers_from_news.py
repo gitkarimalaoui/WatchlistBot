@@ -12,7 +12,7 @@ import re
 import sqlite3
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, Iterable, List
+from typing import Any, Dict, Iterable, List, Set
 
 import requests
 import yfinance as yf
@@ -68,7 +68,7 @@ def get_recent_news_from_finnhub(days: int = 2) -> List[Dict[str, Any]]:
 def extract_tickers_from_news(news_list: Iterable[Dict[str, Any]]) -> List[str]:
     """Extract potential US tickers from news items."""
     pattern = re.compile(r"(?:\$|\(|\[)([A-Z]{1,5})(?:\)|\]|)")
-    tickers: set[str] = set()
+    tickers: Set[str] = set()
     for news in news_list:
         text = f"{news.get('title', '')} {news.get('summary', '')}"
         for match in pattern.finditer(text):

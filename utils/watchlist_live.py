@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from typing import Iterable, List, Dict
+from typing import Iterable, List, Dict, Set
 
 from utils.telegram_utils import send_telegram_message
 
 # Track which tickers already triggered a pump notification
-seen_pumps: set[str] = set()
+seen_pumps: Set[str] = set()
 
 
 def get_watchlist_data_for_ui(entries: Iterable[Dict]) -> List[Dict]:
