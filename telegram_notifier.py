@@ -19,6 +19,8 @@ class TelegramNotifier:
         tp = details.get("tp") or details.get("take_profit")
         source = details.get("source") or details.get("provenance", "Simulation")
         note = details.get("note")
+        expected_gain = details.get("expected_gain")
+        date_time = details.get("datetime") or details.get("date")
 
         lines = ["\U0001F4BC TRADE EX\u00C9CUT\u00C9", f"Action : {action}", f"Ticker : {ticker}"]
         if price is not None:
@@ -33,6 +35,10 @@ class TelegramNotifier:
             lines.append(f"Source : {source}")
         if note:
             lines.append(f"Note : {note}")
+        if expected_gain is not None:
+            lines.append(f"Gain attendu : {expected_gain}")
+        if date_time:
+            lines.append(f"Date/Heure : {date_time}")
         return "\n".join(lines)
 
     def send_trade_alert(self, alert_type: str, ticker: str, details: Dict) -> bool:

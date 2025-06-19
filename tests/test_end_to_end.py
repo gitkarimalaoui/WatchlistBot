@@ -1,11 +1,14 @@
 import importlib
+import datetime
 
 import pytest
+from dotenv import load_dotenv
 from utils.telegram_utils import send_telegram_message
 
 
 @pytest.fixture
 def e2e_setup(monkeypatch, tmp_path):
+    load_dotenv()
     db_file = tmp_path / "trades.db"
     monkeypatch.setenv("DB_PATH", str(db_file))
     monkeypatch.setenv("TEST_MODE", "true")
@@ -16,11 +19,19 @@ def e2e_setup(monkeypatch, tmp_path):
     yield str(db_file)
 
 
-def test_end_to_end_trade_execution(e2e_setup, capsys):
+def test_end_to_end_trade_execution(e2e_setup, capsys, monkeypatch):
     from decision_engine import DecisionEngine
     from simulation.execution_simulee import enregistrer_trade_simule
     from telegram_notifier import TelegramNotifier
     from core import db as core_db, models
+    
+    sent = []
+    def _fake_send(msg: str) -> bool:
+        sent.append(msg)
+        return True
+
+    monkeypatch.setattr('telegram_notifier.send_telegram_message', _fake_send)
+    monkeypatch.setattr('tests.test_end_to_end.send_telegram_message', _fake_send)
 
     ticker_data = {
         "ticker": "XYZ",
@@ -56,4 +67,19 @@ def test_end_to_end_trade_execution(e2e_setup, capsys):
     session.close()
     assert row is not None and row.prix_achat == 1.50
 
-    send_telegram_message("\u2705 Test end-to-end termin\u00E9 avec succ\u00E8s.")
+    details = {
+        "action": "Achat",
+        "price": 1.50,
+        "qty": 1000,
+        "sl": 1.40,
+        "tp": 1.55,
+        "source": "Test automatique",
+        "note": "Fin du test E2E",
+    }
+    details["expected_gain"] = round((details["tp"] - details["price"]) * details["qty"], 2)
+    details["datetime"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    msg = notifier._format_trade_message("TRADE_EXECUTED", "XYZ", details)
+    assert send_telegram_message(msg) is True
+
+    send_telegram_message("\u2705 Test E2E termin\u00E9 avec succ\u00E8s.")
