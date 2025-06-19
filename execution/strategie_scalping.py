@@ -13,6 +13,7 @@ from data.indicateurs import (
     get_float,
     get_catalyseur_score,
     check_breakout_sustain,
+    get_atr,
 )
 from data.stream_data_manager import get_latest_data
 from utils.execution_reelle import executer_ordre_reel
@@ -36,6 +37,22 @@ def _compute_score(ticker: str) -> Optional[dict]:
     price_prev = get_price_5s_ago(ticker)
     float_val = get_float(ticker)
     catalyst = get_catalyseur_score(ticker)
+    atr = get_atr(ticker)
+
+    # gap filter between previous close and today's open
+    gap_pct = None
+    try:
+        import yfinance as yf
+
+        df_gap = yf.download(ticker, period="2d", interval="1d", progress=False)
+        if len(df_gap) >= 2:
+            prev_close = float(df_gap["Close"].iloc[-2])
+            today_open = float(df_gap["Open"].iloc[-1])
+            gap_pct = (today_open - prev_close) / prev_close * 100
+            if abs(gap_pct) >= 15:
+                return None
+    except Exception:
+        pass
 
     if last_price is None or price_prev is None or volume_now is None:
         return None
@@ -46,24 +63,33 @@ def _compute_score(ticker: str) -> Optional[dict]:
 
     score = 0
     if rsi is not None and 65 <= rsi <= 72:
-        score += 10
+        score += 8
     if (
         emas.get(9) is not None
         and emas.get(21) is not None
         and emas[21] != 0
         and emas[9] / emas[21] > 1.001
     ):
-        score += 25
+        score += 20
     if vwap is not None and last_price < vwap * 0.998:
         score += 5
     if volume_now is not None and volume_now > 750_000:
-        score += 15
+        score += 20
     if float_val is not None and float_val < 100_000_000:
-        score += 5
+        score += 4
     if catalyst is not None and catalyst > 0.7:
-        score += 30
+        score += 35
     if macd is not None and macd_signal is not None and macd > macd_signal and momentum > 1:
-        score += 10
+        score += 8
+
+    stop_loss = None
+    take_profit = None
+    trailing_atr = None
+    if atr is not None and last_price:
+        sl_pct = min((2 * atr) / last_price, 0.08)
+        stop_loss = round(last_price * (1 - sl_pct), 4)
+        take_profit = round(last_price * 1.05, 4)
+        trailing_atr = round(atr * 1.5, 4)
 
     return {
         "score": score,
@@ -71,6 +97,11 @@ def _compute_score(ticker: str) -> Optional[dict]:
         "momentum": momentum,
         "volume": volume_now,
         "source": tick_data.get("source", "FALLBACK"),
+        "atr": atr,
+        "gap_pct": gap_pct,
+        "stop_loss": stop_loss,
+        "take_profit": take_profit,
+        "trailing_atr": trailing_atr,
     }
 
 
@@ -80,7 +111,13 @@ def executer_strategie_scalping(ticker: str) -> Optional[dict]:
     Retourne un dict si un trade est lancé, sinon ``None``.
     """
 
-    today = datetime.utcnow()
+    now = datetime.utcnow()
+    if now.hour == 13 and now.minute < 45:
+        return None
+    if now.hour == 20 and now.minute > 45:
+        return None
+
+    today = now
     if get_nb_trades_du_jour(ticker, today) >= 3:
         return None
 

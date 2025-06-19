@@ -66,6 +66,11 @@ def enregistrer_trade_ia(
     ema21: float,
     momentum: float,
     source: str,
+    atr: float | None = None,
+    gap_pct: float | None = None,
+    stop_loss: float | None = None,
+    take_profit: float | None = None,
+    entry_time: str | None = None,
 ) -> None:
     """Insère un trade IA enrichi dans la base ``trades``."""
 
@@ -86,7 +91,12 @@ def enregistrer_trade_ia(
                 ema9 REAL,
                 ema21 REAL,
                 momentum REAL,
-                source_data TEXT
+                source_data TEXT,
+                atr REAL,
+                gap_pct REAL,
+                stop_loss REAL,
+                take_profit REAL,
+                entry_time TEXT
             )
             """,
         )
@@ -105,8 +115,13 @@ def enregistrer_trade_ia(
                 ema9,
                 ema21,
                 momentum,
-                source_data
-            ) VALUES (?, ?, 'achat', ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                source_data,
+                atr,
+                gap_pct,
+                stop_loss,
+                take_profit,
+                entry_time
+            ) VALUES (?, ?, 'achat', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 datetime.utcnow().isoformat(),
@@ -120,6 +135,11 @@ def enregistrer_trade_ia(
                 ema21,
                 momentum,
                 source,
+                atr,
+                gap_pct,
+                stop_loss,
+                take_profit,
+                entry_time or datetime.utcnow().isoformat(),
             ),
         )
 

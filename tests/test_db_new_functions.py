@@ -21,7 +21,12 @@ def test_enregistrer_trade_ia(monkeypatch, tmp_path):
             ema9 REAL,
             ema21 REAL,
             momentum REAL,
-            source_data TEXT
+            source_data TEXT,
+            atr REAL,
+            gap_pct REAL,
+            stop_loss REAL,
+            take_profit REAL,
+            entry_time TEXT
         )
         """
     )
@@ -37,12 +42,30 @@ def test_enregistrer_trade_ia(monkeypatch, tmp_path):
 
     monkeypatch.setattr(sqlite3, "connect", fake_connect)
 
-    enregistrer_trade_ia("ABC", 1.0, 100.0, 90, 2.0, 70, 10, 9, 1.2, "test")
+    enregistrer_trade_ia(
+        "ABC",
+        1.0,
+        100.0,
+        90,
+        2.0,
+        70,
+        10,
+        9,
+        1.2,
+        "test",
+        atr=0.5,
+        gap_pct=1.0,
+        stop_loss=0.9,
+        take_profit=1.05,
+        entry_time="2024-01-01T00:00:00",
+    )
 
     conn = sqlite3.connect(db_file)
-    row = conn.execute("SELECT ticker, score_at_entry, pump_pct_60s FROM trades").fetchone()
+    row = conn.execute(
+        "SELECT ticker, score_at_entry, pump_pct_60s, atr, gap_pct, stop_loss, take_profit FROM trades"
+    ).fetchone()
     conn.close()
-    assert row == ("ABC", 90, 2.0)
+    assert row == ("ABC", 90, 2.0, 0.5, 1.0, 0.9, 1.05)
 
 
 def test_update_score_watchlist(monkeypatch, tmp_path):
