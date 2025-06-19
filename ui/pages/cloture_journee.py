@@ -2,6 +2,7 @@ import sqlite3
 import streamlit as st
 import pandas as pd
 from datetime import datetime
+from watchlist_panel import render_watchlist_panel
 
 def cloturer_journee():
     st.title("🔒 Clôturer la Journée de Trading")
@@ -78,3 +79,5 @@ def cloturer_journee():
     conn.close()
 
 cloturer_journee()
+
+render_watchlist_panel()

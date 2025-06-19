@@ -1,6 +1,7 @@
 
 import streamlit as st
 from simulation.execution_simulee import enregistrer_trade_simule
+from watchlist_panel import render_watchlist_panel
 
 st.set_page_config(page_title="🟢 Simulation Achat", layout="wide")
 st.title("🟢 Simulation d'achat manuel")
@@ -22,3 +23,5 @@ prix = st.number_input("💵 Prix d'achat", min_value=0.0, step=0.01)
 
 if st.button("Simuler l'achat") and ticker and prix > 0:
     enregistrer_achat(ticker, prix)
+
+render_watchlist_panel()

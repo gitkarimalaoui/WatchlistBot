@@ -4,6 +4,7 @@ import pandas as pd
 import os
 import json
 from datetime import datetime
+from watchlist_panel import render_watchlist_panel
 
 st.set_page_config(page_title="📅 Dashboard Journalier", layout="wide")
 st.title("📅 Dashboard Journalier des Trades")
@@ -42,3 +43,5 @@ if os.path.exists(JOURNAL_PATH):
         st.warning("Le journal ne contient pas de données valides pour aujourd'hui.")
 else:
     st.error("📭 Base de journal non trouvée. Lance une simulation pour la générer.")
+
+render_watchlist_panel()

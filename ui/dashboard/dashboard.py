@@ -4,6 +4,7 @@ import pandas as pd
 import sqlite3
 from datetime import datetime
 from pathlib import Path
+from watchlist_panel import render_watchlist_panel
 
 st.markdown("## 📊 Tableau de bord")
 
@@ -51,3 +52,5 @@ else:
         st.error(f"Erreur lors du chargement de stats_journalieres : {e}")
 
     conn.close()
+
+render_watchlist_panel()

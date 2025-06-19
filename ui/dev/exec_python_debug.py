@@ -3,6 +3,7 @@ import streamlit as st
 import os
 import json
 from datetime import datetime
+from watchlist_panel import render_watchlist_panel
 
 st.set_page_config(page_title="🧪 Zone avancée - Exécution & Maintenance", layout="wide")
 st.title("🧪 Zone avancée - Exécution Python, Historique & Maintenance")
@@ -69,3 +70,5 @@ with col4:
         with open(IA_PATH, "w", encoding="utf-8") as f:
             json.dump({}, f)
         st.success("✅ Base IA vidée.")
+
+render_watchlist_panel()
