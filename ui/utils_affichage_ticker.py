@@ -412,3 +412,15 @@ def afficher_ticker_panel(ticker, stock, index):
                 st.success(result["message"])
             else:
                 st.error(result["message"])
+
+
+def afficher_bloc_ticker(stock: dict, index: int = 0) -> None:
+    """Alias simple de :func:`afficher_ticker_panel` pour un dict ``stock``.
+
+    Cette fonction extrait automatiquement le ticker du dictionnaire puis
+    délègue l'affichage détaillé à ``afficher_ticker_panel``.
+    """
+    ticker = stock.get("ticker") or stock.get("symbol")
+    if not ticker:
+        return
+    afficher_ticker_panel(ticker, stock, index)
