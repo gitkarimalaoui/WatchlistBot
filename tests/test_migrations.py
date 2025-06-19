@@ -1,8 +1,6 @@
 import os
 import tempfile
-import pytest
-sqlalchemy = pytest.importorskip("sqlalchemy")
-from sqlalchemy import create_engine, inspect
+import sqlite3
 from alembic import command
 from alembic.config import Config
 
@@ -17,7 +15,10 @@ def test_migrations_create_tables():
     with tempfile.TemporaryDirectory() as tmp:
         db_file = os.path.join(tmp, 'test.db')
         run_migrations(db_file)
-        engine = create_engine(f'sqlite:///{db_file}')
-        insp = inspect(engine)
-        tables = set(insp.get_table_names())
+
+        with sqlite3.connect(db_file) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+            tables = {row[0] for row in cursor.fetchall()}
+
         assert {'watchlist', 'intraday_smart', 'trades_simules'} <= tables
