@@ -64,11 +64,15 @@ def render_watchlist_panel() -> None:
     st.markdown('<div id="right-watchlist">', unsafe_allow_html=True)
     st.markdown("### 📈 Watchlist Live")
     if data:
-        data = sorted(
-            data,
-            key=lambda d: d.get("score_global", d.get("global_score", 0)),
-            reverse=True,
-        )
+        def _score_key(row: Dict) -> float:
+            score = row.get("score_global")
+            if score is None:
+                score = row.get("global_score")
+            if score is None:
+                score = 0
+            return score
+
+        data = sorted(data, key=_score_key, reverse=True)
         for itm in data:
             tic = itm.get("ticker") or itm.get("symbol")
             if not tic:
