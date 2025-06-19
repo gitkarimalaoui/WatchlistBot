@@ -1,0 +1,58 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  padding: 1rem;
+}
+.summary span {
+  margin-right: 1rem;
+  font-weight: bold;
+}
+#tickersTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+#tickersTable th, #tickersTable td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: center;
+}
+.score-high { background-color: #c8e6c9; }
+.score-mid { background-color: #ffe0b2; }
+.score-low { background-color: #ffcdd2; }
+.badge-pump { background-color: #4caf50; color: white; padding: 0.2rem 0.4rem; border-radius: 4px; }
+.badge-bullish { color: #4caf50; font-weight: bold; }
+.badge-bearish { color: #f44336; font-weight: bold; }
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+@media (max-width: 600px) {
+  #tickersTable th, #tickersTable td {
+    font-size: 0.8rem;
+    padding: 0.3rem;
+  }
+}

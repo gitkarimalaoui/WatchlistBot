@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Watchlist Live</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Watchlist Live</h1>
+    <div class="summary">
+      <span id="pumpCount">Pumps: 0</span>
+      <span id="scoreCount">Score ≥ 60: 0</span>
+      <span id="totalCount">Total: 0</span>
+    </div>
+    <table id="tickersTable">
+      <thead>
+        <tr>
+          <th>Ticker</th>
+          <th>Price</th>
+          <th>Change %</th>
+          <th>Volume Ratio</th>
+          <th>RSI</th>
+          <th>EMA Signal</th>
+          <th>Score</th>
+          <th>Pump</th>
+          <th>Last Update</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+  <div id="detailModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <pre id="detailText"></pre>
+    </div>
+  </div>
+<script src="script.js"></script>
+</body>
+</html>
