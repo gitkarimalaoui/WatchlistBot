@@ -137,4 +137,10 @@ def check_breakout_sustain(momentum: float, volume_now: float, volume_5min_ago: 
     if volume_5min_ago == 0 or volume_5min_ago is None or volume_now is None:
         return False
     vol_ratio = volume_now / volume_5min_ago
-    return momentum > 1.0 and vol_ratio >= 1.5
+    momentum_check = momentum > 1.0
+    vol_ratio_check = vol_ratio >= 1.5
+    if hasattr(momentum_check, "all"):
+        momentum_check = momentum_check.all()
+    if hasattr(vol_ratio_check, "all"):
+        vol_ratio_check = vol_ratio_check.all()
+    return bool(momentum_check and vol_ratio_check)
