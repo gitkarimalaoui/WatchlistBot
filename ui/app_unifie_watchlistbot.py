@@ -65,7 +65,11 @@ from roadmap_ui import (
 )
 from query_entreprise_db import get_portfolio_modules, get_use_cases, get_revenue_sources, get_kpi_targets
 from pages.cloture_journee import cloturer_journee
-from utils_affichage_ticker import afficher_ticker_panel, _ia_score
+from utils_affichage_ticker import (
+    afficher_ticker_panel,
+    _ia_score,
+    afficher_bloc_ticker,
+)
 from utils.execution_reelle import executer_ordre_reel
 from execution.strategie_scalping import executer_strategie_scalping
 from intelligence.ai_scorer import compute_global_score
@@ -398,9 +402,6 @@ with st.expander("📥 Scraper Jaguar et Injecter"):
         st.success(f"✅ {after - before} tickers injectés dans la base.")
     if st.button("🔁 Rafraîchir la watchlist"):
         st.rerun()
-    if st.button("🔄 Refresh", key="refresh_live"):
-        st.session_state["watchlist_live"] = fetch_live_watchlist()
-        st.rerun()
     try:
         resp_csv = requests.get(f"{API_URL}/watchlist/export", timeout=10)
         if resp_csv.status_code == 200:
@@ -426,84 +427,28 @@ with st.expander("📥 Données marché – Historique et Intraday"):
             st.error("❌ Échec pendant la collecte.")
             st.code(proc.stderr)
 
-# 💼 Affichage dynamique paginé
-st.sidebar.subheader("🌟 Score IA minimum")
-score_minimum = st.sidebar.slider("Score IA minimum", 0, 100, 70)
+# 💼 Watchlist Live
+if "watchlist_live" not in st.session_state:
+    st.session_state["watchlist_live"] = fetch_live_watchlist()
 
-if st.sidebar.button("🎯 Voir les meilleures opportunités"):
-    score_minimum = 85
+if st.button("🔄 Refresh"):
+    st.session_state["watchlist_live"] = fetch_live_watchlist()
 
-load_watchlist.clear()
-watchlist = st.session_state.pop("watchlist_live", None)
-if watchlist is None:
-    watchlist = load_watchlist()
+watchlist = st.session_state.get("watchlist_live", [])
+watchlist = sorted(
+    watchlist,
+    key=lambda w: w.get("change")
+    or w.get("percent_gain")
+    or w.get("change_percent")
+    or 0,
+    reverse=True,
+)
 
-scalp_auto = st.sidebar.checkbox("Mode scalping auto")
-if scalp_auto:
-    for tick in watchlist:
-        resultat = executer_strategie_scalping(tick.get('ticker') or tick.get('symbol'))
-        if resultat:
-            st.write(f"{tick.get('ticker') or tick.get('symbol')} — SCALPING lancé : {resultat}")
-
-if st.session_state.get("watchdog_alert"):
-    alert = st.session_state["watchdog_alert"]
-    with st.container():
-        st.markdown("### 📢 OPPORTUNITÉ DETECTÉE")
-        st.markdown(
-            f"Ticker : {alert['ticker']}\n\nPrix d’achat : {alert['prix']}$\nQuantité : {alert['quantite']}\nStop loss : {alert['stop_loss']}$"
-        )
-        c1, c2, c3 = st.columns(3)
-        c1.button("✅ Acheter maintenant", key="wd_buy")
-        c2.button("✏️ Modifier", key="wd_edit")
-        if c3.button("🚫 Ignorer", key="wd_ignore"):
-            st.session_state.pop("watchdog_alert", None)
-
-if st.button("🧠 Détection auto à partir des News"):
-    proc = subprocess.run(
-        [sys.executable, os.path.join(SCRIPTS, "detect_tickers_from_news.py")],
-        capture_output=True,
-        text=True,
-    )
-    if proc.returncode == 0:
-        st.success("✅ Détection terminée")
-        st.code(proc.stdout)
-        st.rerun()
-    else:
-        st.error("❌ Erreur pendant la détection")
-        st.code(proc.stderr)
-
-if st.button("📣 Vérifier News PR pour la watchlist"):
-    news_detected = []
-    for item in watchlist:  # liste de dicts {'symbol': 'SNPX', ...}
-        symbol = item.get("symbol") or item.get("ticker")
-        if not symbol:
-            continue
-        news = fetch_news_finnhub(symbol)
-        if news:
-            news_detected.append((symbol, news))
-            st.markdown(
-                f"✅ **{symbol}** → {len(news)} news détectées (provenance = `NewsPR`)")
-
-    if not news_detected:
-        st.warning("Aucune news critique détectée.")
-
-
-filtered_watchlist = [w for w in watchlist if _ia_score(w) >= score_minimum]
-filtered_watchlist = sorted(filtered_watchlist, key=_ia_score, reverse=True)
-
-page_size = 10
-total = len(filtered_watchlist)
-page_num = st.sidebar.number_input("Page", min_value=1, max_value=(total // page_size + 1), value=1)
-start = (page_num - 1) * page_size
-end = start + page_size
-paginated_watchlist = filtered_watchlist[start:end]
-
-st.caption(f"{total} tickers chargés | Page {page_num}/{(total // page_size + 1)}")
-
-for i, stock in enumerate(paginated_watchlist):
-    ticker = stock.get('ticker')
-    if ticker:
-        afficher_ticker_panel(ticker, stock, i)
+if not watchlist:
+    st.warning("Aucune donnée disponible pour le moment")
+else:
+    for idx, stock in enumerate(watchlist):
+        afficher_bloc_ticker(stock, idx)
 
 st.markdown("---")
 st.markdown(f"© WatchlistBot V7 – {datetime.now().year}")
