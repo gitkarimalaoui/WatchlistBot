@@ -44,7 +44,7 @@ def _merge(a: Dict[str, Any], b: Dict[str, Any]) -> Dict[str, Any]:
     return res
 
 
-def update_meta(stats: Dict[str, Any], meta_path: Path = DEFAULT_META_PATH) -> Dict[str, Any]:
+def update_meta(stats: Dict[str, Any], meta_path: Union[str, Path] = DEFAULT_META_PATH) -> Dict[str, Any]:
     if meta_path.exists():
         meta = json.loads(meta_path.read_text())
     else:
@@ -62,7 +62,9 @@ def run_hybrid_learning(
     end: str,
     model_version: str = DEFAULT_MODEL,
     db_path: str = "data/trades.db",
-    meta_path: Union[Path, str] = DEFAULT_META_PATH,
+
+    meta_path: Union[str, Path] = DEFAULT_META_PATH,
+
 ) -> Dict[str, Any]:
     """Execute backtest and realtime analysis then update meta file."""
     meta_path = Path(meta_path)
