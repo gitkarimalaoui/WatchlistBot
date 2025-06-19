@@ -65,6 +65,23 @@ DEBUG_MODE=False
 streamlit run ui/app_unifie_watchlistbot.py
 ```
 
+## API FastAPI
+
+Une API légère permet de récupérer la watchlist au format JSON.
+Après installation des dépendances :
+
+```bash
+pip install fastapi uvicorn
+```
+
+Lancez le serveur :
+
+```bash
+python api/watchlist_api.py
+```
+
+La route `/watchlist/live` renvoie les données utilisées par l'interface.
+
 ## Exécuter les tests
 
 Avant de lancer la suite de tests, installez les dépendances :
