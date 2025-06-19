@@ -16,6 +16,8 @@ from utils_graph import (
     charger_historique_intelligent,
     charger_intraday_intelligent,
 )
+from movers_detector import get_momentum
+from utils.progress_tracker import get_latest_progress
 from utils.execution_reelle import executer_ordre_reel
 from utils_signaux import is_buy_signal
 
@@ -162,6 +164,24 @@ def _ia_score(t: dict, return_breakdown: bool = False):
     return final_score
 
 
+def _calc_atr(df: pd.DataFrame, period: int = 14) -> Optional[float]:
+    """Calculate the Average True Range from intraday data."""
+    if df is None or df.empty or len(df) < period:
+        return None
+    df = df.copy()
+    df["prev_close"] = df["close"].shift(1)
+    tr = pd.concat(
+        [
+            df["high"] - df["low"],
+            (df["high"] - df["prev_close"]).abs(),
+            (df["low"] - df["prev_close"]).abs(),
+        ],
+        axis=1,
+    ).max(axis=1)
+    atr = tr.rolling(period).mean().iloc[-1]
+    return float(atr)
+
+
 def _enregistrer_trade(ticker: str, prix: float, quantite: int = 1, sl=None, tp=None, exit_price=None):
     """Enregistre un trade simulé dans la base de données."""
     enregistrer_trade_simule(
@@ -272,6 +292,23 @@ def afficher_ticker_panel(ticker, stock, index):
 
         st.markdown(f"**Niveau de signal :** {stock['signal_level']}")
 
+        st.markdown("### \ud83d\udccc Commentaire IA")
+        score = score_local
+        all_conditions = is_buy_signal(stock)
+        if score < 80:
+            st.error("\u274c Score IA insuffisant – faible momentum ou volume insuffisant.")
+        elif not all_conditions:
+            st.warning("\u23f3 Momentum partiel ou catalyseur faible – attendre confirmation.")
+        else:
+            st.success("\ud83d\dfE Signal complet détecté. Opportunité scalping valide.")
+
+        st.markdown("### \ud83d\udce4 Analyse de Sortie")
+        momentum = get_momentum(ticker)
+        if score >= 80 and momentum < 1:
+            st.info("\u26a0\ufe0f Momentum faiblissant. Prêt pour une prise de profit ?")
+        else:
+            st.write("\u2705 Rien à signaler – dynamique toujours favorable.")
+
         if df_intraday is not None and not df_intraday.empty:
             df = df_intraday.copy()
             df["ema9"] = df["close"].ewm(span=9, adjust=False).mean()
@@ -315,21 +352,36 @@ def afficher_ticker_panel(ticker, stock, index):
             else:
                 st.warning("Données historiques indisponibles.")
 
+        atr = _calc_atr(df_intraday)
+        progress = get_latest_progress()
+        capital = progress[1] if progress else 0
+        quantite_precalc = 1
+        if price:
+            quantite_precalc = max(1, int((capital * 0.02) // price))
+        sl_percent = 0.08
+        if atr and price:
+            sl_percent = min(0.08, (2 * atr) / price)
+        prix_sl = round(price * (1 - sl_percent), 2) if price else 0.0
+        prix_tp = round(price * 1.05, 2) if price else 0.0
+
         prix = st.number_input(
-            "💵 Prix", min_value=0.0, step=0.01, key=f"prix_{ticker}_{index}"
+            "💵 Prix", min_value=0.0, step=0.01, value=price or 0.0, key=f"prix_{ticker}_{index}"
         )
         quantite = st.number_input(
-            "🔢 Quantité", min_value=1, step=1, value=1, key=f"qty_{ticker}_{index}"
+            "🔢 Quantité", min_value=1, step=1, value=quantite_precalc, key=f"qty_{ticker}_{index}"
         )
         stop_loss = st.number_input(
-            "❗ Stop loss", min_value=0.0, step=0.01, key=f"sl_{ticker}_{index}"
+            "❗ Stop loss", min_value=0.0, step=0.01, value=prix_sl, key=f"sl_{ticker}_{index}"
+        )
+        take_profit = st.number_input(
+            "📈 Take Profit", min_value=0.0, step=0.01, value=prix_tp, key=f"tp_{ticker}_{index}"
         )
         c1, c2, c3, c4 = st.columns(4)
         if c1.button("Simuler l'achat", key=f"sim_buy_{ticker}_{index}"):
-            _enregistrer_trade(ticker, prix, int(quantite), sl=stop_loss)
+            _enregistrer_trade(ticker, prix, int(quantite), sl=stop_loss, tp=take_profit)
             st.success(f"Achat simulé enregistré pour {ticker} à {prix:.2f} $")
         if c2.button("Simuler la vente", key=f"sim_sell_{ticker}_{index}"):
-            _enregistrer_trade(ticker, prix, int(quantite), exit_price=prix)
+            _enregistrer_trade(ticker, prix, int(quantite), sl=stop_loss, tp=take_profit, exit_price=prix)
             st.success(f"Vente simulée enregistrée pour {ticker} à {prix:.2f} $")
         if c3.button("Achat réel", key=f"real_buy_{ticker}_{index}"):
             result = executer_ordre_reel(ticker, prix, int(quantite), "achat")
