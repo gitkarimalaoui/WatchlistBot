@@ -15,6 +15,44 @@ import requests
 # ─── Configuration de la page ───
 st.set_page_config(page_title="WatchlistBot V7", layout="wide")
 
+# ─── Style barre latérale droite ───
+st.markdown(
+    """
+    <style>
+        #right-watchlist {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 320px;
+            height: 100vh;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+            padding: 0.5rem;
+            border-left: 1px solid #ddd;
+            z-index: 1000;
+        }
+        div.block-container {
+            margin-right: 330px;
+        }
+        #right-watchlist .badge-pump {
+            background: #ff4b4b;
+            color: white;
+            border-radius: 4px;
+            padding: 0 4px;
+            font-size: 0.75rem;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# ─── Gestion URL focus ticker ───
+params = st.experimental_get_query_params()
+if "focus" in params:
+    st.session_state["ticker_focus"] = params["focus"][0]
+    st.experimental_set_query_params()
+    st.rerun()
+
 # ─── Définition des chemins ───
 ROOT_UI = os.path.dirname(__file__)
 ROOT_DIR = os.path.abspath(os.path.join(ROOT_UI, ".."))
@@ -288,6 +326,17 @@ def fetch_live_watchlist():
         st.warning(f"Erreur chargement live: {e}")
     return load_watchlist()
 
+
+def safe_fetch_live_watchlist():
+    """Return watchlist and possible error message."""
+    try:
+        resp = requests.get(f"{API_URL}/watchlist/live", timeout=10)
+        if resp.status_code == 200:
+            return resp.json(), None
+        return [], f"HTTP {resp.status_code}"
+    except Exception as e:
+        return [], str(e)
+
 def load_watchlist_full():
     conn = sqlite3.connect(DB_PATH)
     rows = conn.execute(
@@ -301,6 +350,40 @@ def load_watchlist_full():
         if ticker not in unique and text:
             unique[ticker] = text
     return [{"symbol": t, "desc": d} for t, d in unique.items()]
+
+
+def render_watchlist_sidebar() -> None:
+    """Affiche la watchlist live dans une barre latérale droite."""
+    data, err = safe_fetch_live_watchlist()
+    container = st.container()
+    with container:
+        st.markdown('<div id="right-watchlist">', unsafe_allow_html=True)
+        st.markdown("### 📈 Watchlist Live")
+        if err:
+            st.warning(f"Backend indisponible: {err}")
+        if data:
+            data = sorted(data, key=lambda d: d.get('global_score', 0), reverse=True)
+            for itm in data:
+                tic = itm.get('ticker') or itm.get('symbol')
+                if not tic:
+                    continue
+                pump = itm.get('isPump')
+                badge = "<span class='badge-pump'>PUMP</span>" if pump else ""
+                pct = itm.get('percent_gain') or itm.get('change_percent') or 0
+                rsi = itm.get('rsi', 'NA')
+                ema = itm.get('ema', itm.get('ema9'))
+                ema_str = str(ema) if ema is not None else 'NA'
+                upd = itm.get('updated_at') or itm.get('timestamp', '')
+                url = f"?focus={tic}"
+                st.markdown(
+                    f"**[ {tic} ]({url})** {badge}<br>" \
+                    f"Score: {itm.get('global_score','N/A')} | %Gain: {pct} | " \
+                    f"Vol: {itm.get('volume','N/A')} | RSI: {rsi} | EMA: {ema_str} | {upd}",
+                    unsafe_allow_html=True,
+                )
+        else:
+            st.info("Aucune donnée")
+        st.markdown('</div>', unsafe_allow_html=True)
 
 # ➕ Ajout manuel
 st.markdown("### ➕ Ajouter un ticker manuellement")
@@ -452,3 +535,5 @@ else:
 
 st.markdown("---")
 st.markdown(f"© WatchlistBot V7 – {datetime.now().year}")
+
+render_watchlist_sidebar()
