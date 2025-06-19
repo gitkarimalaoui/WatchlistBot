@@ -1,6 +1,6 @@
 import os
 from typing import Dict
-import requests
+from utils.telegram_utils import send_telegram_message
 
 
 class TelegramNotifier:
@@ -8,19 +8,37 @@ class TelegramNotifier:
 
     def __init__(self) -> None:
         self.test_mode = os.getenv("TEST_MODE", "False").lower() == "true"
-        self.token = os.getenv("TELEGRAM_TOKEN", "")
-        self.chat_id = os.getenv("TELEGRAM_CHAT_ID", "")
+
+    def _format_trade_message(self, alert_type: str, ticker: str, details: Dict) -> str:
+        action = details.get("action") or details.get("side")
+        if not action:
+            action = "Vente" if details.get("exit_price") else "Achat"
+        price = details.get("price") or details.get("entry")
+        qty = details.get("qty") or details.get("quantity")
+        sl = details.get("sl") or details.get("stop_loss")
+        tp = details.get("tp") or details.get("take_profit")
+        source = details.get("source") or details.get("provenance", "Simulation")
+        note = details.get("note")
+
+        lines = ["\U0001F4BC TRADE EX\u00C9CUT\u00C9", f"Action : {action}", f"Ticker : {ticker}"]
+        if price is not None:
+            lines.append(f"Prix : {price}$")
+        if qty is not None:
+            lines.append(f"Quantit\u00E9 : {qty}")
+        if sl is not None:
+            lines.append(f"Stop Loss : {sl}")
+        if tp is not None:
+            lines.append(f"Take Profit : {tp}")
+        if source:
+            lines.append(f"Source : {source}")
+        if note:
+            lines.append(f"Note : {note}")
+        return "\n".join(lines)
 
     def send_trade_alert(self, alert_type: str, ticker: str, details: Dict) -> bool:
         """Send a Telegram alert or print when in test mode."""
-        message = f"[{alert_type}] {ticker} - {details}"
-        if self.test_mode or not self.token or not self.chat_id:
+        message = self._format_trade_message(alert_type, ticker, details)
+        if self.test_mode:
             print(f"[TEST MODE] {message}")
             return False
-        url = f"https://api.telegram.org/bot{self.token}/sendMessage"
-        payload = {"chat_id": self.chat_id, "text": message}
-        try:
-            resp = requests.post(url, data=payload, timeout=10)
-            return resp.ok
-        except Exception:
-            return False
+        return send_telegram_message(message)
