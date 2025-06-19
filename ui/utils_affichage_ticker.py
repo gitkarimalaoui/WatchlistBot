@@ -1,5 +1,7 @@
 
 from simulation.execution_simulee import enregistrer_trade_simule
+from decision_engine import DecisionEngine
+from telegram_notifier import TelegramNotifier
 
 import streamlit as st
 import pandas as pd
@@ -20,6 +22,17 @@ from movers_detector import get_momentum
 from utils.progress_tracker import get_latest_progress
 from utils.execution_reelle import executer_ordre_reel
 from utils_signaux import is_buy_signal
+
+engine = DecisionEngine()
+notifier = TelegramNotifier()
+
+BROKER_FEES = {
+    "commission_per_share": 0.0049,
+    "commission_min": 0.99,
+    "platform_fee_per_share": 0.005,
+    "platform_fee_min": 1.0,
+    "platform_max_ratio": 0.01,
+}
 
 
 def calculer_indicateurs(df: pd.DataFrame) -> Optional[Dict[str, float]]:
@@ -278,29 +291,24 @@ def afficher_ticker_panel(ticker, stock, index):
             """
         )
 
-        # Détection du signal d'achat fort
-        if is_buy_signal(stock):
-            st.success(
-                "\U0001F680 **Signal d'achat détecté !** Conditions techniques remplies."
-            )
+        # Utilisation du moteur de décision
+        decision = engine.analyze_trade_decision(stock)
+        if decision["buy"] and not decision["avoid"]:
+            st.success("\n".join(decision["buy"]))
             stock["signal_level"] = "🟢"
             if st.button(f"Recevoir alerte pour {ticker}", key=f"alert_{ticker}_{index}"):
                 st.info("Alerte activée pour ce ticker.")
         else:
-            st.info("⏳ Pas encore toutes les conditions réunies pour entrer.")
-            stock["signal_level"] = "🟡" if stock.get("score_ia", 0) >= 60 else "🔴"
+            st.error("\n".join(decision["avoid"]))
+            stock["signal_level"] = "🔴"
 
         st.markdown(f"**Niveau de signal :** {stock['signal_level']}")
 
         st.markdown("### 📌 Commentaire IA")
-        score = score_local
-        all_conditions = is_buy_signal(stock)
-        if score < 80:
-            st.error("\u274c Score IA insuffisant – faible momentum ou volume insuffisant.")
-        elif not all_conditions:
-            st.warning("\u23f3 Momentum partiel ou catalyseur faible – attendre confirmation.")
-        else:
-            st.success("🟢 Signal complet détecté. Opportunité scalping valide.")
+        if decision["buy"] and not decision["avoid"]:
+            st.info("Ne pas vendre – tendance toujours favorable")
+        confidence = decision.get("confidence", 0)
+        st.markdown(f"**Confiance** : {confidence:.2f}")
 
         st.markdown("### 📤 Analyse de Sortie")
         momentum = get_momentum(ticker)
@@ -355,17 +363,14 @@ def afficher_ticker_panel(ticker, stock, index):
         atr = _calc_atr(df_intraday)
         progress = get_latest_progress()
         capital = progress[1] if progress else 0
-        quantite_precalc = 1
-        if price:
-            quantite_precalc = max(1, int((capital * 0.02) // price))
-        sl_percent = 0.08
-        if atr and price:
-            sl_percent = min(0.08, (2 * atr) / price)
-        prix_sl = round(price * (1 - sl_percent), 2) if price else 0.0
-        prix_tp = round(price * 1.05, 2) if price else 0.0
+        stock["capital"] = capital
+        suggestions = engine.generate_order_suggestions({**stock, "atr": atr, "capital": capital})
+        quantite_precalc = suggestions["quantity"]
+        prix_sl = suggestions["stop_loss"]
+        prix_tp = suggestions["take_profit"]
 
         prix = st.number_input(
-            "💵 Prix", min_value=0.0, step=0.01, value=price or 0.0, key=f"prix_{ticker}_{index}"
+            "💵 Prix", min_value=0.0, step=0.01, value=suggestions["price"], key=f"prix_{ticker}_{index}"
         )
         quantite = st.number_input(
             "🔢 Quantité", min_value=1, step=1, value=quantite_precalc, key=f"qty_{ticker}_{index}"
@@ -378,17 +383,29 @@ def afficher_ticker_panel(ticker, stock, index):
         )
         c1, c2, c3, c4 = st.columns(4)
         if c1.button("Simuler l'achat", key=f"sim_buy_{ticker}_{index}"):
-            _enregistrer_trade(ticker, prix, int(quantite), sl=stop_loss, tp=take_profit)
-            st.success(f"Achat simulé enregistré pour {ticker} à {prix:.2f} $")
+            viability = engine.calculate_trade_viability(prix, take_profit, int(quantite), BROKER_FEES)
+            if not viability["viable"]:
+                st.error("🚫 Commissions trop élevées")
+                notifier.send_trade_alert("TRADE_BLOCKED", ticker, viability)
+            else:
+                _enregistrer_trade(ticker, prix, int(quantite), sl=stop_loss, tp=take_profit)
+                st.success(f"Achat simulé enregistré pour {ticker} à {prix:.2f} $")
+                notifier.send_trade_alert("TRADE_EXECUTED", ticker, {"price": prix, "qty": int(quantite)})
         if c2.button("Simuler la vente", key=f"sim_sell_{ticker}_{index}"):
             _enregistrer_trade(ticker, prix, int(quantite), sl=stop_loss, tp=take_profit, exit_price=prix)
             st.success(f"Vente simulée enregistrée pour {ticker} à {prix:.2f} $")
         if c3.button("Achat réel", key=f"real_buy_{ticker}_{index}"):
-            result = executer_ordre_reel(ticker, prix, int(quantite), "achat")
-            if result["success"]:
-                st.success(result["message"])
+            viability = engine.calculate_trade_viability(prix, take_profit, int(quantite), BROKER_FEES)
+            if not viability["viable"]:
+                st.error("🚫 Commissions trop élevées")
+                notifier.send_trade_alert("TRADE_BLOCKED", ticker, viability)
             else:
-                st.error(result["message"])
+                result = executer_ordre_reel(ticker, prix, int(quantite), "achat")
+                if result["success"]:
+                    st.success(result["message"])
+                    notifier.send_trade_alert("TRADE_EXECUTED", ticker, result)
+                else:
+                    st.error(result["message"])
         if c4.button("Vente réelle", key=f"real_sell_{ticker}_{index}"):
             result = executer_ordre_reel(ticker, prix, int(quantite), "vente")
             if result["success"]:
