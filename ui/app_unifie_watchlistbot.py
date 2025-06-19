@@ -10,6 +10,7 @@ import time
 
 import pandas as pd
 import streamlit as st
+import requests
 
 # ─── Configuration de la page ───
 st.set_page_config(page_title="WatchlistBot V7", layout="wide")
@@ -21,6 +22,7 @@ SCRIPTS = os.path.join(ROOT_DIR, "scripts")
 UTILS = os.path.join(ROOT_DIR, "utils")
 SIMULATION = os.path.join(ROOT_DIR, "simulation")
 TASKS_JSON_PATH = os.path.join(ROOT_DIR, "refactor_tasks.json")
+API_URL = os.getenv("API_URL", "http://localhost:8000")
 
 # ─── Ajout des chemins au système ───
 for path in (ROOT_DIR, SCRIPTS, ROOT_UI, UTILS, SIMULATION):
@@ -273,6 +275,15 @@ def load_watchlist():
     )
     return df.to_dict(orient='records')
 
+def fetch_live_watchlist():
+    try:
+        resp = requests.get(f"{API_URL}/watchlist/live", timeout=10)
+        if resp.status_code == 200:
+            return resp.json()
+    except Exception as e:
+        st.warning(f"Erreur chargement live: {e}")
+    return load_watchlist()
+
 def load_watchlist_full():
     conn = sqlite3.connect(DB_PATH)
     rows = conn.execute(
@@ -387,6 +398,19 @@ with st.expander("📥 Scraper Jaguar et Injecter"):
         st.success(f"✅ {after - before} tickers injectés dans la base.")
     if st.button("🔁 Rafraîchir la watchlist"):
         st.rerun()
+    if st.button("🔄 Refresh", key="refresh_live"):
+        st.session_state["watchlist_live"] = fetch_live_watchlist()
+        st.rerun()
+    try:
+        resp_csv = requests.get(f"{API_URL}/watchlist/export", timeout=10)
+        if resp_csv.status_code == 200:
+            st.download_button(
+                "💾 Télécharger watchlist (.csv)",
+                data=resp_csv.content,
+                file_name="watchlist.csv",
+            )
+    except Exception as e:
+        st.warning(f"Export CSV indisponible: {e}")
 
 with st.expander("📥 Données marché – Historique et Intraday"):
     st.markdown("Génère les données depuis l’API Yahoo Finance pour tous les tickers de la base (7d/1min + 2y/daily).")
@@ -410,7 +434,9 @@ if st.sidebar.button("🎯 Voir les meilleures opportunités"):
     score_minimum = 85
 
 load_watchlist.clear()
-watchlist = load_watchlist()
+watchlist = st.session_state.pop("watchlist_live", None)
+if watchlist is None:
+    watchlist = load_watchlist()
 
 scalp_auto = st.sidebar.checkbox("Mode scalping auto")
 if scalp_auto:
