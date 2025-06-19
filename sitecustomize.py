@@ -72,3 +72,50 @@ def _handle_exception(exc_type, exc_value, exc_traceback):
         return
     logging.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
     logging.info(debug_prompt())
+
+sys.excepthook = _handle_exception
+
+# ---------------------------------------------------------------------------
+# Streamlit watchlist auto-integration
+# ---------------------------------------------------------------------------
+try:
+    ROOT = Path(__file__).parent
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    ui_path = ROOT / "ui"
+    if str(ui_path) not in sys.path:
+        sys.path.insert(0, str(ui_path))
+
+    from streamlit.runtime.scriptrunner.script_runner import ScriptRunner
+    from ui.watchlist_panel import render_watchlist_panel, _fetch_live
+    from ui.utils_affichage_ticker import afficher_ticker_panel
+
+    if not getattr(ScriptRunner, "_watchlist_patched", False):
+        _orig_run_script = ScriptRunner._run_script
+
+        def _run_script_with_watchlist(self, rerun_data):
+            import streamlit as st
+
+            main_col, watch_col = st.columns([7, 3])
+            ticker = st.query_params.get("ticker")
+            if ticker:
+                st.session_state["ticker_focus"] = ticker
+                try:
+                    data = _fetch_live()
+                    info = next((d for d in data if (d.get("ticker") or d.get("symbol")) == ticker), {})
+                except Exception:
+                    info = {}
+                with main_col:
+                    afficher_ticker_panel(ticker, info, 0)
+
+            with main_col:
+                _orig_run_script(self, rerun_data)
+
+            with watch_col:
+                render_watchlist_panel()
+
+        ScriptRunner._run_script = _run_script_with_watchlist
+        ScriptRunner._watchlist_patched = True
+except Exception as e:  # pragma: no cover - best effort
+    logging.warning(f"Watchlist auto patch failed: {e}")
+

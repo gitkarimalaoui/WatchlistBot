@@ -4,7 +4,6 @@ import pandas as pd
 import os
 from utils.module_checklist_fusion import charger_sources_checklist, fusionner_tous_les_tickers, generer_checklist_fusionnee
 from utils.utils_watchlist import importer_watchlist_txt
-from watchlist_panel import render_watchlist_panel
 
 st.set_page_config(page_title="Checklist Fusionnée", layout="wide")
 st.title("🧩 Import & Checklist Fusionnée")
@@ -49,5 +48,3 @@ st.dataframe(df_checklist, use_container_width=True)
 
 # Option d'export
 st.download_button("💾 Télécharger checklist fusionnée (.csv)", data=df_checklist.to_csv(index=False), file_name="checklist_fusionnee.csv")
-
-render_watchlist_panel()
