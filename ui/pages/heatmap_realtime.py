@@ -49,7 +49,7 @@ def compute_scores(df: pd.DataFrame) -> pd.DataFrame:
     )
     return df[["ticker", "global_score"]]
 
-df = load_scores()
+df = load_scores().drop_duplicates(subset="ticker")
 tickers: List[str] = df["ticker"].tolist()
 set_watchlist(tickers)
 
