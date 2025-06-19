@@ -312,7 +312,7 @@ def afficher_ticker_panel(ticker, stock, index):
 
         st.markdown("### 📤 Analyse de Sortie")
         momentum = get_momentum(ticker)
-        if score >= 80 and momentum < 1:
+        if score_local >= 80 and momentum < 1:
             st.info("\u26a0\ufe0f Momentum faiblissant. Prêt pour une prise de profit ?")
         else:
             st.write("\u2705 Rien à signaler – dynamique toujours favorable.")
