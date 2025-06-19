@@ -208,7 +208,8 @@ def _enregistrer_trade(ticker: str, prix: float, quantite: int = 1, sl=None, tp=
 
 def afficher_ticker_panel(ticker, stock, index):
     label = f"{index + 1}. {ticker}"
-    with st.expander(label, expanded=False):
+    expanded = st.session_state.get("ticker_focus") == ticker
+    with st.expander(label, expanded=expanded):
         if st_autorefresh:
             st_autorefresh(interval=30 * 1000, key=f"refresh_{ticker}_{index}")
         if st.button("🔄 Rafraîchir", key=f"btn_refresh_{ticker}_{index}"):
@@ -412,6 +413,9 @@ def afficher_ticker_panel(ticker, stock, index):
                 st.success(result["message"])
             else:
                 st.error(result["message"])
+
+    if expanded:
+        st.session_state.pop("ticker_focus", None)
 
 
 def afficher_bloc_ticker(stock: dict, index: int = 0) -> None:
