@@ -4,6 +4,7 @@ from typing import List
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+from watchlist_panel import render_watchlist_panel
 
 from streamlit_autorefresh import st_autorefresh
 
@@ -75,3 +76,5 @@ st.markdown("### Dernières données")
 for tic in tickers:
     data = get_latest_data(tic)
     st.write(tic, data)
+
+render_watchlist_panel()
