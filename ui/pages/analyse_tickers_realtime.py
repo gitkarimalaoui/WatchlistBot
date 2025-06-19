@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-from watchlist_panel import render_watchlist_panel
 from intelligence.training.utils_ai_predictor import charger_modele
 from fusion.module_fusion_watchlist import charger_watchlists_sources
 from intelligence.features.check_tickers import analyser_ticker
@@ -52,4 +51,3 @@ for ticker_obj in watchlist:
 
 df = pd.DataFrame(resultats)
 st.dataframe(df, use_container_width=True)
-render_watchlist_panel()

@@ -11,18 +11,15 @@ import time
 import pandas as pd
 import streamlit as st
 import requests
-from watchlist_panel import render_watchlist_panel
 
 # ─── Configuration de la page ───
 st.set_page_config(page_title="WatchlistBot V7", layout="wide")
 
 
-# ─── Gestion URL focus ticker ───
+# ─── Gestion URL ticker ───
 params = st.query_params
-if "focus" in params:
-    st.session_state["ticker_focus"] = params.get_all("focus")[0]
-    st.query_params.clear()
-    st.rerun()
+if "ticker" in params:
+    st.session_state["ticker_focus"] = params.get_all("ticker")[0]
 
 # ─── Définition des chemins ───
 ROOT_UI = os.path.dirname(__file__)
@@ -473,5 +470,3 @@ else:
 
 st.markdown("---")
 st.markdown(f"© WatchlistBot V7 – {datetime.now().year}")
-
-render_watchlist_panel()

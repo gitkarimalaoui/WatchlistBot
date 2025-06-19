@@ -2,7 +2,6 @@ import streamlit as st
 from datetime import datetime
 import json
 import os
-from watchlist_panel import render_watchlist_panel
 
 from utils.execution_reelle import executer_ordre_reel
 
@@ -77,5 +76,3 @@ if col3.button("Achat réel") and ticker and prix > 0 and quantite > 0:
         st.success(result["message"])
     else:
         st.error(result["message"])
-
-render_watchlist_panel()

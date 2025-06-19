@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from pathlib import Path
-from watchlist_panel import render_watchlist_panel
 
 def app():
     st.title("🤖 IA Backtest Qlib")
@@ -11,4 +10,3 @@ def app():
         st.dataframe(df)
     else:
         st.warning("Aucun rapport AI backtest trouvé. Exécutez le runner d'abord.")
-render_watchlist_panel()
