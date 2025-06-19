@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import json
 import os
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 
 def _load_dotenv(path: str = ".env") -> None:
@@ -87,7 +87,7 @@ class ConfigManager:
 
         return config
 
-    def get(self, key: str, default: Any | None = None) -> Any:
+    def get(self, key: str, default: Optional[Any] = None) -> Any:
         """Access nested configuration values using dot notation."""
 
         keys = key.split(".")

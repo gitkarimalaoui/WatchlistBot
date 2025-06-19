@@ -5,18 +5,18 @@ from __future__ import annotations
 import threading
 import time
 from collections import deque
-from typing import Deque, Dict, List, Optional
+from typing import Deque, Dict, List, Optional, Tuple
 
 from data.stream_data_manager import get_latest_data, WATCHLIST, latest_data
 
 _WINDOW = 60.0  # seconds
 _PUMP_THRESHOLD = 1.5  # percent
 
-_price_history: Dict[str, Deque[tuple[float, float]]] = {}
+_price_history: Dict[str, Deque[Tuple[float, float]]] = {}
 _lock = threading.Lock()
 
 
-def _trim(history: Deque[tuple[float, float]]) -> None:
+def _trim(history: Deque[Tuple[float, float]]) -> None:
     now = time.time()
     while history and now - history[0][0] > _WINDOW:
         history.popleft()

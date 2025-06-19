@@ -36,7 +36,9 @@ def run_backtest(
     start: str = DEFAULT_START,
     end: str = DEFAULT_END,
     model_version: str = DEFAULT_MODEL,
+
     report_path: Union[str, Path] = DEFAULT_REPORT,
+
 ) -> pd.DataFrame:
     """Evaluate the model on historical data and save a CSV report."""
 

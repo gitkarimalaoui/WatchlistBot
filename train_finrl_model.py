@@ -8,13 +8,16 @@ from typing import Union
 
 
 def load_config(path: Union[str, Path] = "models/finrl/config.json") -> dict:
+
     """Load JSON configuration file."""
     path = Path(path)
     with path.open("r", encoding="utf-8") as f:
         return json.load(f)
 
 
+
 def train_from_config(config_path: Union[str, Path] = "models/finrl/config.json") -> None:
+
     """Train a FinRL model using parameters from a JSON config."""
     config = load_config(config_path)
 
