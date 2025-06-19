@@ -292,7 +292,7 @@ def afficher_ticker_panel(ticker, stock, index):
 
         st.markdown(f"**Niveau de signal :** {stock['signal_level']}")
 
-        st.markdown("### \ud83d\udccc Commentaire IA")
+        st.markdown("### 📌 Commentaire IA")
         score = score_local
         all_conditions = is_buy_signal(stock)
         if score < 80:
@@ -300,9 +300,9 @@ def afficher_ticker_panel(ticker, stock, index):
         elif not all_conditions:
             st.warning("\u23f3 Momentum partiel ou catalyseur faible – attendre confirmation.")
         else:
-            st.success("\ud83d\dfE Signal complet détecté. Opportunité scalping valide.")
+            st.success("🟢 Signal complet détecté. Opportunité scalping valide.")
 
-        st.markdown("### \ud83d\udce4 Analyse de Sortie")
+        st.markdown("### 📤 Analyse de Sortie")
         momentum = get_momentum(ticker)
         if score >= 80 and momentum < 1:
             st.info("\u26a0\ufe0f Momentum faiblissant. Prêt pour une prise de profit ?")
