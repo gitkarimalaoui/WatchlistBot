@@ -66,11 +66,11 @@ def enregistrer_trade_ia(
     ema21: float,
     momentum: float,
     source: str,
-    atr: float | None = None,
-    gap_pct: float | None = None,
-    stop_loss: float | None = None,
-    take_profit: float | None = None,
-    entry_time: str | None = None,
+    atr: Optional[float] = None,
+    gap_pct: Optional[float] = None,
+    stop_loss: Optional[float] = None,
+    take_profit: Optional[float] = None,
+    entry_time: Optional[str] = None,
 ) -> None:
     """Insère un trade IA enrichi dans la base ``trades``."""
 
