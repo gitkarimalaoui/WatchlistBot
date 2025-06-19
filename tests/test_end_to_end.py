@@ -1,6 +1,7 @@
 import importlib
 
 import pytest
+from utils.telegram_utils import send_telegram_message
 
 
 @pytest.fixture
@@ -48,9 +49,11 @@ def test_end_to_end_trade_execution(e2e_setup, capsys):
     notifier.send_trade_alert("TRADE_EXECUTED", "XYZ", result)
 
     captured = capsys.readouterr()
-    assert "TRADE_EXECUTED" in captured.out
+    assert "TRADE EX\u00C9CUT\u00C9" in captured.out
 
     session = core_db.get_session()
     row = session.query(models.TradeSimule).filter_by(ticker="XYZ").first()
     session.close()
     assert row is not None and row.prix_achat == 1.50
+
+    send_telegram_message("\u2705 Test end-to-end termin\u00E9 avec succ\u00E8s.")

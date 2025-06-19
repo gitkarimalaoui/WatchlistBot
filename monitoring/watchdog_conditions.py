@@ -13,7 +13,7 @@ from intelligence.ai_scorer import score_ai
 from utils.utils_graph import charger_intraday_intelligent
 from ui.utils_affichage_ticker import calculer_indicateurs
 from utils.fda_fetcher import check_fda_match
-from utils.telegram_alert import send_telegram_alert
+from utils.telegram_utils import send_telegram_message
 import streamlit as st
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "trades.db")
@@ -140,7 +140,7 @@ def surveiller_tickers(interval: Optional[int] = None) -> None:
             for tic in tickers:
                 res = verifier_conditions_achat(tic, thresholds)
                 if res.get("ok"):
-                    send_telegram_alert(_telegram_message(res))
+                    send_telegram_message(_telegram_message(res))
                     st.session_state["watchdog_alert"] = res
         except Exception as exc:
             print(f"[watchdog] Error: {exc}")

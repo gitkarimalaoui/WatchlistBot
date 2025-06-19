@@ -57,19 +57,13 @@ EVENT_QUEUE: List[tuple[float, Event]] = []
 # Utilities
 # ---------------------------------------------------------------------------
 
-def send_telegram(text: str) -> None:
-    """Send a Telegram message if credentials are available.
+from utils.telegram_utils import send_telegram_message
 
-    Args:
-        text (str): Message body to send.
-    """
-    token = os.getenv("TELEGRAM_TOKEN")
-    chat_id = os.getenv("TELEGRAM_CHAT_ID")
-    if not token or not chat_id:
-        return
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
+
+def send_telegram(text: str) -> None:
+    """Send a Telegram message using the shared utility."""
     try:
-        requests.post(url, data={"chat_id": chat_id, "text": text}, timeout=10)
+        send_telegram_message(text)
     except Exception as exc:  # pragma: no cover - network error
         logger.warning("Telegram notification failed: %s", exc)
 
