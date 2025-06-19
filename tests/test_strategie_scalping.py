@@ -39,7 +39,7 @@ def test_compute_score(monkeypatch):
     assert res['score'] == 100
     assert res['source'] == 'WS'
     assert res['atr'] == 0.5
-    assert res['gap_pct'] == 10.0
+    assert res['gap_pct'] == pytest.approx(10.0)
 
 
 def test_executer_strategie_scalping(monkeypatch):

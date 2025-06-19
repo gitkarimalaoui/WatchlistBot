@@ -1,10 +1,16 @@
 import importlib
+from datetime import datetime
+import types
 import pytest
 pd = pytest.importorskip("pandas")
 
 
 def _reload_module(monkeypatch):
-    monkeypatch.setattr('websocket.WebSocketApp', lambda *a, **k: None)
+    class DummyWS:
+        def run_forever(self):
+            pass
+
+    monkeypatch.setattr('websocket.WebSocketApp', lambda *a, **k: DummyWS())
     monkeypatch.setattr('threading.Thread', lambda *a, **k: type('T', (), {'start': lambda self: None})())
     return importlib.reload(importlib.import_module('data.stream_data_manager'))
 
@@ -33,6 +39,14 @@ def test_get_latest_data_ws_cache(monkeypatch):
         'source': 'WS',
         'status': 'OK',
     }
+    monkeypatch.setattr(
+        module,
+        'datetime',
+        types.SimpleNamespace(
+            utcnow=lambda: datetime(2024, 1, 1, 0, 0, 9),
+            fromisoformat=module.datetime.fromisoformat,
+        ),
+    )
     res = module.get_latest_data('AAA')
     assert res['source'] == 'WS'
     assert res['status'] == 'OK'

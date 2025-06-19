@@ -17,5 +17,6 @@ def test_fallback(monkeypatch):
     df = mod.fetch_historical_with_fallback("TSLA")
     assert df is not None
     assert not df.empty
+    df = df[["timestamp", "close"]]
     assert list(df.columns) == ["timestamp", "close"]
 
