@@ -171,3 +171,5 @@
 ./fusion/module_import_checklist_txt.py
 ./fusion/module_fusion_watchlist.py
 ./utils/execution_reelle.py
+./utils/market_scheduler.py
+./realtime/pump_scan_scheduler.py
