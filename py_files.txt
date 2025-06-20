@@ -42,7 +42,6 @@
 ./start_watchers.py
 ./notifications/__init__.py
 ./notifications/proactive_voice.py
-./notifications/popup_trade.py
 ./notifications/telegram_bot.py
 ./aiohttp/__init__.py
 ./backtest/__init__.py
@@ -78,6 +77,7 @@
 ./ui/backtest_ui/ai_backtest.py
 ./ui/utils_affichage_ticker.py
 ./ui/app_unifie_watchlistbot.py
+./ui/trade_popup.py
 ./utils/utils_finnhub.py
 ./utils/async_utils.py
 ./utils/__init__.py
