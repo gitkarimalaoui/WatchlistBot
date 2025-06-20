@@ -167,3 +167,7 @@ python start_watchers.py
 ```
 
 Le watcher observe `models/finrl/` pour tout fichier `.pkl` ou `.json` ajouté et `logs/` pour les fichiers `local_llm.log` ou contenant `finrl`. À chaque événement, un appel à Codex est déclenché pour proposer automatiquement un patch ou ouvrir une pull request.
+
+## Surveillance en temps réel
+
+L'outil `realtime/pump_detector.py` analyse les ticks pour détecter les pumps soudains. Lorsque les seuils sont atteints, un dialogue Streamlit s'affiche via `ui/trade_popup.py` pour confirmer l'exécution de l'ordre. L'ancien popup Tkinter a été supprimé.

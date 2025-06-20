@@ -11,7 +11,7 @@ import pandas as pd
 
 from intelligence.ai_scorer import compute_global_score
 from notifications.telegram_bot import envoyer_alerte_ia
-from notifications.popup_trade import show_trade_popup
+from ui.trade_popup import show_trade_popup_streamlit
 from simulation.simulate_trade_result import executer_trade_simule
 
 RULES_PATH = os.path.join("config", "rules_auto.json")
@@ -82,7 +82,7 @@ def detect_pump(ticker: str, rules: Optional[dict] = None) -> Optional[dict]:
         envoyer_alerte_ia(ticker, metrics["global_score"], metrics["price_change"])
         stop = metrics["last_price"] * (1 - rules.get("trailing_stop_pct", 0) / 100)
         qty = rules.get("order_qty", 1)
-        show_trade_popup(ticker, metrics["last_price"], qty, stop)
+        show_trade_popup_streamlit(ticker, metrics["last_price"], qty, stop)
         metrics["alert_sent"] = True
     else:
         metrics["alert_sent"] = False
