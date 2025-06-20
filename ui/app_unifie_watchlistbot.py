@@ -12,6 +12,11 @@ import pandas as pd
 import streamlit as st
 import requests
 
+try:  # Optional dependency for auto refresh
+    from streamlit_autorefresh import st_autorefresh
+except Exception:  # pragma: no cover - fallback if package missing
+    st_autorefresh = None  # type: ignore
+
 # ─── Configuration de la page ───
 st.set_page_config(page_title="WatchlistBot V7", layout="wide")
 
@@ -320,6 +325,41 @@ def load_watchlist_full():
     return [{"symbol": t, "desc": d} for t, d in unique.items()]
 
 
+def render_top_tickers_panel(watchlist):
+    """Display a vertical panel with top 20 tickers by daily change."""
+    if st_autorefresh:
+        st_autorefresh(interval=30 * 1000, key="top_tickers_refresh")
+    top = sorted(
+        watchlist,
+        key=lambda w: w.get("change")
+        or w.get("percent_gain")
+        or w.get("change_percent")
+        or 0,
+        reverse=True,
+    )[:20]
+    st.markdown("#### 🔥 Top 20 Tickers")
+    for itm in top:
+        tic = itm.get("ticker") or itm.get("symbol")
+        if not tic:
+            continue
+        change = (
+            itm.get("change")
+            or itm.get("percent_gain")
+            or itm.get("change_percent")
+            or 0
+        )
+        if change > 5:
+            color = "green"
+        elif change >= 0:
+            color = "orange"
+        else:
+            color = "red"
+        st.markdown(
+            f"<a href='?ticker={tic}' style='color:{color}; text-decoration:none; display:block; margin:2px 0;'>{tic} {change:+.2f}%</a>",
+            unsafe_allow_html=True,
+        )
+
+
 # ➕ Ajout manuel
 st.markdown("### ➕ Ajouter un ticker manuellement")
 with st.expander("Saisie manuelle"):
@@ -462,11 +502,17 @@ watchlist = sorted(
     reverse=True,
 )
 
-if not watchlist:
-    st.warning("Aucune donnée disponible pour le moment")
-else:
-    for idx, stock in enumerate(watchlist):
-        afficher_bloc_ticker(stock, idx)
+main_col, right_col = st.columns([8, 1])
+
+with right_col:
+    render_top_tickers_panel(watchlist)
+
+with main_col:
+    if not watchlist:
+        st.warning("Aucune donnée disponible pour le moment")
+    else:
+        for idx, stock in enumerate(watchlist):
+            afficher_bloc_ticker(stock, idx)
 
 st.markdown("---")
 st.markdown(f"© WatchlistBot V7 – {datetime.now().year}")
