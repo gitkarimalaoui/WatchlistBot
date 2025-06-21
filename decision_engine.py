@@ -1,11 +1,71 @@
 from typing import Dict, List
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+import json
+import os
+
+from core.db import get_session
+from core import models
 
 from utils.utils_signaux import is_buy_signal
 
 
 class DecisionEngine:
     """Simple engine computing trade decisions and viability."""
+
+    def __init__(self, thresholds_path: str = os.path.join("config", "thresholds.json")) -> None:
+        self.thresholds = self._load_thresholds(thresholds_path)
+
+    def _load_thresholds(self, path: str) -> Dict:
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception:
+                pass
+        return {}
+
+    def _count_open_positions(self) -> int:
+        try:
+            session = get_session()
+            count = (
+                session.query(models.TradeSimule)
+                .filter(models.TradeSimule.exit_price.is_(None))
+                .count()
+            )
+            session.close()
+            return count
+        except Exception:
+            return 0
+
+    def _daily_loss(self) -> float:
+        try:
+            session = get_session()
+            today = date.today()
+            trades = (
+                session.query(models.TradeSimule)
+                .filter(models.TradeSimule.date >= today)
+                .all()
+            )
+            loss = 0.0
+            for t in trades:
+                if t.exit_price is None:
+                    continue
+                pnl = (t.exit_price - t.prix_achat) * t.quantite - (t.frais or 0)
+                if pnl < 0:
+                    loss += -pnl
+            session.close()
+            return loss
+        except Exception:
+            return 0.0
+
+    def _risk_limits_reached(self) -> str:
+        max_pos = self.thresholds.get("max_concurrent_biotech_positions")
+        if max_pos is not None and self._count_open_positions() >= max_pos:
+            return "Maximum biotech positions reached"
+        limit = self.thresholds.get("daily_loss_limit")
+        if limit is not None and self._daily_loss() >= limit:
+            return "Daily loss limit reached"
+        return ""
 
     def analyze_trade_decision(self, ticker_data: Dict) -> Dict:
         """Return reasons to buy or avoid a trade and confidence level."""
@@ -70,6 +130,10 @@ class DecisionEngine:
 
     def generate_order_suggestions(self, ticker_data: Dict) -> Dict:
         """Suggest order parameters based on ticker data."""
+        reason = self._risk_limits_reached()
+        if reason:
+            return {"blocked": reason}
+
         price = float(ticker_data.get("price", 0) or 0)
         atr = ticker_data.get("atr")
         capital = float(ticker_data.get("capital", 0) or 0)
