@@ -95,6 +95,7 @@ from intelligence.local_llm import (
     run_local_ticker_by_ticker,
     save_scores_from_objects,
 )
+from utils.performance_metrics import compute_performance_metrics
 
 # ─── Progression Capital / Milestones ───
 try:
@@ -244,6 +245,17 @@ except Exception:
     st.progress(0.0, text="Capital actuel : inconnue")
 
 watchlist_kpi_dashboard()
+
+with st.sidebar.expander("📈 Performance réelle"):
+    metrics = compute_performance_metrics(DB_PATH)
+    if metrics:
+        col_a, col_b = st.columns(2)
+        col_a.metric("Win Rate", f"{metrics['win_rate']*100:.1f}%")
+        col_b.metric("Profit Factor", f"{metrics['profit_factor']:.2f}")
+        col_a.metric("Sharpe", f"{metrics['sharpe_ratio']:.2f}")
+        col_b.metric("Drawdown", f"{metrics['drawdown']:.2f}$")
+    else:
+        st.write("Aucune donnée")
 
 def count_watchlist_tickers():
     conn = sqlite3.connect(DB_PATH)
