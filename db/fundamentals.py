@@ -30,7 +30,7 @@ def update_fundamentals(
 ) -> None:
     if not db_path.exists():
         return
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(str(db_path))
     try:
         _ensure_columns(conn)
         conn.execute(

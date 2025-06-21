@@ -238,4 +238,7 @@ def executer_strategie_scalping(
     res = executer_ordre_reel(ticker, data["price"], 1, action="achat")
     enregistrer_trade_auto(ticker, "achat", data["price"], 1)
     data["ordre"] = res
-    return data
+    # Preserve backward compatibility: return order details directly
+    res["score"] = data["score"]
+    res["momentum"] = data["momentum"]
+    return res
