@@ -75,7 +75,7 @@ from roadmap_ui import (
     watchlist_kpi_dashboard,
 )
 from query_entreprise_db import get_portfolio_modules, get_use_cases, get_revenue_sources, get_kpi_targets
-from pages.cloture_journee import cloturer_journee
+from page_modules.cloture_journee import cloturer_journee
 from utils_affichage_ticker import (
     afficher_ticker_panel,
     _ia_score,

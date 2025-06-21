@@ -77,4 +77,5 @@ def cloturer_journee():
 
     conn.close()
 
-cloturer_journee()
+if __name__ == "__main__":
+    cloturer_journee()
