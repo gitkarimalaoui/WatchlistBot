@@ -8,6 +8,7 @@ from collections import deque
 from typing import Deque, Dict, List, Optional, Tuple
 
 from data.stream_data_manager import get_latest_data, WATCHLIST, latest_data
+from prescreen import screen_ticker
 
 _WINDOW = 60.0  # seconds
 _PUMP_THRESHOLD = 1.5  # percent
@@ -62,6 +63,8 @@ def get_top_movers(tickers: Optional[List[str]] = None) -> List[dict]:
     tickers = tickers or WATCHLIST
     movers: List[dict] = []
     for tic in tickers:
+        if not screen_ticker(tic):
+            continue
         data = get_latest_data(tic)
         if data.get("status") == "ERR":
             continue
