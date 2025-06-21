@@ -55,6 +55,26 @@ def enregistrer_trade_auto(
         conn.close()
 
 
+def enregistrer_exit_partielle(
+    ticker: str,
+    prix: float,
+    niveau_pct: float,
+    provenance: str = "scalping",
+    db_path: str = DB_PATH,
+) -> None:
+    """Log une sortie partielle (prise de profit)."""
+
+    action = f"exit_{int(niveau_pct)}pct"
+    enregistrer_trade_auto(
+        ticker=ticker,
+        action=action,
+        prix=prix,
+        quantite=1,
+        provenance=provenance,
+        db_path=db_path,
+    )
+
+
 def enregistrer_trade_ia(
     ticker: str,
     prix: float,

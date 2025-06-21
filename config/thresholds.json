@@ -7,5 +7,7 @@
     "check_fda": true,
     "watch_interval": 60,
     "order_qty": 500,
-    "stop_loss_pct": 10
+    "stop_loss_pct": 10,
+    "max_concurrent_biotech_positions": 3,
+    "daily_loss_limit": 1000
 }
