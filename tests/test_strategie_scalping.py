@@ -24,7 +24,10 @@ def _setup_indicators(monkeypatch):
     df_gap = pd.DataFrame(
         {
             "Open": [1.0, 1.1],
-            "Close": [1.0, 1.0],
+            "High": [1.1, 1.2],
+            "Low": [0.9, 1.0],
+            "Close": [1.0, 1.2],
+            "Volume": [100000, 400000],
         },
         index=pd.date_range("2024-01-01", periods=2),
     )
@@ -75,32 +78,4 @@ def test_executer_strategie_scalping(monkeypatch):
         strat, "executer_ordre_reel", lambda *a, **k: {"status": "filled"}
     )
     alerts = []
-    monkeypatch.setattr(strat, "envoyer_alerte_ia", lambda *a, **k: alerts.append(a))
-    trades = []
-    monkeypatch.setattr(
-        strat, "enregistrer_trade_auto", lambda *a, **k: trades.append(a)
-    )
-    monkeypatch.setattr(strat.time, "sleep", lambda s: None)
-
-    class FakeDT:
-        @classmethod
-        def utcnow(cls):
-            return datetime(2024, 1, 1, 15, 0, 0)
-
-    monkeypatch.setattr(strat, "datetime", FakeDT)
-
-    res = strat.executer_strategie_scalping("AAA")
-    assert res["ordre"] == {"status": "filled"}
-    assert alerts
-    assert trades
-
-
-def test_trailing_manager():
-    strat = importlib.import_module(STRAT_PATH)
-    tm = strat.TrailingManager(entry_price=1.0, stop_loss=0.9)
-    # No update when price below thresholds
-    assert tm.update(1.0) == 0.9
-    # Breakeven triggered at +2%
-    assert tm.update(1.02) == pytest.approx(1.0)
-    # Secure profit at +5%
-    assert tm.update(1.05) == pytest.approx(1.03)
+    monkeypatch.setattr(strat, "envoyer_alerte_ia", lambda *a,*

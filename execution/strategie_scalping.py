@@ -49,6 +49,62 @@ from notifications.telegram_bot import envoyer_alerte_ia
 from db.trades import get_nb_trades_du_jour, enregistrer_trade_auto
 
 
+def enter_breakout(
+    ticker: str,
+    volume_spike: float = 3.0,
+    min_body_ratio: float = 0.5,
+) -> bool:
+    """Return ``True`` if the last 1m candle shows a breakout."""
+    try:
+        import yfinance as yf
+
+        df = yf.download(ticker, period="1d", interval="1m", progress=False)
+        if len(df) < 2:
+            return False
+        last = df.iloc[-1]
+        prev = df.iloc[-2]
+        if prev["Volume"] == 0:
+            return False
+        vol_ratio = last["Volume"] / prev["Volume"]
+        body = abs(last["Close"] - last["Open"])
+        rng = last["High"] - last["Low"]
+        body_ratio = body / rng if rng else 0
+        breakout = last["Close"] > prev["High"]
+        return bool(
+            vol_ratio >= volume_spike and body_ratio >= min_body_ratio and breakout
+        )
+    except Exception:
+        return False
+
+
+def enter_pullback(
+    ticker: str,
+    volume_spike: float = 3.0,
+    min_body_ratio: float = 0.5,
+) -> bool:
+    """Return ``True`` if the last 1m candle confirms a pullback."""
+    try:
+        import yfinance as yf
+
+        df = yf.download(ticker, period="1d", interval="1m", progress=False)
+        if len(df) < 2:
+            return False
+        last = df.iloc[-1]
+        prev = df.iloc[-2]
+        if prev["Volume"] == 0:
+            return False
+        vol_ratio = last["Volume"] / prev["Volume"]
+        body = abs(last["Close"] - last["Open"])
+        rng = last["High"] - last["Low"]
+        body_ratio = body / rng if rng else 0
+        pullback = last["Open"] < prev["Close"] < last["Close"]
+        return bool(
+            vol_ratio >= volume_spike and body_ratio >= min_body_ratio and pullback
+        )
+    except Exception:
+        return False
+
+
 def _compute_score(ticker: str) -> Optional[dict]:
     rsi = get_rsi(ticker)
     emas = get_ema(ticker, [9, 21])
@@ -144,7 +200,11 @@ def _compute_score(ticker: str) -> Optional[dict]:
     }
 
 
-def executer_strategie_scalping(ticker: str) -> Optional[dict]:
+def executer_strategie_scalping(
+    ticker: str,
+    volume_spike: float = 3.0,
+    min_body_ratio: float = 0.5,
+) -> Optional[dict]:
     """Execute l'algorithme de scalping sur ``ticker``.
 
     Retourne un dict si un trade est lancé, sinon ``None``.
@@ -165,6 +225,12 @@ def executer_strategie_scalping(ticker: str) -> Optional[dict]:
         return None
 
     if data["score"] < 80:
+        return None
+
+    if not (
+        enter_breakout(ticker, volume_spike, min_body_ratio)
+        or enter_pullback(ticker, volume_spike, min_body_ratio)
+    ):
         return None
 
     time.sleep(2)
