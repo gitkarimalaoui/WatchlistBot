@@ -10,7 +10,7 @@ def get_nb_trades_du_jour(ticker: str, date: datetime, db_path: str = DB_PATH) -
     """Retourne le nombre de trades enregistrés pour ``ticker`` à la date donnée."""
     if not os.path.exists(db_path):
         return 0
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(str(db_path))
     try:
         date_str = date.strftime("%Y-%m-%d")
         row = conn.execute(
@@ -31,7 +31,7 @@ def enregistrer_trade_auto(
     db_path: str = DB_PATH,
 ) -> None:
     """Insère un trade automatique dans la base SQLite."""
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(str(db_path))
     try:
         conn.execute(
             """
@@ -94,7 +94,7 @@ def enregistrer_trade_ia(
 ) -> None:
     """Insère un trade IA enrichi dans la base ``trades``."""
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(str(DB_PATH))
     try:
         conn.execute(
             """

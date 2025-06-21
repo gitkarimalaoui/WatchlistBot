@@ -153,6 +153,26 @@ if "voice_thread" not in st.session_state:
     st.session_state.voice_thread = None
 if "watchdog_thread" not in st.session_state:
     st.session_state.watchdog_thread = None
+if "watchlist_updater" not in st.session_state:
+    st.session_state.watchlist_updater = None
+
+def start_watchlist_updater(interval: int = 30) -> None:
+    """Background thread fetching latest watchlist periodically."""
+
+    if st.session_state.watchlist_updater is not None:
+        return
+
+    def _loop() -> None:
+        while True:
+            try:
+                st.session_state["watchlist_live"] = fetch_live_watchlist()
+            except Exception as exc:  # pragma: no cover - best effort logging
+                print(f"[watchlist_updater] {exc}")
+            time.sleep(interval)
+
+    thread = threading.Thread(target=_loop, daemon=True)
+    thread.start()
+    st.session_state.watchlist_updater = thread
 
 if st.sidebar.button("🎤 Activer notifications vocales") and st.session_state.voice_thread is None:
     thread = threading.Thread(target=loop_notifications, daemon=True)
@@ -163,6 +183,8 @@ if st.sidebar.button("🎤 Activer notifications vocales") and st.session_state.
 if st.sidebar.button("🛡️ Activer surveillance IA"):
     start_watchdog_thread()
     st.sidebar.success("Surveillance IA activée")
+
+start_watchlist_updater()
 
 # ─── Pages secondaires ───
 if page == "📋 Roadmap":

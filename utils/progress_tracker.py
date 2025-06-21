@@ -3,6 +3,7 @@ import sqlite3
 from pathlib import Path
 from datetime import datetime, timedelta
 import math
+import json
 from typing import Optional
 
 # ─── Paths and Constants ───────────────────────────────────────────────────────
@@ -60,14 +61,21 @@ def get_latest_progress(db_path: Path = DB_PATH):
     conn.close()
     return row
 
-def update_roadmap_from_progress(db_path: Path = DB_PATH) -> None:
-    """Deprecated wrapper kept for backward compatibility."""
+def update_roadmap_from_progress(
+    db_path: Path = DB_PATH, json_path: Optional[Path] = None
+) -> None:
+    """Write milestone information to ``json_path`` if provided."""
+
     latest = get_latest_progress(db_path)
     if not latest:
         return
-    # Previously this updated ROADMAP_JSON; now it simply logs the milestone
+
     milestone = detect_milestone(latest[1])
-    print(f"[ROADMAP] Current milestone: {milestone}")
+    if json_path is not None:
+        step = int(milestone) // 1000 if milestone.isdigit() else 0
+        json_path.write_text(json.dumps({"step": f"{step:02d}/100"}))
+    else:
+        print(f"[ROADMAP] Current milestone: {milestone}")
 
 def load_progress(db_path: Path = DB_PATH):
     init_progress_table(db_path)

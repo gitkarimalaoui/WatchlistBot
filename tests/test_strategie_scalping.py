@@ -48,37 +48,45 @@ def test_compute_score(monkeypatch):
 def test_executer_strategie_scalping(monkeypatch):
     strat = importlib.import_module(STRAT_PATH)
     _setup_indicators(monkeypatch)
-    monkeypatch.setattr(strat, '_compute_score', lambda t: {
-        'score': 100,
-        'price': 3.12,
-        'momentum': 1.05,
-        'volume': 900000,
-        'source': 'WS',
-        'atr': 0.5,
-        'gap_pct': 10.0,
-        'stop_loss': 3.0,
-        'take_profit': 3.2,
-        'trailing_atr': 0.7,
-    })
-    monkeypatch.setattr(strat, 'get_nb_trades_du_jour', lambda t, d: 0)
-    monkeypatch.setattr(strat, 'executer_ordre_reel', lambda *a, **k: {'status': 'filled'})
+
+    monkeypatch.setattr(
+        strat,
+        "datetime",
+        type("d", (), {"utcnow": staticmethod(lambda: datetime(2024, 1, 1, 15, 0))}),
+    )
+
+    monkeypatch.setattr(
+        strat,
+        "_compute_score",
+        lambda t: {
+            "score": 100,
+            "price": 3.12,
+            "momentum": 1.05,
+            "volume": 900000,
+            "source": "WS",
+            "atr": 0.5,
+            "gap_pct": 10.0,
+            "stop_loss": 3.0,
+            "take_profit": 3.2,
+            "trailing_atr": 0.7,
+        },
+    )
+
+    monkeypatch.setattr(strat, "get_nb_trades_du_jour", lambda t, d: 0)
+    monkeypatch.setattr(strat, "executer_ordre_reel", lambda *a, **k: {"status": "filled"})
+
     alerts = []
-    monkeypatch.setattr(strat, 'envoyer_alerte_ia', lambda *a, **k: alerts.append(a))
+    monkeypatch.setattr(strat, "envoyer_alerte_ia", lambda *a, **k: alerts.append("sent"))
+
     trades = []
-    monkeypatch.setattr(strat, 'enregistrer_trade_auto', lambda *a, **k: trades.append(a))
-    monkeypatch.setattr(strat.time, 'sleep', lambda s: None)
-    monkeypatch.setattr(strat, 'enter_breakout', lambda *a, **k: True)
-    monkeypatch.setattr(strat, 'enter_pullback', lambda *a, **k: False)
+    monkeypatch.setattr(strat, "enregistrer_trade_auto", lambda *a, **k: trades.append("done"))
 
-    class FakeDT:
-        @classmethod
-        def utcnow(cls):
-            return datetime(2024, 1, 1, 15, 0, 0)
+    monkeypatch.setattr(strat, "time", type("t", (), {"sleep": staticmethod(lambda s: None)}))
+    monkeypatch.setattr(strat, "enter_breakout", lambda *a, **k: True)
+    monkeypatch.setattr(strat, "enter_pullback", lambda *a, **k: False)
 
-    monkeypatch.setattr(strat, 'datetime', FakeDT)
-
-    res = strat.executer_strategie_scalping('AAA')
-    assert res['ordre'] == {'status': 'filled'}
+    res = strat.executer_strategie_scalping("AAA")
+    assert res["ordre"]["status"] == "filled"
     assert alerts
     assert trades
 
@@ -107,4 +115,3 @@ def test_enter_pullback(monkeypatch):
     }, index=pd.date_range('2024-01-01', periods=2))
     monkeypatch.setattr('yfinance.download', lambda *a, **k: df)
     assert strat.enter_pullback('AAA', 3.0, 0.5)
-

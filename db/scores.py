@@ -12,7 +12,7 @@ def update_score_watchlist(
 ) -> None:
     """Met à jour les informations de scoring pour ``ticker`` dans ``watchlist``."""
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(str(DB_PATH))
     try:
         conn.execute(
             """
