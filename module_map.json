@@ -1,0 +1,2848 @@
+{
+  "start_watchers.py": {
+    "role": "",
+    "imports": [
+      "automation.codex_watcher"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "movers_detector.py": {
+    "role": "Real-time pump detection helper.",
+    "imports": [
+      "__future__",
+      "collections",
+      "data.stream_data_manager",
+      "prescreen",
+      "threading",
+      "time",
+      "typing"
+    ],
+    "used_by": [
+      "pump_score.py",
+      "watchlist_loop.py",
+      "ui/utils_affichage_ticker.py",
+      "tests/test_movers_detector_module.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "decision_engine.py": {
+    "role": "",
+    "imports": [
+      "core",
+      "core.db",
+      "datetime",
+      "json",
+      "os",
+      "typing",
+      "utils.utils_signaux"
+    ],
+    "used_by": [
+      "ui/utils_affichage_ticker.py",
+      "tests/test_end_to_end.py",
+      "tests/test_trade_decision_logic.py"
+    ],
+    "db_access": false,
+    "io": true
+  },
+  "telegram_notifier.py": {
+    "role": "",
+    "imports": [
+      "os",
+      "typing",
+      "utils.telegram_utils"
+    ],
+    "used_by": [
+      "ui/utils_affichage_ticker.py",
+      "tests/test_end_to_end.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "pump_score.py": {
+    "role": "AI score for pump detection.",
+    "imports": [
+      "__future__",
+      "data.indicateurs",
+      "data.stream_data_manager",
+      "movers_detector",
+      "typing"
+    ],
+    "used_by": [
+      "watchlist_loop.py",
+      "realtime/pump_scan_scheduler.py",
+      "tests/test_pump_score.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "sitecustomize.py": {
+    "role": "",
+    "imports": [
+      "logging",
+      "os",
+      "pathlib",
+      "platform",
+      "streamlit",
+      "streamlit.runtime.scriptrunner.script_runner",
+      "sys",
+      "ui.utils_affichage_ticker",
+      "ui.watchlist_panel"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "train_finrl_model.py": {
+    "role": "Train a FinRL agent using configuration from models/finrl/config.json.",
+    "imports": [
+      "__future__",
+      "finrl.agents.stablebaselines3.models",
+      "finrl.meta.env_stock_trading.env_stocktrading",
+      "json",
+      "pandas",
+      "pathlib",
+      "typing"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "watchlist_loop.py": {
+    "role": "Example IA loop executing automatic scalping.",
+    "imports": [
+      "__future__",
+      "data.fundamental_filters",
+      "db.fundamentals",
+      "execution.strategie_scalping",
+      "movers_detector",
+      "pump_score",
+      "time"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "prescreen.py": {
+    "role": "",
+    "imports": [
+      "functools",
+      "pandas",
+      "typing",
+      "yfinance"
+    ],
+    "used_by": [
+      "movers_detector.py",
+      "tests/test_movers_detector_module.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "notifications/telegram_bot.py": {
+    "role": "",
+    "imports": [
+      "sys",
+      "utils.telegram_utils"
+    ],
+    "used_by": [
+      "realtime/pump_detector.py",
+      "execution/strategie_scalping.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "notifications/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "notifications/proactive_voice.py": {
+    "role": "",
+    "imports": [
+      "__future__",
+      "asyncio",
+      "automation.orchestrateur_evenements",
+      "datetime",
+      "heapq",
+      "pyttsx3",
+      "typing"
+    ],
+    "used_by": [
+      "ui/app_unifie_watchlistbot.py",
+      "tests/test_proactive_voice.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "aiohttp/__init__.py": {
+    "role": "",
+    "imports": [
+      "types"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "automation/orchestrateur_evenements.py": {
+    "role": "",
+    "imports": [
+      "__future__",
+      "asyncio",
+      "dataclasses",
+      "datetime",
+      "enum",
+      "heapq",
+      "json",
+      "logging",
+      "os",
+      "pathlib",
+      "requests",
+      "typing",
+      "utils.db_access",
+      "utils.telegram_utils"
+    ],
+    "used_by": [
+      "notifications/proactive_voice.py",
+      "tests/test_proactive_voice.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "automation/codex_watcher.py": {
+    "role": "",
+    "imports": [
+      "json",
+      "pathlib",
+      "pickle",
+      "time",
+      "typing",
+      "watchdog.events",
+      "watchdog.observers"
+    ],
+    "used_by": [
+      "start_watchers.py",
+      "tests/test_codex_watcher.py"
+    ],
+    "db_access": false,
+    "io": true
+  },
+  "config/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "config/config_manager.py": {
+    "role": "Unified configuration manager.",
+    "imports": [
+      "__future__",
+      "json",
+      "os",
+      "typing"
+    ],
+    "used_by": [
+      "utils/utils_finnhub.py",
+      "utils/utils_intraday.py",
+      "utils/market_scheduler.py",
+      "utils/utils_yf_historical.py",
+      "scripts/finnhub_provider.py"
+    ],
+    "db_access": false,
+    "io": true
+  },
+  "backtest/backtest_scalping.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "backtest/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "backtest/ai_backtest_runner.py": {
+    "role": "",
+    "imports": [
+      "argparse",
+      "intelligence.ai_scorer",
+      "intelligence.features.check_tickers",
+      "os",
+      "pandas",
+      "pathlib",
+      "typing",
+      "utils.db_historical",
+      "utils.utils_yf_historical"
+    ],
+    "used_by": [
+      "intelligence/hybrid_learning.py",
+      "tests/test_ai_backtest_runner.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "realtime/generer_donnees_intraday.py": {
+    "role": "",
+    "imports": [
+      "realtime.build_intraday_candles",
+      "realtime.utils_graph_local",
+      "sys"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "realtime/utils_graph_local.py": {
+    "role": "",
+    "imports": [
+      "matplotlib.dates",
+      "matplotlib.pyplot",
+      "os",
+      "pandas",
+      "realtime.build_intraday_candles",
+      "sys"
+    ],
+    "used_by": [
+      "realtime/generer_donnees_intraday.py",
+      "realtime/auto_tick_collector.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "realtime/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "realtime/pump_detector.py": {
+    "role": "Detection de mouvements de prix anormaux et trailing stop.",
+    "imports": [
+      "__future__",
+      "dataclasses",
+      "intelligence.ai_scorer",
+      "json",
+      "notifications.telegram_bot",
+      "os",
+      "pandas",
+      "simulation.simulate_trade_result",
+      "typing",
+      "ui.trade_popup"
+    ],
+    "used_by": [
+      "tests/test_pump_detector.py"
+    ],
+    "db_access": false,
+    "io": true
+  },
+  "realtime/tick_collector_launcher.py": {
+    "role": "",
+    "imports": [
+      "os",
+      "subprocess",
+      "sys"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "realtime/real_time_tick_collector.py": {
+    "role": "",
+    "imports": [
+      "core.db",
+      "datetime",
+      "json",
+      "os",
+      "requests",
+      "sqlite3",
+      "sys",
+      "time"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": true
+  },
+  "realtime/auto_tick_collector.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "json",
+      "os",
+      "pandas",
+      "realtime.build_intraday_candles",
+      "realtime.utils_graph_local",
+      "streamlit",
+      "tick_collector_launcher",
+      "time"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "realtime/build_intraday_candles.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "os",
+      "pandas"
+    ],
+    "used_by": [
+      "realtime/generer_donnees_intraday.py",
+      "realtime/utils_graph_local.py",
+      "realtime/auto_tick_collector.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "realtime/pump_scan_scheduler.py": {
+    "role": "",
+    "imports": [
+      "__future__",
+      "aiohttp",
+      "asyncio",
+      "os",
+      "pump_score",
+      "time",
+      "typing",
+      "utils.market_scheduler",
+      "utils.telegram_utils"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "intelligence/ticker_analysis.py": {
+    "role": "",
+    "imports": [
+      "intelligence.features.check_tickers",
+      "joblib",
+      "os"
+    ],
+    "used_by": [
+      "intelligence/learning_loop.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "intelligence/learn_from_trades.py": {
+    "role": "",
+    "imports": [
+      "argparse",
+      "datetime",
+      "json",
+      "os",
+      "sqlite3",
+      "typing"
+    ],
+    "used_by": [
+      "intelligence/hybrid_learning.py",
+      "intelligence/learning_loop.py",
+      "tests/test_learn_from_trades.py"
+    ],
+    "db_access": true,
+    "io": true
+  },
+  "intelligence/test_local_llm.py": {
+    "role": "",
+    "imports": [
+      "intelligence.local_llm",
+      "os",
+      "pytest",
+      "sys"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "intelligence/token_utils.py": {
+    "role": "Utility functions for token counting.",
+    "imports": [
+      "__future__",
+      "llama_cpp",
+      "tiktoken"
+    ],
+    "used_by": [
+      "scripts/run_chatgpt_batch.py",
+      "tests/test_local_llm.py",
+      "tests/test_build_prompt.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "intelligence/apprentissage_hybride.py": {
+    "role": "",
+    "imports": [
+      "core.db",
+      "core.models",
+      "datetime",
+      "json",
+      "os"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "intelligence/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "intelligence/local_llm.py": {
+    "role": "Wrapper around a local Llama model.",
+    "imports": [
+      "json",
+      "llama_cpp",
+      "logging",
+      "pathlib",
+      "scripts.run_chatgpt_batch",
+      "time",
+      "token_utils",
+      "typing"
+    ],
+    "used_by": [
+      "intelligence/test_local_llm.py",
+      "ui/app_unifie_watchlistbot.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "intelligence/hybrid_learning.py": {
+    "role": "",
+    "imports": [
+      "backtest.ai_backtest_runner",
+      "datetime",
+      "intelligence.learn_from_trades",
+      "json",
+      "pandas",
+      "pathlib",
+      "typing"
+    ],
+    "used_by": [
+      "tests/test_hybrid_learning.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "intelligence/learning_loop.py": {
+    "role": "Simple AI trading loop using simulated trades.",
+    "imports": [
+      "intelligence.learn_from_trades",
+      "intelligence.ticker_analysis",
+      "random",
+      "simulation.execution_simulee",
+      "sys",
+      "typing"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "intelligence/ai_scorer.py": {
+    "role": "AI scoring utilities.",
+    "imports": [
+      "base64",
+      "io",
+      "joblib",
+      "json",
+      "math",
+      "os",
+      "pickle"
+    ],
+    "used_by": [
+      "backtest/ai_backtest_runner.py",
+      "realtime/pump_detector.py",
+      "ui/app_unifie_watchlistbot.py",
+      "ui/page_modules/heatmap_realtime.py",
+      "tests/test_ai_scorer.py",
+      "backend/orchestrator.py",
+      "monitoring/watchdog_conditions.py"
+    ],
+    "db_access": false,
+    "io": true
+  },
+  "intelligence/features/check_tickers.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [
+      "backtest/ai_backtest_runner.py",
+      "intelligence/ticker_analysis.py",
+      "ui/page_modules/analyse_tickers_realtime.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "intelligence/training/utils_ai_predictor.py": {
+    "role": "",
+    "imports": [
+      "joblib",
+      "sklearn.linear_model",
+      "sklearn.metrics",
+      "sklearn.model_selection"
+    ],
+    "used_by": [
+      "ui/page_modules/analyse_tickers_realtime.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "intelligence/training/prepare_qlib_data.py": {
+    "role": "",
+    "imports": [
+      "joblib",
+      "numpy",
+      "pandas",
+      "pathlib",
+      "sklearn.tree",
+      "sys"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "intelligence/training/tools/repickle_model.py": {
+    "role": "",
+    "imports": [
+      "joblib",
+      "sys"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "fusion/module_fusion_watchlist.py": {
+    "role": "",
+    "imports": [
+      "json",
+      "os"
+    ],
+    "used_by": [
+      "ui/page_modules/analyse_tickers_realtime.py",
+      "tests/test_fusion.py"
+    ],
+    "db_access": false,
+    "io": true
+  },
+  "fusion/module_import_checklist_txt.py": {
+    "role": "",
+    "imports": [
+      "re"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "fusion/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "fusion/module_checklist_fusion.py": {
+    "role": "",
+    "imports": [
+      "json",
+      "os",
+      "pandas"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "utils/utils_finnhub.py": {
+    "role": "",
+    "imports": [
+      "config.config_manager",
+      "os",
+      "pandas",
+      "requests",
+      "time"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "utils/sanitize.py": {
+    "role": "",
+    "imports": [
+      "math",
+      "typing"
+    ],
+    "used_by": [
+      "backend/api.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "utils/utils_signaux.py": {
+    "role": "Fonctions pour d\u00e9tecter les signaux techniques d'achat.",
+    "imports": [],
+    "used_by": [
+      "decision_engine.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "utils/telegram_utils.py": {
+    "role": "",
+    "imports": [
+      "logging",
+      "os",
+      "requests"
+    ],
+    "used_by": [
+      "telegram_notifier.py",
+      "notifications/telegram_bot.py",
+      "automation/orchestrateur_evenements.py",
+      "realtime/pump_scan_scheduler.py",
+      "utils/watchlist_live.py",
+      "scripts/task_manager.py",
+      "tests/test_end_to_end.py",
+      "monitoring/watchdog_conditions.py"
+    ],
+    "db_access": false,
+    "io": true
+  },
+  "utils/utils_intraday.py": {
+    "role": "",
+    "imports": [
+      "asyncio",
+      "config.config_manager",
+      "datetime",
+      "inspect",
+      "logging",
+      "os",
+      "pandas",
+      "pathlib",
+      "random",
+      "requests",
+      "time",
+      "typing",
+      "utils.async_utils",
+      "utils_finnhub",
+      "yfinance"
+    ],
+    "used_by": [
+      "scripts/utils_data_intraday.py",
+      "scripts/collect_intraday_from_finnhub.py",
+      "tests/test_intraday_env.py"
+    ],
+    "db_access": false,
+    "io": true
+  },
+  "utils/async_utils.py": {
+    "role": "",
+    "imports": [
+      "asyncio",
+      "functools"
+    ],
+    "used_by": [
+      "utils/utils_intraday.py",
+      "utils/utils_yf_historical.py",
+      "backend/orchestrator.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "utils/utils_news.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "dotenv",
+      "os",
+      "requests",
+      "typing"
+    ],
+    "used_by": [
+      "ui/app_unifie_watchlistbot.py"
+    ],
+    "db_access": false,
+    "io": true
+  },
+  "utils/telegram_alert.py": {
+    "role": "",
+    "imports": [
+      "telegram_utils"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "utils/__init__.py": {
+    "role": "",
+    "imports": [
+      "db_intraday"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "utils/market_scheduler.py": {
+    "role": "",
+    "imports": [
+      "__future__",
+      "config.config_manager",
+      "datetime",
+      "os",
+      "requests",
+      "time",
+      "typing"
+    ],
+    "used_by": [
+      "realtime/pump_scan_scheduler.py"
+    ],
+    "db_access": false,
+    "io": true
+  },
+  "utils/fda_fetcher.py": {
+    "role": "",
+    "imports": [
+      "__future__",
+      "argparse",
+      "datetime",
+      "json",
+      "pathlib",
+      "requests",
+      "sqlite3",
+      "typing"
+    ],
+    "used_by": [
+      "ui/app_unifie_watchlistbot.py",
+      "tests/test_fda_fetcher.py",
+      "monitoring/watchdog_conditions.py"
+    ],
+    "db_access": true,
+    "io": true
+  },
+  "utils/utils_error_handler.py": {
+    "role": "",
+    "imports": [
+      "functools",
+      "logging",
+      "streamlit",
+      "typing"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "utils/execution_reelle.py": {
+    "role": "",
+    "imports": [
+      "core.db",
+      "datetime",
+      "sqlite3",
+      "subprocess"
+    ],
+    "used_by": [
+      "execution/strategie_scalping.py",
+      "ui/trading_manuel.py",
+      "ui/app_unifie_watchlistbot.py",
+      "ui/utils_affichage_ticker.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "utils/utils_yf_historical.py": {
+    "role": "",
+    "imports": [
+      "asyncio",
+      "config.config_manager",
+      "datetime",
+      "os",
+      "pandas",
+      "random",
+      "requests",
+      "time",
+      "typing",
+      "utils.async_utils",
+      "utils_finnhub",
+      "yfinance"
+    ],
+    "used_by": [
+      "backtest/ai_backtest_runner.py"
+    ],
+    "db_access": false,
+    "io": true
+  },
+  "utils/utils_graph.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "db_historical",
+      "db_intraday",
+      "matplotlib.pyplot",
+      "pandas",
+      "pathlib",
+      "sqlite3",
+      "streamlit",
+      "typing",
+      "utils_finnhub",
+      "utils_intraday",
+      "utils_yf_historical"
+    ],
+    "used_by": [
+      "ui/app_unifie_watchlistbot.py",
+      "monitoring/watchdog_conditions.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "utils/progress_tracker.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "json",
+      "math",
+      "os",
+      "pathlib",
+      "sqlite3",
+      "typing"
+    ],
+    "used_by": [
+      "ui/app_unifie_watchlistbot.py",
+      "ui/utils_affichage_ticker.py",
+      "tests/test_progress.py",
+      "tests/test_progress_tracker.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "utils/order_executor.py": {
+    "role": "",
+    "imports": [
+      "core.db",
+      "core.models",
+      "datetime",
+      "executer_ordre_moomoo",
+      "sqlalchemy.orm",
+      "streamlit"
+    ],
+    "used_by": [
+      "ui/trade_popup.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "utils/advanced_logger.py": {
+    "role": "",
+    "imports": [
+      "logging",
+      "time"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "utils/watchlist_live.py": {
+    "role": "",
+    "imports": [
+      "__future__",
+      "typing",
+      "utils.telegram_utils"
+    ],
+    "used_by": [
+      "tests/test_watchlist_live.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "utils/db_intraday.py": {
+    "role": "",
+    "imports": [
+      "__future__",
+      "pandas",
+      "pathlib",
+      "sqlite3",
+      "typing"
+    ],
+    "used_by": [
+      "scripts/data_ingest/collect_historical_us_stocks.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "utils/db_access.py": {
+    "role": "",
+    "imports": [
+      "__future__",
+      "core.db",
+      "pathlib",
+      "sqlite3",
+      "typing"
+    ],
+    "used_by": [
+      "automation/orchestrateur_evenements.py",
+      "db/fundamentals.py",
+      "backend/orchestrator.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "utils/data_completeness.py": {
+    "role": "",
+    "imports": [
+      "__future__",
+      "pathlib",
+      "sqlite3",
+      "typing"
+    ],
+    "used_by": [
+      "tests/test_data_completeness.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "utils/performance_metrics.py": {
+    "role": "Utility functions to compute trading performance metrics.",
+    "imports": [
+      "__future__",
+      "numpy",
+      "os",
+      "sqlite3",
+      "typing"
+    ],
+    "used_by": [
+      "ui/app_unifie_watchlistbot.py",
+      "tests/test_performance_metrics.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "utils/data_standardizer.py": {
+    "role": "",
+    "imports": [
+      "enum",
+      "pandas"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "utils/db_historical.py": {
+    "role": "",
+    "imports": [
+      "pandas",
+      "pathlib",
+      "sqlite3"
+    ],
+    "used_by": [
+      "backtest/ai_backtest_runner.py",
+      "scripts/data_ingest/collect_historical_us_stocks.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "cafe/app.py": {
+    "role": "",
+    "imports": [
+      "modules.database",
+      "modules.interface_achats",
+      "modules.interface_charges",
+      "modules.interface_chiffre_affaire",
+      "modules.interface_rapports",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "cafe/modules/database.py": {
+    "role": "",
+    "imports": [
+      "pandas",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "cafe/modules/interface_achats.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "modules.database",
+      "pandas",
+      "sqlite3",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "cafe/modules/interface_charges.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "modules.database",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "cafe/modules/interface_chiffre_affaire.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "pandas",
+      "sqlite3",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "cafe/modules/interface_rapports.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "modules.database",
+      "plotly.express",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "migration/info.py": {
+    "role": "",
+    "imports": [
+      "pandas",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "migration/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "migration/env.py": {
+    "role": "",
+    "imports": [
+      "alembic",
+      "core",
+      "core.db",
+      "logging.config",
+      "sqlalchemy"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "migration/versions/001_create_watchlist.py": {
+    "role": "create watchlist table",
+    "imports": [
+      "alembic",
+      "sqlalchemy"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "migration/versions/002_create_intraday_smart.py": {
+    "role": "create intraday_smart table",
+    "imports": [
+      "alembic",
+      "sqlalchemy"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "migration/versions/003_create_trades_simules.py": {
+    "role": "create trades_simules table",
+    "imports": [
+      "alembic",
+      "sqlalchemy"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "execution/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "execution/strategie_scalping.py": {
+    "role": "",
+    "imports": [
+      "data.indicateurs",
+      "data.stream_data_manager",
+      "datetime",
+      "db.trades",
+      "notifications.telegram_bot",
+      "pandas",
+      "time",
+      "typing",
+      "utils.execution_reelle",
+      "yfinance"
+    ],
+    "used_by": [
+      "watchlist_loop.py",
+      "ui/app_unifie_watchlistbot.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "data/stream_data_manager.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "dotenv",
+      "json",
+      "os",
+      "threading",
+      "typing",
+      "websocket",
+      "yfinance"
+    ],
+    "used_by": [
+      "movers_detector.py",
+      "pump_score.py",
+      "execution/strategie_scalping.py",
+      "ui/page_modules/heatmap_realtime.py",
+      "tests/test_movers_detector_module.py"
+    ],
+    "db_access": false,
+    "io": true
+  },
+  "data/fundamental_filters.py": {
+    "role": "",
+    "imports": [
+      "bs4",
+      "pandas",
+      "requests",
+      "typing",
+      "yfinance"
+    ],
+    "used_by": [
+      "watchlist_loop.py",
+      "tests/test_fundamental_filters.py"
+    ],
+    "db_access": false,
+    "io": true
+  },
+  "data/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "data/indicateurs.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "os",
+      "pandas",
+      "sqlite3",
+      "typing",
+      "yfinance"
+    ],
+    "used_by": [
+      "pump_score.py",
+      "execution/strategie_scalping.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "JobAutomationAssistant/index.py": {
+    "role": "",
+    "imports": [
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "JobAutomationAssistant/assistant_emploi_quebec.py": {
+    "role": "",
+    "imports": [
+      "bs4",
+      "collections",
+      "datetime",
+      "email.mime.multipart",
+      "email.mime.text",
+      "hashlib",
+      "json",
+      "openai",
+      "pandas",
+      "plotly.express",
+      "plotly.graph_objects",
+      "random",
+      "re",
+      "requests",
+      "smtplib",
+      "sqlite3",
+      "streamlit",
+      "time",
+      "transformers",
+      "urllib.parse"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": true
+  },
+  "JobAutomationAssistant/app.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "pandas",
+      "plotly.express",
+      "random",
+      "sqlite3",
+      "streamlit",
+      "time"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "db/fundamentals.py": {
+    "role": "",
+    "imports": [
+      "pathlib",
+      "sqlite3",
+      "typing",
+      "utils.db_access"
+    ],
+    "used_by": [
+      "watchlist_loop.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "db/cleanup.py": {
+    "role": "",
+    "imports": [
+      "os",
+      "sqlite3",
+      "typing"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "db/utils.py": {
+    "role": "",
+    "imports": [
+      "core.db",
+      "os",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "db/__init__.py": {
+    "role": "",
+    "imports": [
+      "utils"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "db/checks.py": {
+    "role": "",
+    "imports": [
+      "sqlite3",
+      "typing"
+    ],
+    "used_by": [
+      "tests/test_db_checks.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "db/trades.py": {
+    "role": "",
+    "imports": [
+      "core.db",
+      "datetime",
+      "os",
+      "sqlite3",
+      "typing"
+    ],
+    "used_by": [
+      "execution/strategie_scalping.py",
+      "tests/test_db_trades_auto.py",
+      "tests/test_db_new_functions.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "db/scores.py": {
+    "role": "",
+    "imports": [
+      "core.db",
+      "sqlite3"
+    ],
+    "used_by": [
+      "tests/test_db_new_functions.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "ui/trading_manuel.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "simulation.execution_simulee",
+      "streamlit",
+      "utils.execution_reelle"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "ui/simulation_achat.py": {
+    "role": "",
+    "imports": [
+      "simulation.execution_simulee",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "ui/watchlist_panel.py": {
+    "role": "",
+    "imports": [
+      "os",
+      "requests",
+      "streamlit",
+      "typing"
+    ],
+    "used_by": [
+      "sitecustomize.py"
+    ],
+    "db_access": false,
+    "io": true
+  },
+  "ui/journal.py": {
+    "role": "",
+    "imports": [
+      "core.db",
+      "pandas",
+      "sqlite3",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "ui/simulation_vente.py": {
+    "role": "",
+    "imports": [
+      "simulation.execution_simulee",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "ui/app_unifie_watchlistbot.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "execution.strategie_scalping",
+      "intelligence.ai_scorer",
+      "intelligence.local_llm",
+      "json",
+      "math",
+      "monitoring.watchdog_conditions",
+      "notifications.proactive_voice",
+      "os",
+      "page_modules.cloture_journee",
+      "pandas",
+      "progress_tracker",
+      "query_entreprise_db",
+      "requests",
+      "roadmap_ui",
+      "sqlite3",
+      "streamlit",
+      "streamlit_autorefresh",
+      "subprocess",
+      "sys",
+      "threading",
+      "time",
+      "utils.execution_reelle",
+      "utils.fda_fetcher",
+      "utils.performance_metrics",
+      "utils.progress_tracker",
+      "utils.utils_graph",
+      "utils.utils_news",
+      "utils_affichage_ticker"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": true
+  },
+  "ui/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "ui/trade_popup.py": {
+    "role": "Streamlit helper to confirm trades.",
+    "imports": [
+      "__future__",
+      "streamlit",
+      "utils.order_executor"
+    ],
+    "used_by": [
+      "realtime/pump_detector.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "ui/utils_affichage_ticker.py": {
+    "role": "",
+    "imports": [
+      "decision_engine",
+      "matplotlib.pyplot",
+      "movers_detector",
+      "pandas",
+      "simulation.execution_simulee",
+      "streamlit",
+      "streamlit_autorefresh",
+      "telegram_notifier",
+      "typing",
+      "utils.execution_reelle",
+      "utils.progress_tracker",
+      "utils_graph",
+      "utils_signaux"
+    ],
+    "used_by": [
+      "sitecustomize.py",
+      "tests/test_ia_score.py",
+      "monitoring/watchdog_conditions.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "ui/dashboard.py": {
+    "role": "",
+    "imports": [
+      "streamlit",
+      "v6.pages"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "ui/dashboard/dashboard_journalier.py": {
+    "role": "",
+    "imports": [
+      "core.db",
+      "datetime",
+      "pandas",
+      "sqlite3",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "ui/dashboard/dashboard_apprentissage.py": {
+    "role": "",
+    "imports": [
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "ui/dashboard/dashboard.py": {
+    "role": "",
+    "imports": [
+      "core.db",
+      "datetime",
+      "pandas",
+      "pathlib",
+      "sqlite3",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "ui/dev/exec_python_debug.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "json",
+      "os",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "ui/backtest_ui/ai_backtest.py": {
+    "role": "",
+    "imports": [
+      "pandas",
+      "pathlib",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "ui/page_modules/cloture_journee.py": {
+    "role": "",
+    "imports": [
+      "core.db",
+      "datetime",
+      "pandas",
+      "sqlite3",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "ui/page_modules/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "ui/page_modules/heatmap_realtime.py": {
+    "role": "",
+    "imports": [
+      "core.db",
+      "data.stream_data_manager",
+      "intelligence.ai_scorer",
+      "pandas",
+      "plotly.express",
+      "sqlite3",
+      "streamlit",
+      "streamlit_autorefresh",
+      "typing"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "ui/page_modules/checklist_import_affichage.py": {
+    "role": "",
+    "imports": [
+      "os",
+      "pandas",
+      "streamlit",
+      "utils.module_checklist_fusion",
+      "utils.utils_watchlist"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "ui/page_modules/analyse_tickers_realtime.py": {
+    "role": "",
+    "imports": [
+      "fusion.module_fusion_watchlist",
+      "intelligence.features.check_tickers",
+      "intelligence.training.utils_ai_predictor",
+      "pandas",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "ui/control_center/ia_control_center.py": {
+    "role": "",
+    "imports": [
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "simulation/simulation_achat.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "simulation.execution_simulee",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "simulation/simulation_vente.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "simulation.execution_simulee",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "simulation/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "simulation/simulate_trade_result.py": {
+    "role": "Simulation d\u2019un trade avec calcul de frais, SL/TP, gain net.",
+    "imports": [],
+    "used_by": [
+      "realtime/pump_detector.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "simulation/execution_simulee.py": {
+    "role": "",
+    "imports": [
+      "core.db",
+      "core.models",
+      "datetime",
+      "simulate_trade_result"
+    ],
+    "used_by": [
+      "intelligence/learning_loop.py",
+      "ui/trading_manuel.py",
+      "ui/simulation_achat.py",
+      "ui/simulation_vente.py",
+      "ui/utils_affichage_ticker.py",
+      "simulation/simulation_achat.py",
+      "simulation/simulation_vente.py",
+      "tests/test_end_to_end.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "models/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "core/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "core/models.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "db",
+      "sqlalchemy"
+    ],
+    "used_by": [
+      "intelligence/apprentissage_hybride.py",
+      "utils/order_executor.py",
+      "simulation/execution_simulee.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "core/db.py": {
+    "role": "",
+    "imports": [
+      "os",
+      "pathlib",
+      "sqlalchemy",
+      "sqlalchemy.orm"
+    ],
+    "used_by": [
+      "decision_engine.py",
+      "realtime/real_time_tick_collector.py",
+      "intelligence/apprentissage_hybride.py",
+      "utils/execution_reelle.py",
+      "utils/order_executor.py",
+      "utils/db_access.py",
+      "migration/env.py",
+      "db/utils.py",
+      "db/trades.py",
+      "db/scores.py",
+      "ui/journal.py",
+      "ui/dashboard/dashboard_journalier.py",
+      "ui/dashboard/dashboard.py",
+      "ui/page_modules/cloture_journee.py",
+      "ui/page_modules/heatmap_realtime.py",
+      "simulation/execution_simulee.py",
+      "scripts/collect_intraday_smart.py",
+      "tests/test_end_to_end.py"
+    ],
+    "db_access": true,
+    "io": false
+  },
+  "api/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "scripts/collect_intraday_smart.py": {
+    "role": "",
+    "imports": [
+      "asyncio",
+      "core.db",
+      "datetime",
+      "os",
+      "pandas",
+      "pathlib",
+      "scripts.smart_collector",
+      "smart_collector",
+      "sqlite3",
+      "sys",
+      "time"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "scripts/collect_historical_finnhub.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "os",
+      "pandas",
+      "pathlib",
+      "sqlite3",
+      "sys",
+      "utils_finnhub"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "scripts/postmarket_scanner.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "pandas",
+      "yfinance"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "scripts/run_chatgpt_batch.py": {
+    "role": "",
+    "imports": [
+      "asyncio",
+      "datetime",
+      "hashlib",
+      "intelligence.token_utils",
+      "json",
+      "logging",
+      "os",
+      "pathlib",
+      "platform",
+      "playwright.async_api",
+      "psutil",
+      "requests",
+      "sqlite3",
+      "subprocess",
+      "time"
+    ],
+    "used_by": [
+      "intelligence/local_llm.py",
+      "tests/test_build_prompt.py"
+    ],
+    "db_access": true,
+    "io": true
+  },
+  "scripts/collect_historical_batch_to_db.py": {
+    "role": "",
+    "imports": [
+      "data_completeness",
+      "db_historical",
+      "db_intraday",
+      "logging",
+      "os",
+      "pandas",
+      "pathlib",
+      "sqlite3",
+      "sys",
+      "time",
+      "utils_intraday",
+      "utils_yf_historical"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": true
+  },
+  "scripts/utils_data_intraday.py": {
+    "role": "",
+    "imports": [
+      "utils.utils_intraday"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "scripts/batch_news_scoring.py": {
+    "role": "",
+    "imports": [
+      "asyncio",
+      "hashlib",
+      "json",
+      "pathlib",
+      "playwright.async_api",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "scripts/smart_collector.py": {
+    "role": "",
+    "imports": [
+      "data.scraper_fallback",
+      "utils_finnhub",
+      "utils_yf_historical",
+      "yfinance"
+    ],
+    "used_by": [
+      "scripts/collect_intraday_smart.py"
+    ],
+    "db_access": false,
+    "io": false
+  },
+  "scripts/collect_intraday_yahoo.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "os",
+      "pandas",
+      "sqlite3",
+      "yfinance"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "scripts/load_watchlist.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "pathlib",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": true
+  },
+  "scripts/collect_intraday_from_finnhub.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "os",
+      "pandas",
+      "pathlib",
+      "sqlite3",
+      "utils",
+      "utils.utils_intraday"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "scripts/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "scripts/fetch_intraday_to_db.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "os",
+      "pandas",
+      "sqlite3",
+      "yfinance"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "scripts/scraper_jaguar.py": {
+    "role": "",
+    "imports": [
+      "asyncio",
+      "os",
+      "pathlib",
+      "playwright.async_api",
+      "re"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "scripts/collect_historical_us_stocks.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "pandas",
+      "sqlite3",
+      "yfinance"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "scripts/test_import.py": {
+    "role": "Basic import test for optional GUI utilities.",
+    "imports": [
+      "os",
+      "pyautogui",
+      "pyperclip",
+      "pytest"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "scripts/get_position.py": {
+    "role": "",
+    "imports": [
+      "pyautogui",
+      "sys",
+      "time"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "scripts/us_db_tools.py": {
+    "role": "",
+    "imports": [
+      "os",
+      "pandas",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "scripts/executer_ordre_moomoo.py": {
+    "role": "",
+    "imports": [
+      "json",
+      "os",
+      "pyautogui",
+      "pyperclip",
+      "sys",
+      "time"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "scripts/detect_tickers_from_news.py": {
+    "role": "Automatic ticker detection from pharma-related news.",
+    "imports": [
+      "__future__",
+      "datetime",
+      "dotenv",
+      "os",
+      "pathlib",
+      "re",
+      "requests",
+      "sqlite3",
+      "typing",
+      "yfinance"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": true
+  },
+  "scripts/task_manager_ancienne_table.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "scripts/task_manager.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "sqlite3",
+      "utils.telegram_utils"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "scripts/collect_historical_yfinance.py": {
+    "role": "",
+    "imports": [
+      "os",
+      "pandas",
+      "sqlite3",
+      "yfinance"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "scripts/streamlit_entreprise_view.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "scripts/generate_function_audit.py": {
+    "role": "",
+    "imports": [
+      "argparse",
+      "ast",
+      "csv",
+      "os",
+      "re",
+      "typing"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "scripts/roadmap_generator_tools.py": {
+    "role": "",
+    "imports": [
+      "PIL",
+      "os"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "scripts/mock_db_fill.py": {
+    "role": "Create a small set of rows in trades.db for testing purposes.",
+    "imports": [
+      "pathlib",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "scripts/roadmap_ui.py": {
+    "role": "",
+    "imports": [
+      "os",
+      "pandas",
+      "roadmap_generator_tools",
+      "sqlite3",
+      "streamlit",
+      "task_manager"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": true
+  },
+  "scripts/finnhub_provider.py": {
+    "role": "",
+    "imports": [
+      "advanced_logger",
+      "config.config_manager",
+      "data_standardizer",
+      "datetime",
+      "pandas",
+      "requests",
+      "typing",
+      "unified_data_collector"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "scripts/utils_data_historical.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "pandas",
+      "requests",
+      "time",
+      "yfinance"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "scripts/query_entreprise_db.py": {
+    "role": "",
+    "imports": [
+      "pandas",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "scripts/updated_utils_affichage_ticker.py": {
+    "role": "",
+    "imports": [
+      "streamlit",
+      "time",
+      "utils_graph"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "scripts/data_ingest/collect_historical_us_stocks.py": {
+    "role": "",
+    "imports": [
+      "logging",
+      "pandas",
+      "pathlib",
+      "sqlite3",
+      "sys",
+      "utils.db_historical",
+      "utils.db_intraday",
+      "yfinance"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "scripts/setup/init_qlib_data.py": {
+    "role": "",
+    "imports": [
+      "qlib",
+      "qlib.config",
+      "qlib.data",
+      "sys"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "scripts/setup/init_qlib_check.py": {
+    "role": "",
+    "imports": [
+      "pandas",
+      "qlib",
+      "qlib.config",
+      "qlib.data",
+      "sys"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_db_trades_auto.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "db.trades",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_async_fetch.py": {
+    "role": "",
+    "imports": [
+      "pytest",
+      "utils"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_migrations.py": {
+    "role": "",
+    "imports": [
+      "alembic",
+      "alembic.config",
+      "os",
+      "sqlite3",
+      "tempfile"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_db_checks.py": {
+    "role": "",
+    "imports": [
+      "db.checks",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_performance_metrics.py": {
+    "role": "",
+    "imports": [
+      "sqlite3",
+      "utils.performance_metrics"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_intraday_env.py": {
+    "role": "",
+    "imports": [
+      "importlib",
+      "os",
+      "utils.utils_intraday"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_pump_score.py": {
+    "role": "",
+    "imports": [
+      "pump_score"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_hybrid_learning.py": {
+    "role": "",
+    "imports": [
+      "intelligence.hybrid_learning",
+      "json",
+      "pandas",
+      "pathlib"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_intraday_fallback.py": {
+    "role": "",
+    "imports": [
+      "importlib",
+      "pytest",
+      "utils"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_data_completeness.py": {
+    "role": "",
+    "imports": [
+      "sqlite3",
+      "utils.data_completeness"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_analyse_ia.py": {
+    "role": "",
+    "imports": [
+      "os",
+      "pytest"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_ajout_ticker.py": {
+    "role": "",
+    "imports": [
+      "os",
+      "pytest",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_ia_score.py": {
+    "role": "",
+    "imports": [
+      "pytest",
+      "sys",
+      "types",
+      "ui.utils_affichage_ticker"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_ai_scorer.py": {
+    "role": "",
+    "imports": [
+      "intelligence.ai_scorer"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_learn_from_trades.py": {
+    "role": "",
+    "imports": [
+      "intelligence.learn_from_trades",
+      "json",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_strategie_scalping.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "importlib",
+      "pytest"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_local_llm.py": {
+    "role": "",
+    "imports": [
+      "intelligence",
+      "intelligence.token_utils",
+      "os",
+      "pytest",
+      "scripts",
+      "sqlite3",
+      "sys",
+      "types"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_proactive_voice.py": {
+    "role": "",
+    "imports": [
+      "automation.orchestrateur_evenements",
+      "datetime",
+      "notifications.proactive_voice"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_scraping_jaguar.py": {
+    "role": "",
+    "imports": [
+      "os"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_movers_detector_module.py": {
+    "role": "",
+    "imports": [
+      "data.stream_data_manager",
+      "movers_detector",
+      "prescreen",
+      "time"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_fundamental_filters.py": {
+    "role": "",
+    "imports": [
+      "data.fundamental_filters",
+      "types"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_affichage_streamlit.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_db_historical_insert.py": {
+    "role": "",
+    "imports": [
+      "pytest",
+      "sqlite3",
+      "utils"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_intraday_async.py": {
+    "role": "",
+    "imports": [
+      "asyncio",
+      "pandas",
+      "pytest",
+      "time",
+      "utils"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_end_to_end.py": {
+    "role": "",
+    "imports": [
+      "core",
+      "core.db",
+      "datetime",
+      "decision_engine",
+      "dotenv",
+      "importlib",
+      "pytest",
+      "simulation.execution_simulee",
+      "telegram_notifier",
+      "utils.telegram_utils"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_stream_data_manager.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "importlib",
+      "pytest",
+      "types"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_progress.py": {
+    "role": "",
+    "imports": [
+      "json",
+      "utils.progress_tracker"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_db_new_functions.py": {
+    "role": "",
+    "imports": [
+      "db.scores",
+      "db.trades",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_codex_watcher.py": {
+    "role": "",
+    "imports": [
+      "automation.codex_watcher",
+      "types"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_finnhub_graph.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "matplotlib.pyplot",
+      "os",
+      "pytest",
+      "requests",
+      "streamlit"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "tests/test_db_access.py": {
+    "role": "",
+    "imports": [
+      "pathlib",
+      "sqlite3",
+      "utils"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_db_scores.py": {
+    "role": "",
+    "imports": [
+      "db",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_watchlist_live.py": {
+    "role": "",
+    "imports": [
+      "utils.watchlist_live"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_fusion.py": {
+    "role": "",
+    "imports": [
+      "fusion.module_fusion_watchlist",
+      "json",
+      "os",
+      "pytest",
+      "sys"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_import_txt.py": {
+    "role": "",
+    "imports": [
+      "os"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_trade_decision_logic.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "decision_engine"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_db_trades.py": {
+    "role": "",
+    "imports": [
+      "db",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_build_prompt.py": {
+    "role": "",
+    "imports": [
+      "intelligence.token_utils",
+      "scripts.run_chatgpt_batch",
+      "sys",
+      "types"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_pump_detector.py": {
+    "role": "",
+    "imports": [
+      "os",
+      "pytest",
+      "realtime.pump_detector",
+      "tempfile"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_yf_fallback.py": {
+    "role": "",
+    "imports": [
+      "pytest",
+      "types",
+      "utils"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_progress_tracker.py": {
+    "role": "",
+    "imports": [
+      "datetime",
+      "pathlib",
+      "utils.progress_tracker"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/conftest.py": {
+    "role": "",
+    "imports": [
+      "os",
+      "pathlib",
+      "pytest",
+      "shutil"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "tests/test_fda_fetcher.py": {
+    "role": "",
+    "imports": [
+      "pathlib",
+      "sqlite3",
+      "types",
+      "utils.fda_fetcher"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_features.py": {
+    "role": "",
+    "imports": [
+      "os",
+      "pytest",
+      "re"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "tests/test_db_cleanup.py": {
+    "role": "",
+    "imports": [
+      "db",
+      "sqlite3"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "tests/test_ai_backtest_runner.py": {
+    "role": "",
+    "imports": [
+      "backtest.ai_backtest_runner",
+      "pytest"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "dotenv/__init__.py": {
+    "role": "",
+    "imports": [
+      "os"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": true
+  },
+  "backend/api.py": {
+    "role": "",
+    "imports": [
+      "fastapi",
+      "utils.sanitize"
+    ],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "backend/__init__.py": {
+    "role": "",
+    "imports": [],
+    "used_by": [],
+    "db_access": false,
+    "io": false
+  },
+  "backend/orchestrator.py": {
+    "role": "",
+    "imports": [
+      "asyncio",
+      "intelligence.ai_scorer",
+      "pandas",
+      "pathlib",
+      "sqlite3",
+      "typing",
+      "utils.async_utils",
+      "utils.db_access"
+    ],
+    "used_by": [],
+    "db_access": true,
+    "io": false
+  },
+  "monitoring/watchdog_conditions.py": {
+    "role": "IA watchdog module for automatic opportunity detection.",
+    "imports": [
+      "__future__",
+      "intelligence.ai_scorer",
+      "json",
+      "os",
+      "sqlite3",
+      "streamlit",
+      "threading",
+      "time",
+      "typing",
+      "ui.utils_affichage_ticker",
+      "utils.fda_fetcher",
+      "utils.telegram_utils",
+      "utils.utils_graph"
+    ],
+    "used_by": [
+      "ui/app_unifie_watchlistbot.py"
+    ],
+    "db_access": true,
+    "io": true
+  }
+}
