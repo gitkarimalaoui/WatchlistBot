@@ -143,6 +143,11 @@ page = st.sidebar.radio("Menu principal", [
 # Activation IA locale
 use_local_llm = st.sidebar.checkbox("Activer IA locale (Mistral-7B)", key="local_llm")
 
+# Enable or disable automatic page refresh
+auto_refresh = st.sidebar.checkbox("\U0001F503 Auto refresh", value=True)
+if auto_refresh and st_autorefresh:
+    st_autorefresh(interval=30 * 1000, key="watchlist_global_refresh")
+
 if "voice_thread" not in st.session_state:
     st.session_state.voice_thread = None
 if "watchdog_thread" not in st.session_state:
@@ -352,9 +357,9 @@ def update_green_indicators(watchlist):
     return updated
 
 
-def render_top_tickers_panel(watchlist):
+def render_top_tickers_panel(watchlist, autorefresh: bool = False) -> None:
     """Display a vertical panel with top 20 tickers by daily change."""
-    if st_autorefresh:
+    if autorefresh and st_autorefresh:
         st_autorefresh(interval=30 * 1000, key="top_tickers_refresh")
     top = sorted(
         watchlist,
