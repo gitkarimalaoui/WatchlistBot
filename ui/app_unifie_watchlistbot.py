@@ -80,6 +80,7 @@ from utils_affichage_ticker import (
     afficher_ticker_panel,
     _ia_score,
     afficher_bloc_ticker,
+    calculer_indicateurs,
 )
 from utils.execution_reelle import executer_ordre_reel
 from execution.strategie_scalping import executer_strategie_scalping
@@ -87,6 +88,7 @@ from intelligence.ai_scorer import compute_global_score
 from utils.progress_tracker import load_progress
 from utils.fda_fetcher import fetch_fda_data, enrichir_watchlist_avec_fda
 from utils.utils_news import fetch_news_finnhub
+from utils.utils_graph import charger_intraday_intelligent
 from intelligence.local_llm import (
     run_local_llm,
     chunk_and_query_local_llm,
@@ -296,7 +298,10 @@ def fetch_live_watchlist():
         if resp.status_code == 200:
             return resp.json()
     except Exception as e:
-        st.warning(f"Erreur chargement live: {e}")
+        if not st.session_state.get("api_error_displayed"):
+            st.warning(
+                f"API indisponible ({e}). Utilisation des donn\xE9es locales.")
+            st.session_state["api_error_displayed"] = True
     return load_watchlist()
 
 
@@ -323,6 +328,28 @@ def load_watchlist_full():
         if ticker not in unique and text:
             unique[ticker] = text
     return [{"symbol": t, "desc": d} for t, d in unique.items()]
+
+
+def update_green_indicators(watchlist):
+    """Update indicators for tickers with positive change."""
+    updated = []
+    for itm in watchlist:
+        change = (
+            itm.get("change")
+            or itm.get("percent_gain")
+            or itm.get("change_percent")
+            or 0
+        )
+        if change > 0:
+            ticker = itm.get("ticker") or itm.get("symbol")
+            if not ticker:
+                continue
+            df = charger_intraday_intelligent(ticker)
+            ind = calculer_indicateurs(df)
+            if ind:
+                itm.update(ind)
+                updated.append(ticker)
+    return updated
 
 
 def render_top_tickers_panel(watchlist):
@@ -502,16 +529,47 @@ watchlist = sorted(
     reverse=True,
 )
 
+page_size = st.sidebar.number_input("Tickers par page", 5, 50, 10, step=5)
+show_positive = st.sidebar.checkbox("Change positif uniquement", value=False)
+min_score = st.sidebar.slider("Score global minimum", 0, 100, 0)
+auto_score = st.sidebar.slider("Score auto-ouverture", 0, 100, 85, step=5)
+st.session_state["auto_expand_score"] = auto_score
+
+if show_positive:
+    watchlist = [
+        w
+        for w in watchlist
+        if (
+            w.get("change")
+            or w.get("percent_gain")
+            or w.get("change_percent")
+            or 0
+        )
+        > 0
+    ]
+
+watchlist = [w for w in watchlist if w.get("global_score", 0) >= min_score]
+
+page_count = max(1, math.ceil(len(watchlist) / page_size))
+page = st.sidebar.number_input("Page", 1, page_count, 1, step=1)
+start = (page - 1) * page_size
+end = start + page_size
+page_watchlist = watchlist[start:end]
+
+if st.sidebar.button("🔧 MAJ indicateurs verts"):
+    updated = update_green_indicators(watchlist)
+    st.sidebar.success(f"{len(updated)} tickers mis \xE0 jour")
+
 main_col, right_col = st.columns([8, 1])
 
 with right_col:
     render_top_tickers_panel(watchlist)
 
 with main_col:
-    if not watchlist:
+    if not page_watchlist:
         st.warning("Aucune donnée disponible pour le moment")
     else:
-        for idx, stock in enumerate(watchlist):
+        for idx, stock in enumerate(page_watchlist, start=start):
             afficher_bloc_ticker(stock, idx)
 
 st.markdown("---")

@@ -208,7 +208,11 @@ def _enregistrer_trade(ticker: str, prix: float, quantite: int = 1, sl=None, tp=
 
 def afficher_ticker_panel(ticker, stock, index):
     label = f"{index + 1}. {ticker}"
-    expanded = st.session_state.get("ticker_focus") == ticker
+    auto_thr = st.session_state.get("auto_expand_score", 1000)
+    expanded = (
+        st.session_state.get("ticker_focus") == ticker
+        or stock.get("global_score", 0) >= auto_thr
+    )
     with st.expander(label, expanded=expanded):
         if st_autorefresh:
             st_autorefresh(interval=30 * 1000, key=f"refresh_{ticker}_{index}")
