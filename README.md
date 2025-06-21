@@ -90,8 +90,10 @@ Avant de lancer la suite de tests, installez les dépendances :
 pip install -r requirements.txt
 ```
 
-Les tests requièrent en particulier les packages `pandas` et `SQLAlchemy`,
-ainsi que `finrl` et `stable-baselines3`, en plus de `pytest`.
+Les tests nécessitent la plupart des modules listés dans `requirements.txt`.
+Veillez notamment à installer `watchdog`, `SQLAlchemy`, `pandas`, `numpy`,
+`requests` et `alembic`, ainsi que `finrl`, `stable-baselines3` et bien sûr
+`pytest`.
 
 Ensuite lancez simplement :
 
