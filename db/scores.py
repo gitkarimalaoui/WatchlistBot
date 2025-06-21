@@ -1,5 +1,7 @@
 import sqlite3
 
+from core.db import DB_PATH
+
 
 def update_score_watchlist(
     ticker: str,
@@ -10,7 +12,7 @@ def update_score_watchlist(
 ) -> None:
     """Met à jour les informations de scoring pour ``ticker`` dans ``watchlist``."""
 
-    conn = sqlite3.connect("data/trades.db")
+    conn = sqlite3.connect(DB_PATH)
     try:
         conn.execute(
             """

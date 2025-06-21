@@ -3,7 +3,7 @@ import sqlite3
 from datetime import datetime
 from typing import Optional
 
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "trades.db")
+from core.db import DB_PATH
 
 
 def get_nb_trades_du_jour(ticker: str, date: datetime, db_path: str = DB_PATH) -> int:
@@ -94,7 +94,7 @@ def enregistrer_trade_ia(
 ) -> None:
     """Insère un trade IA enrichi dans la base ``trades``."""
 
-    conn = sqlite3.connect("data/trades.db")
+    conn = sqlite3.connect(DB_PATH)
     try:
         conn.execute(
             """

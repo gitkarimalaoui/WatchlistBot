@@ -1,9 +1,8 @@
 import subprocess
 import sqlite3
-import os
 from datetime import datetime
 
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "trades.db")
+from core.db import DB_PATH
 
 
 def executer_ordre_reel(ticker: str, prix: float, quantite: int, action: str = "achat") -> dict:

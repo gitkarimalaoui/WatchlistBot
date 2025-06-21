@@ -6,6 +6,7 @@ import plotly.express as px
 import streamlit as st
 
 from streamlit_autorefresh import st_autorefresh
+from core.db import DB_PATH
 
 from data.stream_data_manager import set_watchlist, get_latest_data
 from intelligence.ai_scorer import compute_global_score
@@ -16,7 +17,6 @@ st.title("🔥 Heatmap IA temps réel")
 if st_autorefresh:
     st_autorefresh(interval=10 * 1000)
 
-DB_PATH = "data/trades.db"
 
 @st.cache_data
 def load_scores() -> pd.DataFrame:

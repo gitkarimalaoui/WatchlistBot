@@ -2,13 +2,14 @@
 import streamlit as st
 import pandas as pd
 import sqlite3
+from core.db import DB_PATH
 
 def afficher_journal():
     st.header("📓 Journal des trades simulés")
     conn = None
     df = None
     try:
-        conn = sqlite3.connect("watchlist_bot.db")
+        conn = sqlite3.connect(DB_PATH)
         df = pd.read_sql_query(
             "SELECT * FROM trades_simules ORDER BY date DESC",
             conn,

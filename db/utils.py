@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "trades.db")
+from core.db import DB_PATH
 
 
 def ensure_schema(db_path: str = DB_PATH) -> None:

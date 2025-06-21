@@ -4,11 +4,12 @@ import pandas as pd
 import sqlite3
 from datetime import datetime
 from pathlib import Path
+from core.db import DB_PATH
 
 st.markdown("## 📊 Tableau de bord")
 
 # Débogage du chemin
-db_path = Path("data/trades/trades.db")
+db_path = Path(DB_PATH)
 st.info(f"📁 Utilisation de la base : {db_path}")
 
 if not db_path.exists():

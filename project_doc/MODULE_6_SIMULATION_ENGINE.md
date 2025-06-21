@@ -32,7 +32,7 @@ Ce module est responsable de la **simulation complète des ordres de trading** �
 |-------------|---------------------|----------------------------------|
 | `trades.db` | `simulated_trades`  | Enregistrements de simulation IA |
 | `trades.db` | `trades_simules`    | Enregistrements manuels SQL     |
-| `journal_simule.json` | Back-up ou interface rapide JSON        |
+| *(retiré)* | Les journaux sont désormais stockés uniquement dans `trades.db` |
 
 ---
 

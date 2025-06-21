@@ -9,7 +9,7 @@ This document summarizes the current implementation status of the trading bot an
 - **AI scoring and global score** – implemented in `intelligence/ai_scorer.py`; used by the UI to rank tickers.
 - **ChatGPT batch validation** – `scripts/run_chatgpt_batch.py` sends the watchlist to ChatGPT and stores results in `news_score`.
 - **Intraday and historical collectors** – scripts under `scripts/` and utilities under `utils/` manage data ingestion and persistence.
-- **Real‑time monitoring** – collector `realtime/real_time_tick_collector.py` stores ticks, while `realtime/pump_detector.py` evaluates sudden moves and can trigger a trade popup via `notifications/popup_trade.py`.
+- **Real‑time monitoring** – `realtime/real_time_tick_collector.py` enregistre les ticks dans la table `ticks` de `trades.db`. `realtime/pump_detector.py` analyse ensuite ces valeurs et peut déclencher une fenêtre de confirmation via `notifications/popup_trade.py`.
 - **Simulation and trade execution helpers** – `simulation/` directory plus `utils/order_executor.py`.
 - **Documentation** – design chapters in `project_doc/` describe each EPIC; module 1 already validated.
 
