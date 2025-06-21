@@ -20,6 +20,18 @@ Ce dépôt fournit l'ensemble des scripts et de la documentation pour:
 - `tests/` – Suite de tests PyTest.
 - `utils/`, `models/`, `simulation/` – Modules utilisés par le bot et la partie IA.
 
+## Détails des répertoires
+
+- `data/` – Données sources et fichier SQLite `trades.db`.
+- `db/` – Fonctions d'accès à la base et journalisation des trades.
+- `execution/` – Stratégies et routines d'exécution d'ordres.
+- `utils/` – Utilitaires communs (accès API, graphes, logs…).
+- `automation/` – Watchers Codex et scripts d'automatisation.
+- `realtime/` – Collecte tick par tick et détection de pumps.
+- `intelligence/` – Modèles et scoring IA.
+- `scripts/` – Outils CLI pour charger watchlist et news.
+- `ui/` – Interface Streamlit.
+
 Consultez `project_doc/project_structure.md` pour la vue d'ensemble du projet ainsi que les fiches spécifiques (`MODULE_1_WATCHLISTBOT.md`, `MODULE_1_ORCHESTRATEUR_EVENEMENTS.md`, `MODULE_2_LEARNING_ENGINE.md`, `04_core_database_and_logging_setup.md`, ...).
 
 ## Modules principaux
@@ -34,6 +46,14 @@ Plusieurs scripts en doublon (`app_unifie_watchlistbotx.py`, `ai_scorerx.py`, `o
 - `scripts/run_chatgpt_batch.py` – scoring GPT des news
 - `scripts/scraper_jaguar.py` – scraping des posts Jaguar
 - `scripts/load_watchlist.py` – import de la watchlist
+
+## Workflow complet
+
+1. **Collecte des news** : les scripts du dossier `scripts/` récupèrent les articles et posts (ex. `scraper_jaguar.py`).
+2. **Scoring** : `run_chatgpt_batch.py` ou le LLM local analyse ces news et met à jour les scores dans `data/trades.db`.
+3. **Détection** : `movers_detector.py` et `pump_score.py` identifient les tickers prometteurs.
+4. **Exécution** : la stratégie de scalping d'`execution/` peut être lancée automatiquement via `watchlist_loop.py` ou manuellement depuis l'interface Streamlit.
+5. **Journalisation** : toutes les opérations sont enregistrées via `db/trades.py` pour suivre la performance et nourrir l'apprentissage.
 
 
 ## Mise en place de la base de données
@@ -172,3 +192,20 @@ Le watcher observe `models/finrl/` pour tout fichier `.pkl` ou `.json` ajouté e
 
 L'outil `realtime/pump_detector.py` analyse les ticks pour détecter les pumps soudains. Lorsque les seuils sont atteints, un dialogue Streamlit s'affiche via `ui/trade_popup.py` pour confirmer l'exécution de l'ordre. L'ancien popup Tkinter a été supprimé.
 Les ticks sont collectés par `realtime/real_time_tick_collector.py` et enregistrés directement dans la base `trades.db`.
+
+## Utilisation manuelle et automatisée
+
+### Exécution manuelle
+
+- Lancer l'interface : `streamlit run ui/app_unifie_watchlistbot.py`
+- Exécuter individuellement les scripts de collecte ou de scoring (ex. `python scripts/run_chatgpt_batch.py`).
+
+### Mode automatique
+
+- Démarrer la surveillance continue avec :
+
+```bash
+python start_watchers.py
+```
+
+Les watchers gèrent l'exécution des stratégies dès qu'un nouveau modèle ou un log pertinent est détecté.
