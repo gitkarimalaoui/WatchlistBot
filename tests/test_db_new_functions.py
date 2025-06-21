@@ -36,11 +36,17 @@ def test_enregistrer_trade_ia(monkeypatch, tmp_path):
     orig_connect = sqlite3.connect
 
     def fake_connect(path):
-        if path == "data/trades.db":
+        path_str = str(path)
+        if path_str.endswith("trades.db"):
             return orig_connect(db_file)
         return orig_connect(path)
 
     monkeypatch.setattr(sqlite3, "connect", fake_connect)
+    monkeypatch.setattr("db.scores.DB_PATH", str(db_file), raising=False)
+    monkeypatch.setattr("core.db.DB_PATH", str(db_file), raising=False)
+    monkeypatch.setattr("db.scores.DB_PATH", str(db_file), raising=False)
+    monkeypatch.setattr("db.trades.DB_PATH", str(db_file), raising=False)
+    monkeypatch.setattr("core.db.DB_PATH", str(db_file), raising=False)
 
     enregistrer_trade_ia(
         "ABC",
@@ -90,7 +96,8 @@ def test_update_score_watchlist(monkeypatch, tmp_path):
     orig_connect = sqlite3.connect
 
     def fake_connect(path):
-        if path == "data/trades.db":
+        path_str = str(path)
+        if path_str.endswith("trades.db"):
             return orig_connect(db_file)
         return orig_connect(path)
 
