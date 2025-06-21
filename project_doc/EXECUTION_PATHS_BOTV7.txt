@@ -5,9 +5,9 @@
 [Main UI]
 - ui/app_unifie_watchlistbot.py
   ├── Charge modules de :
-      ├── ui/pages/analyse_ia_realtime.py
-      ├── ui/pages/cloture_journee.py
-      ├── ui/pages/checklist_import_affichage.py
+      ├── ui/page_modules/analyse_tickers_realtime.py
+      ├── ui/page_modules/cloture_journee.py
+      ├── ui/page_modules/checklist_import_affichage.py
       ├── ui/dashboard/dashboard.py
       ├── ui/dev/exec_python_debug.py
       ├── ui/control_center/ia_control_center.py
@@ -56,7 +56,7 @@
 - notifications/telegram_bot.py
   ├── appelé par :
       ├── cloture_journee.py
-      ├── analyse_ia_realtime.py
+      ├── analyse_tickers_realtime.py
       └── learning_loop.py (si IA détecte un pattern)
 
 ## 8. Fusion des watchlists

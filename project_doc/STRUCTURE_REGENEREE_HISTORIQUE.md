@@ -46,7 +46,7 @@
 - scripts/run_chatgpt_batch.py
 - scripts/startup_loader.py
 - ui/app_unifie_watchlistbot.py
-- ui/pages/cloture_journee.py
+- ui/page_modules/cloture_journee.py
 - utils/config.py
 - utils/telegram_alerts.py
 - utils/utils_finnhub.py

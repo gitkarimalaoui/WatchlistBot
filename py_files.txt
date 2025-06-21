@@ -65,10 +65,10 @@
 ./ui/dashboard/dashboard_journalier.py
 ./ui/dashboard/dashboard.py
 ./ui/control center/ia_control_center.py
-./ui/pages/cloture_journee.py
-./ui/pages/__init__.py
-./ui/pages/analyse_tickers_realtime.py
-./ui/pages/checklist_import_affichage.py
+./ui/page_modules/cloture_journee.py
+./ui/page_modules/__init__.py
+./ui/page_modules/analyse_tickers_realtime.py
+./ui/page_modules/checklist_import_affichage.py
 ./ui/dev/exec_python_debug.py
 ./ui/simulation_achat.py
 ./ui/journal.py
