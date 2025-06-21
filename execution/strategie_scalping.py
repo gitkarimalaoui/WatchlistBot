@@ -2,6 +2,32 @@ import time
 from datetime import datetime
 from typing import Optional
 
+
+class TrailingManager:
+    """Simple trailing stop manager.
+
+    Once the price gains more than 2% from entry the stop is moved to
+    break even. When gains exceed 5% it is moved to secure roughly 3%
+    profit. ``update`` returns the potentially adjusted stop loss.
+    """
+
+    def __init__(self, entry_price: float, stop_loss: float) -> None:
+        self.entry_price = entry_price
+        self.stop_loss = stop_loss
+        self._breakeven_done = False
+        self._secure_done = False
+
+    def update(self, price: float) -> float:
+        gain_pct = (price - self.entry_price) / self.entry_price * 100
+        if not self._breakeven_done and gain_pct >= 2:
+            self.stop_loss = max(self.stop_loss, self.entry_price)
+            self._breakeven_done = True
+        if not self._secure_done and gain_pct >= 5:
+            self.stop_loss = max(self.stop_loss, self.entry_price * 1.03)
+            self._secure_done = True
+        return self.stop_loss
+
+
 import pandas as pd
 
 from data.indicateurs import (
@@ -87,7 +113,12 @@ def _compute_score(ticker: str) -> Optional[dict]:
         score += 4
     if catalyst is not None and catalyst > 0.7:
         score += 35
-    if macd is not None and macd_signal is not None and macd > macd_signal and momentum > 1:
+    if (
+        macd is not None
+        and macd_signal is not None
+        and macd > macd_signal
+        and momentum > 1
+    ):
         score += 8
 
     stop_loss = None

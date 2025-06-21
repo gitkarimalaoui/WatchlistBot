@@ -22,6 +22,8 @@ def ensure_schema(db_path: str = DB_PATH) -> None:
             ("stop_loss", "REAL"),
             ("take_profit", "REAL"),
             ("entry_time", "TEXT"),
+            ("partial_exit_3pct", "REAL"),
+            ("partial_exit_7pct", "REAL"),
         ]
         for col, typ in columns:
             if col not in existing:
