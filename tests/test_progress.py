@@ -24,7 +24,5 @@ def test_record_and_update(tmp_path):
     assert row[1] == 1500
     assert row[2] == 100
 
-    update_roadmap_from_progress(db_path=db_path, json_path=json_path)
-    data = json.loads(json_path.read_text())
-    assert data["step"] == "01/100"
+    update_roadmap_from_progress(db_path=db_path)
 

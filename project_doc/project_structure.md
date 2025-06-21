@@ -42,6 +42,7 @@
 - [28. Suivi Agile & Plan de Livraison](28_agile_tests.md)
 - [29. Roadmap V8+ : Image IA, Auto Trade, Broker API](29_roadmap.md)
 - [30. Retour d’Expérience, Transfert & Réplication](30_feedback.md)
+- [31. Daily Workflow](31_daily_workflow.md)
 
 ### 📎 ANNEXES
 - [Modules Python & Mapping](annexes/modules_python.md)

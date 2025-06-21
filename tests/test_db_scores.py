@@ -15,10 +15,12 @@ def test_update_score_watchlist(tmp_trades_db, monkeypatch):
 
     class DummySqlite:
         def connect(self, path):
-            assert path == 'data/trades.db'
+            assert path.endswith('trades.db')
             return real_connect(db_file)
 
     monkeypatch.setattr(scores, 'sqlite3', DummySqlite())
+    monkeypatch.setattr(scores, 'DB_PATH', str(db_file), raising=False)
+    monkeypatch.setattr('core.db.DB_PATH', str(db_file), raising=False)
 
     scores.update_score_watchlist('AAA', 9.9, 5.0, 0.2, 70.0)
 

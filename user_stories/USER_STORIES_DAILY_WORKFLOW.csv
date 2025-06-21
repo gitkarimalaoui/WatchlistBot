@@ -1,0 +1,8 @@
+ID,Epic,Description,Status
+US-WL-001,Watchlist Import,Importer un fichier texte de tickers,To Do
+US-WL-004,Watchlist Import,Ajouter manuellement un ticker via l'UI,To Do
+US-UI-001,Interface,Accéder à l'interface unifiée,Done
+US-UI-004,Interface,Exécuter une simulation depuis l'écran principal,Done
+US-TRADE-001,Trade Execution,Exécuter un ordre réel ou simulé,In Progress
+US-CLOSE-001,Daily Closure,Déclencher la clôture manuellement,To Do
+US-CLOSE-006,Daily Closure,Logger l'évènement de clôture,To Do

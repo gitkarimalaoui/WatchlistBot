@@ -10,10 +10,13 @@ def test_enregistrer_trade_ia(tmp_trades_db, monkeypatch):
 
     class DummySqlite:
         def connect(self, path):
-            assert path.endswith("trades.db")
+            path_str = str(path)
+            assert path_str.endswith("trades.db")
             return real_connect(db_file)
 
     monkeypatch.setattr(trades, "sqlite3", DummySqlite())
+    monkeypatch.setattr(trades, "DB_PATH", str(db_file), raising=False)
+    monkeypatch.setattr("core.db.DB_PATH", str(db_file), raising=False)
 
     trades.enregistrer_trade_ia(
         ticker="AAA",
@@ -41,10 +44,13 @@ def test_enregistrer_exit_partielle(tmp_trades_db, monkeypatch):
 
     class DummySqlite:
         def connect(self, path):
-            assert path.endswith("trades.db")
+            path_str = str(path)
+            assert path_str.endswith("trades.db")
             return real_connect(db_file)
 
     monkeypatch.setattr(trades, "sqlite3", DummySqlite())
+    monkeypatch.setattr(trades, "DB_PATH", str(db_file), raising=False)
+    monkeypatch.setattr("core.db.DB_PATH", str(db_file), raising=False)
 
     trades.enregistrer_exit_partielle("AAA", 1.03, 3)
     trades.enregistrer_exit_partielle("AAA", 1.07, 7)
