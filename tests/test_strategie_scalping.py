@@ -20,7 +20,10 @@ def _setup_indicators(monkeypatch):
     monkeypatch.setattr(f'{STRAT_PATH}.get_atr', lambda t: 0.5)
     df_gap = pd.DataFrame({
         'Open': [1.0, 1.1],
-        'Close': [1.0, 1.0],
+        'High': [1.1, 1.2],
+        'Low': [0.9, 1.0],
+        'Close': [1.0, 1.2],
+        'Volume': [100000, 400000],
     }, index=pd.date_range('2024-01-01', periods=2))
     monkeypatch.setattr('yfinance.download', lambda *a, **k: df_gap)
     monkeypatch.setattr(f'{STRAT_PATH}.get_latest_data', lambda t: {
@@ -64,6 +67,8 @@ def test_executer_strategie_scalping(monkeypatch):
     trades = []
     monkeypatch.setattr(strat, 'enregistrer_trade_auto', lambda *a, **k: trades.append(a))
     monkeypatch.setattr(strat.time, 'sleep', lambda s: None)
+    monkeypatch.setattr(strat, 'enter_breakout', lambda *a, **k: True)
+    monkeypatch.setattr(strat, 'enter_pullback', lambda *a, **k: False)
 
     class FakeDT:
         @classmethod
@@ -76,3 +81,30 @@ def test_executer_strategie_scalping(monkeypatch):
     assert res['ordre'] == {'status': 'filled'}
     assert alerts
     assert trades
+
+
+def test_enter_breakout(monkeypatch):
+    strat = importlib.import_module(STRAT_PATH)
+    df = pd.DataFrame({
+        'Open': [1.0, 1.06],
+        'High': [1.1, 1.2],
+        'Low': [0.9, 1.06],
+        'Close': [1.05, 1.2],
+        'Volume': [100000, 400000],
+    }, index=pd.date_range('2024-01-01', periods=2))
+    monkeypatch.setattr('yfinance.download', lambda *a, **k: df)
+    assert strat.enter_breakout('AAA', 3.0, 0.5)
+
+
+def test_enter_pullback(monkeypatch):
+    strat = importlib.import_module(STRAT_PATH)
+    df = pd.DataFrame({
+        'Open': [1.0, 1.02],
+        'High': [1.1, 1.08],
+        'Low': [0.95, 1.01],
+        'Close': [1.05, 1.07],
+        'Volume': [100000, 400000],
+    }, index=pd.date_range('2024-01-01', periods=2))
+    monkeypatch.setattr('yfinance.download', lambda *a, **k: df)
+    assert strat.enter_pullback('AAA', 3.0, 0.5)
+
