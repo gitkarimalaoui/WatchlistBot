@@ -6,6 +6,8 @@ import pandas as pd
 import os
 import sys
 
+from core.db import DB_PATH
+
 # Ensure UTF-8 console output for emoji support
 sys.stdout.reconfigure(encoding="utf-8")
 from datetime import datetime
@@ -21,7 +23,6 @@ except ImportError as e:
     print(f"Import error: {e}")
     from smart_collector import SmartFinancialDataCollector
 
-DB_PATH = "data/trades.db"
 
 def ensure_db_exists():
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)

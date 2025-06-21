@@ -4,10 +4,13 @@ import sqlite3
 from pathlib import Path
 from typing import Any, Dict, List
 
+from core.db import DB_PATH
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PROJECT_DB_PATH = ROOT / "data" / "project_tracker.db"
-TRADES_DB_PATH = ROOT / "data" / "trades.db"
+# Reuse the central DB path from core.db for all modules
+TRADES_DB_PATH = DB_PATH
 
 
 def _connect(db_path: Path) -> sqlite3.Connection:

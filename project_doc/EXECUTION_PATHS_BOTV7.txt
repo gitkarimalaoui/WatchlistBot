@@ -17,8 +17,8 @@
 [Manual Trade Simulation]
 - ui/simulation_achat.py
 - ui/simulation_vente.py
-  ├── écrit dans journal_simule.json (à remplacer par trades.db)
-  └── lecture possible par dashboard_journalier.py (à archiver)
+  ├── enregistre directement les trades dans `trades.db`
+  └── consultable via dashboard_journalier.py
 
 ## 3. Simulation IA automatique
 [AI Simulated Trading]
@@ -45,7 +45,7 @@
 ## 6. Génération données ticks live
 [Tick Data Flow]
 - realtime/real_time_tick_collector.py
-  ├── sauvegarde dans data/ticks/*.csv
+  ├── enregistre les ticks dans la table `ticks` de `trades.db`
 - realtime/build_intraday_candles.py
   └── convertit les ticks → candles
 - realtime/utils_graph_local.py

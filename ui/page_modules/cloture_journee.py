@@ -3,6 +3,8 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
+from core.db import DB_PATH
+
 def cloturer_journee():
     st.title("🔒 Clôturer la Journée de Trading")
 
@@ -12,7 +14,7 @@ def cloturer_journee():
     st.success(f"📅 Date choisie : {date_str}")
 
     try:
-        conn = sqlite3.connect("data/trades.db")
+        conn = sqlite3.connect(DB_PATH)
         st.success("✅ Connexion à la base réussie")
     except Exception as e:
         st.error(f"❌ Erreur de connexion : {e}")

@@ -1,7 +1,7 @@
 # 📘 Pump Detector & Trailing Stop
 
-Ce module surveille en temps r\u00e9el les fichiers de ticks ou la table
-`intraday_smart` afin de rep\u00e9rer les hausses de prix brusques
+Ce module surveille en temps r\u00e9el la table `ticks` (parfois nomm\u00e9e
+`intraday_smart`) afin de rep\u00e9rer les hausses de prix brusques
 ("pumps"). Pour chaque ticker, on calcule :
 
 - **Variation sur quelques minutes** (\`price_change\`)

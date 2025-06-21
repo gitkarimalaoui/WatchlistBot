@@ -2,7 +2,7 @@ import os
 import time
 import json
 import requests
-import pandas as pd
+import sqlite3
 import sys
 
 # Ensure UTF-8 console output for emoji support
@@ -12,6 +12,7 @@ from datetime import datetime
 # Finnhub token loaded from environment variable
 FINNHUB_TOKEN = os.getenv("FINNHUB_API_KEY")
 BASE_URL = "https://finnhub.io/api/v1/quote"
+from core.db import DB_PATH
 SAVE_DIR = "data/ticks"
 # Interval between API requests in seconds (reduced for finer granularity)
 INTERVAL = 5
@@ -32,12 +33,24 @@ def get_quote(ticker):
         return None
 
 def append_tick(ticker, data):
-    path = os.path.join(SAVE_DIR, f"{ticker}.csv")
-    df = pd.DataFrame([data])
-    if os.path.exists(path):
-        df.to_csv(path, mode="a", header=False, index=False)
-    else:
-        df.to_csv(path, index=False)
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS ticks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ticker TEXT,
+            price REAL,
+            volume REAL,
+            timestamp INTEGER
+        )
+        """
+    )
+    conn.execute(
+        "INSERT INTO ticks (ticker, price, volume, timestamp) VALUES (?, ?, ?, ?)",
+        (ticker, data.get("c"), data.get("v", 0), data.get("timestamp")),
+    )
+    conn.commit()
+    conn.close()
 
 if __name__ == "__main__":
     print("🚀 Starting real-time tick collector...")

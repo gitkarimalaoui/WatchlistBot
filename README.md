@@ -171,3 +171,4 @@ Le watcher observe `models/finrl/` pour tout fichier `.pkl` ou `.json` ajouté e
 ## Surveillance en temps réel
 
 L'outil `realtime/pump_detector.py` analyse les ticks pour détecter les pumps soudains. Lorsque les seuils sont atteints, un dialogue Streamlit s'affiche via `ui/trade_popup.py` pour confirmer l'exécution de l'ordre. L'ancien popup Tkinter a été supprimé.
+Les ticks sont collectés par `realtime/real_time_tick_collector.py` et enregistrés directement dans la base `trades.db`.

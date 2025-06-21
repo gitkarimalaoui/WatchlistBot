@@ -1,5 +1,4 @@
 import os
-import json
 import sqlite3
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -9,7 +8,6 @@ from typing import Optional
 # ─── Paths and Constants ───────────────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = Path(os.getenv("PROGRESS_DB_PATH", PROJECT_ROOT / "data" / "project_tracker.db"))
-ROADMAP_JSON = PROJECT_ROOT / "project_doc" / "roadmap_sync.json"
 
 MILESTONES = [1000, 5000, 10000, 25000, 50000, 100000]
 TARGET_CAPITAL = 100000
@@ -62,19 +60,14 @@ def get_latest_progress(db_path: Path = DB_PATH):
     conn.close()
     return row
 
-def update_roadmap_from_progress(db_path: Path = DB_PATH, json_path: Path = ROADMAP_JSON) -> None:
+def update_roadmap_from_progress(db_path: Path = DB_PATH) -> None:
+    """Deprecated wrapper kept for backward compatibility."""
     latest = get_latest_progress(db_path)
     if not latest:
         return
-    capital = latest[1]
-    step = int(capital // 1000)
-    if not json_path.exists():
-        return
-    with open(json_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    data["step"] = f"{step:02d}/100"
-    with open(json_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4)
+    # Previously this updated ROADMAP_JSON; now it simply logs the milestone
+    milestone = detect_milestone(latest[1])
+    print(f"[ROADMAP] Current milestone: {milestone}")
 
 def load_progress(db_path: Path = DB_PATH):
     init_progress_table(db_path)
