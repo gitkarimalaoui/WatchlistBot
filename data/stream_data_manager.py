@@ -29,6 +29,8 @@ def set_watchlist(tickers: List[str]) -> None:
 
 
 def on_message(ws: websocket.WebSocketApp, message: str) -> None:
+    """Handle a WebSocket price update message."""
+
     data = json.loads(message)
     if "data" in data:
         for d in data["data"]:
@@ -44,16 +46,22 @@ def on_message(ws: websocket.WebSocketApp, message: str) -> None:
 
 
 def on_error(ws: websocket.WebSocketApp, error: Exception) -> None:
+    """Log WebSocket errors to stdout."""
+
     print(f"[WS ERROR] {error}")
 
 
 def on_close(ws: websocket.WebSocketApp, close_status_code, close_msg) -> None:
+    """Mark the connection as closed."""
+
     global connected
     connected = False
     print("[WS CLOSED]")
 
 
 def on_open(ws: websocket.WebSocketApp) -> None:
+    """Subscribe to watchlist tickers once the socket is open."""
+
     global connected
     connected = True
     for ticker in WATCHLIST:
@@ -77,6 +85,8 @@ def start_ws() -> None:
 
 
 def fallback_data(ticker: str) -> dict:
+    """Return last minute data from Yahoo Finance if WebSocket is stale."""
+
     try:
         data = yf.download(ticker, period="1d", interval="1m")
         if not data.empty:
@@ -95,6 +105,8 @@ def fallback_data(ticker: str) -> dict:
 
 
 def get_latest_data(ticker: str) -> dict:
+    """Return cached data for ``ticker`` or fetch a fallback quote."""
+
     with _data_lock:
         data = latest_data.get(ticker)
     if data:

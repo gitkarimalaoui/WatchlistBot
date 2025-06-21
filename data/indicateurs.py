@@ -20,6 +20,8 @@ def _download(ticker: str, period: str = "1d", interval: str = "1m") -> pd.DataF
 
 
 def get_rsi(ticker: str, period: int = 14) -> Optional[float]:
+    """Return the intraday Relative Strength Index."""
+
     df = _download(ticker, "2d", "1m")
     if df.empty or len(df) < period + 1:
         return None
@@ -34,6 +36,8 @@ def get_rsi(ticker: str, period: int = 14) -> Optional[float]:
 
 
 def get_ema(ticker: str, periods: List[int] = [9, 21]) -> Dict[int, Optional[float]]:
+    """Return the latest EMA values for ``ticker``."""
+
     df = _download(ticker, "7d", "1m")
     if df.empty:
         return {p: None for p in periods}
@@ -42,6 +46,8 @@ def get_ema(ticker: str, periods: List[int] = [9, 21]) -> Dict[int, Optional[flo
 
 
 def get_vwap(ticker: str) -> Optional[float]:
+    """Return the Volume Weighted Average Price for today."""
+
     df = _download(ticker, "1d", "1m")
     if df.empty:
         return None
@@ -51,6 +57,8 @@ def get_vwap(ticker: str) -> Optional[float]:
 
 
 def get_macd(ticker: str) -> Tuple[Optional[float], Optional[float]]:
+    """Return MACD and signal line values."""
+
     df = _download(ticker, "7d", "1m")
     if df.empty:
         return None, None
@@ -63,6 +71,8 @@ def get_macd(ticker: str) -> Tuple[Optional[float], Optional[float]]:
 
 
 def get_volume(ticker: str, interval: str = "1m") -> Optional[float]:
+    """Return volume of the last candle for ``interval``."""
+
     df = _download(ticker, "1d", interval)
     if df.empty:
         return None
@@ -70,6 +80,8 @@ def get_volume(ticker: str, interval: str = "1m") -> Optional[float]:
 
 
 def get_last_price(ticker: str) -> Optional[float]:
+    """Return the most recent closing price."""
+
     df = _download(ticker, "1d", "1m")
     if df.empty:
         return None
@@ -77,6 +89,8 @@ def get_last_price(ticker: str) -> Optional[float]:
 
 
 def get_price_5s_ago(ticker: str) -> Optional[float]:
+    """Return price from the previous minute."""
+
     df = _download(ticker, "1d", "1m")
     if df.empty:
         return None
@@ -107,6 +121,8 @@ def get_atr(ticker: str, period: int = 14) -> Optional[float]:
 
 
 def get_float(ticker: str) -> Optional[float]:
+    """Return share float stored in the local database."""
+
     if not os.path.exists(DB_PATH):
         return None
     conn = sqlite3.connect(DB_PATH)
@@ -120,13 +136,14 @@ def get_float(ticker: str) -> Optional[float]:
 
 
 def get_catalyseur_score(ticker: str) -> Optional[float]:
+    """Return the latest catalyst score for ``ticker``."""
     if not os.path.exists(DB_PATH):
         return None
     conn = sqlite3.connect(DB_PATH)
     try:
         row = conn.execute(
             "SELECT score FROM news_score WHERE symbol = ? ORDER BY last_analyzed DESC LIMIT 1",
-            (ticker,)
+            (ticker,),
         ).fetchone()
     finally:
         conn.close()
@@ -134,6 +151,8 @@ def get_catalyseur_score(ticker: str) -> Optional[float]:
 
 
 def check_breakout_sustain(momentum: float, volume_now: float, volume_5min_ago: float) -> bool:
+    """Check that both volume and momentum sustain a breakout."""
+
     if volume_5min_ago == 0 or volume_5min_ago is None or volume_now is None:
         return False
     vol_ratio = volume_now / volume_5min_ago

@@ -10,7 +10,16 @@ _RULES_PATH = os.path.join(os.path.dirname(__file__), "rules_auto.json")
 with open(_RULES_PATH, "r", encoding="utf-8") as f:
     RULES = json.load(f)
 
+
 def score_ai(ticker_data):
+    """Return a weighted AI score for ``ticker_data``.
+
+    Each key defined in :data:`RULES` corresponds to a feature in
+    ``ticker_data``. The numeric value associated with the key is used as a
+    weight. Missing or non-numeric values are ignored. The final score is the
+    rounded sum of ``value * weight`` for all available features.
+    """
+
     score = 0
     for key, weight in RULES.items():
         value = ticker_data.get(key)
