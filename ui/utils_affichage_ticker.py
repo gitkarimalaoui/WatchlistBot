@@ -214,8 +214,6 @@ def afficher_ticker_panel(ticker, stock, index):
         or stock.get("global_score", 0) >= auto_thr
     )
     with st.expander(label, expanded=expanded):
-        if st_autorefresh:
-            st_autorefresh(interval=30 * 1000, key=f"refresh_{ticker}_{index}")
         if st.button("🔄 Rafraîchir", key=f"btn_refresh_{ticker}_{index}"):
             st.rerun()
 
