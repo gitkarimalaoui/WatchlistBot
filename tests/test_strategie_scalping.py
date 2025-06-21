@@ -59,6 +59,11 @@ def test_executer_strategie_scalping(monkeypatch):
     _setup_indicators(monkeypatch)
     monkeypatch.setattr(
         strat,
+        "datetime",
+        type("d", (), {"utcnow": staticmethod(lambda: datetime(2024, 1, 1, 14, 0))}),
+    )
+    monkeypatch.setattr(
+        strat,
         "_compute_score",
         lambda t: {
             "score": 100,
@@ -78,4 +83,14 @@ def test_executer_strategie_scalping(monkeypatch):
         strat, "executer_ordre_reel", lambda *a, **k: {"status": "filled"}
     )
     alerts = []
-    monkeypatch.setattr(strat, "envoyer_alerte_ia", lambda *a,*
+    monkeypatch.setattr(
+        strat,
+        "envoyer_alerte_ia",
+        lambda *a, **k: alerts.append("sent"),
+    )
+    monkeypatch.setattr(strat, "enter_breakout", lambda *a, **k: True)
+    monkeypatch.setattr(strat, "enter_pullback", lambda *a, **k: True)
+    res = strat.executer_strategie_scalping("AAA")
+    assert res["status"] == "filled"
+    assert alerts
+

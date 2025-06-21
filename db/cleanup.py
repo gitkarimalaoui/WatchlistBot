@@ -25,7 +25,7 @@ def clean_duplicates(db_path: str = DB_PATH) -> Dict[str, int]:
     if not os.path.exists(db_path):
         return {}
 
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(str(db_path))
     try:
         cur = conn.cursor()
         cur.execute("BEGIN;")

@@ -7,7 +7,7 @@ from core.db import DB_PATH
 def ensure_schema(db_path: str = DB_PATH) -> None:
     if not os.path.exists(db_path):
         return
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(str(db_path))
     try:
         table = conn.execute(
             "SELECT name FROM sqlite_master WHERE type='table' AND name='trades'"
