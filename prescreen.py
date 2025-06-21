@@ -13,6 +13,8 @@ def _download(*args, **kwargs) -> pd.DataFrame:
 
 
 def get_premarket_volume(ticker: str) -> int:
+    """Return pre-market volume traded for ``ticker``."""
+
     df = _download(ticker, period="1d", interval="1m", prepost=True)
     if df.empty:
         return 0
@@ -24,6 +26,8 @@ def get_premarket_volume(ticker: str) -> int:
 
 
 def get_average_volume(ticker: str, days: int = 10) -> Optional[float]:
+    """Return average daily volume over ``days`` days."""
+
     df = _download(ticker, period=f"{days}d", interval="1d")
     if df.empty:
         return None
@@ -31,6 +35,8 @@ def get_average_volume(ticker: str, days: int = 10) -> Optional[float]:
 
 
 def get_gap_pct(ticker: str) -> Optional[float]:
+    """Return percent gap between previous close and today's open."""
+
     df = _download(ticker, period="2d", interval="1d", prepost=True)
     if len(df) >= 2:
         prev_close = float(df["Close"].iloc[-2])
@@ -42,6 +48,8 @@ def get_gap_pct(ticker: str) -> Optional[float]:
 
 @lru_cache(maxsize=128)
 def screen_ticker(ticker: str) -> bool:
+    """Return ``True`` if ``ticker`` meets premarket screening criteria."""
+
     avg = get_average_volume(ticker) or 0
     if avg == 0:
         return False

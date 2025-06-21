@@ -17,4 +17,6 @@ Base = declarative_base()
 
 
 def get_session():
+    """Return a new SQLAlchemy session bound to the global engine."""
+
     return SessionLocal()

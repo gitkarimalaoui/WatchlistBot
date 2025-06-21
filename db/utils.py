@@ -5,6 +5,8 @@ from core.db import DB_PATH
 
 
 def ensure_schema(db_path: str = DB_PATH) -> None:
+    """Create missing columns in ``trades`` table if necessary."""
+
     if not os.path.exists(db_path):
         return
     conn = sqlite3.connect(str(db_path))
