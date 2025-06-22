@@ -84,6 +84,9 @@ DEBUG_MODE=False
 ```bash
 streamlit run ui/app_unifie_watchlistbot.py
 ```
+Un écran de connexion s'affichera pour saisir votre identifiant et mot de passe.
+Le rôle associé (« admin », « trader », « viewer » ou « ia_debug »)
+détermine les fonctionnalités accessibles dans l'interface.
 
 ## API FastAPI
 

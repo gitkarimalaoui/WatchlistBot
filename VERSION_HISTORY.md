@@ -20,3 +20,12 @@
   ```
 - Async tests are skipped with warnings due to missing `pytest-asyncio` plugin.
 
+
+## v7.05 (2025-06-22)
+
+### Added
+- **Security module** – authentication, roles and connection log (`security/` directory).
+  *Origin: Codex*
+
+### Test Status
+- Running `pytest` results in 68 passing and 10 skipped tests.

@@ -86,7 +86,7 @@ def test_executer_strategie_scalping(monkeypatch):
     monkeypatch.setattr(strat, "enter_pullback", lambda *a, **k: False)
 
     res = strat.executer_strategie_scalping("AAA")
-    assert res["ordre"]["status"] == "filled"
+    assert res["status"] == "filled"
     assert alerts
     assert trades
 
