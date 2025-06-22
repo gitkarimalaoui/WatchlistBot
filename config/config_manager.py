@@ -85,6 +85,12 @@ class ConfigManager:
         else:
             config.setdefault("debug_mode", False)
 
+        use_voice = os.getenv("USE_VOICE_ASSISTANT")
+        if use_voice is not None:
+            config["use_voice_assistant"] = use_voice == "True"
+        else:
+            config.setdefault("use_voice_assistant", False)
+
         return config
 
     def get(self, key: str, default: Optional[Any] = None) -> Any:
