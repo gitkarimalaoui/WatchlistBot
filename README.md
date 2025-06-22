@@ -88,6 +88,27 @@ Un écran de connexion s'affichera pour saisir votre identifiant et mot de passe
 Le rôle associé (« admin », « trader », « viewer » ou « ia_debug »)
 détermine les fonctionnalités accessibles dans l'interface.
 
+## Installation hors ligne des dépendances
+
+Si la machine cible n'a pas accès à Internet, préparez les paquets
+nécessaires sur un poste connecté :
+
+1. Téléchargez les fichiers wheel dans un répertoire local :
+   ```bash
+   pip download -d /tmp/wheels -r requirements.txt
+   ```
+   Vous pouvez aussi récupérer manuellement les librairies essentielles
+   comme `pandas`, `SQLAlchemy`, `watchdog`, `numpy`, `requests`,
+   `alembic`, `finrl` et `stable-baselines3`.
+2. Copiez le dossier `/tmp/wheels` sur la machine hors ligne.
+3. Installez ensuite les dépendances sans interroger PyPI :
+   ```bash
+   pip install --no-index --find-links /chemin/vers/wheels -r requirements.txt
+   ```
+
+Assurez‑vous que tous les packages indispensables sont présents dans ce
+répertoire avant de lancer l'installation.
+
 ## API FastAPI
 
 Une API légère permet de récupérer la watchlist au format JSON.
