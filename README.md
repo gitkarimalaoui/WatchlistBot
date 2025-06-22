@@ -108,6 +108,7 @@ nécessaires sur un poste connecté :
 
 Assurez‑vous que tous les packages indispensables sont présents dans ce
 répertoire avant de lancer l'installation.
+Vous pouvez ensuite exécuter `scripts/offline_setup.sh` pour installer les dépendances depuis ce répertoire et vérifier que tous les modules sont bien présents.
 
 ## API FastAPI
 
