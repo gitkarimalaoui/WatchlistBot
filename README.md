@@ -88,6 +88,10 @@ Un écran de connexion s'affichera pour saisir votre identifiant et mot de passe
 Le rôle associé (« admin », « trader », « viewer » ou « ia_debug »)
 détermine les fonctionnalités accessibles dans l'interface.
 
+Par défaut, la sidebar filtre les tickers pour n'afficher que ceux dont
+le changement est positif et dont le score global atteint au moins **50**.
+Vous voyez ainsi immédiatement les opportunités d'achat potentielles.
+
 ## Installation hors ligne des dépendances
 
 Si la machine cible n'a pas accès à Internet, préparez les paquets
