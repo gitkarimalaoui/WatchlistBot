@@ -1,0 +1,36 @@
+{
+  "weights": {
+    "rsi_high": 0.2,
+    "ema_bullish": 0.2,
+    "momentum_pos": 0.2,
+    "pump": 0.2
+  },
+  "disabled_signals": {},
+  "history": [
+    {
+      "timestamp": "2025-06-23T00:56:37.177491",
+      "stats": {
+        "rsi_high": {
+          "count": 2.0,
+          "win_rate": 0.5,
+          "avg_gain": -0.01999999999999995
+        },
+        "ema_bullish": {
+          "count": 2.0,
+          "win_rate": 0.5,
+          "avg_gain": -0.01999999999999995
+        },
+        "momentum_pos": {
+          "count": 2.0,
+          "win_rate": 0.5,
+          "avg_gain": -0.01999999999999995
+        },
+        "pump": {
+          "count": 2.0,
+          "win_rate": 0.5,
+          "avg_gain": -0.01999999999999995
+        }
+      }
+    }
+  ]
+}
