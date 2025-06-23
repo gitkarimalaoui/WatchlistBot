@@ -40,6 +40,24 @@ for path in (ROOT_DIR, SCRIPTS, ROOT_UI, UTILS, SIMULATION):
     if path not in sys.path:
         sys.path.insert(0, path)
 
+from security.auth_manager import authenticate_user
+
+if "user_role" not in st.session_state:
+    st.title("🔐 Connexion")
+    username = st.text_input("Nom d'utilisateur")
+    password = st.text_input("Mot de passe", type="password")
+    if st.button("Se connecter"):
+        success, role = authenticate_user(username, password)
+        if success:
+            st.session_state["user_role"] = role
+            st.success(f"Authentification réussie ({role})")
+            st.rerun()
+        else:
+            st.error("Échec de l'authentification")
+    st.stop()
+else:
+    st.info(f"Connecté en tant que : {st.session_state['user_role']}")
+
 # ─── Imports locaux ───
 from notifications.proactive_voice import ProactiveVoiceNotifier
 from monitoring.watchdog_conditions import start_watchdog_thread
