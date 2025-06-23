@@ -4,11 +4,38 @@ import json
 import os
 import base64
 import io
+from datetime import datetime
+
+from intelligence.meta_ia import load_meta, save_meta
 
 _RULES_PATH = os.path.join(os.path.dirname(__file__), "rules_auto.json")
+_META_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "config", "meta_ia.json")
 
 with open(_RULES_PATH, "r", encoding="utf-8") as f:
-    RULES = json.load(f)
+    RULES_DEFAULT = json.load(f)
+
+
+def _get_rules() -> dict:
+    """Return scoring rules merged with dynamic meta weights."""
+    rules = RULES_DEFAULT.copy()
+    meta = load_meta(_META_PATH)
+    weights = meta.get("weights")
+    if isinstance(weights, dict):
+        rules.update(weights)
+    disabled = meta.get("disabled_signals", {})
+    now = datetime.now().date()
+    changed = False
+    for sig, info in list(disabled.items()):
+        until = info.get("until")
+        if until and until > str(now):
+            rules[sig] = 0
+        elif until and until <= str(now):
+            disabled.pop(sig, None)
+            changed = True
+    if changed:
+        meta["disabled_signals"] = disabled
+        save_meta(meta, _META_PATH)
+    return rules
 
 
 def score_ai(ticker_data):
@@ -20,8 +47,9 @@ def score_ai(ticker_data):
     rounded sum of ``value * weight`` for all available features.
     """
 
+    rules = _get_rules()
     score = 0
-    for key, weight in RULES.items():
+    for key, weight in rules.items():
         value = ticker_data.get(key)
         if isinstance(weight, (int, float)) and value is not None:
             try:

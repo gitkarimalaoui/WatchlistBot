@@ -184,6 +184,18 @@ if st.sidebar.button("🛡️ Activer surveillance IA"):
     start_watchdog_thread()
     st.sidebar.success("Surveillance IA activée")
 
+if st.sidebar.button("Afficher paramètres IA"):
+    st.session_state["show_ai_params"] = not st.session_state.get("show_ai_params", False)
+
+if st.session_state.get("show_ai_params"):
+    from intelligence.meta_ia import load_meta
+    meta = load_meta()
+    st.sidebar.json(meta.get("weights", {}))
+    disabled = meta.get("disabled_signals", {})
+    if disabled:
+        st.sidebar.write("Signaux désactivés :")
+        st.sidebar.json(disabled)
+
 start_watchlist_updater()
 
 # ─── Pages secondaires ───

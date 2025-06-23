@@ -1,0 +1,10 @@
+{
+  "weights": {
+    "rsi_high": 0.2,
+    "ema_bullish": 0.2,
+    "momentum_pos": 0.2,
+    "pump": 0.2
+  },
+  "disabled_signals": {},
+  "history": []
+}
