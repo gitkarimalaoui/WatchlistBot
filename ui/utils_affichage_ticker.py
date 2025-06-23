@@ -368,12 +368,16 @@ def afficher_ticker_panel(ticker, stock, index):
         capital = progress[1] if progress else 0
         stock["capital"] = capital
         suggestions = engine.generate_order_suggestions({**stock, "atr": atr, "capital": capital})
-        quantite_precalc = suggestions["quantity"]
-        prix_sl = suggestions["stop_loss"]
-        prix_tp = suggestions["take_profit"]
+        blocked_reason = suggestions.get("blocked")
+        if blocked_reason:
+            st.warning(blocked_reason)
+        quantite_precalc = suggestions.get("quantity", 1)
+        prix_sl = suggestions.get("stop_loss", 0.0)
+        prix_tp = suggestions.get("take_profit", 0.0)
+        prix_default = suggestions.get("price", stock.get("price", 0.0))
 
         prix = st.number_input(
-            "💵 Prix", min_value=0.0, step=0.01, value=suggestions["price"], key=f"prix_{ticker}_{index}"
+            "💵 Prix", min_value=0.0, step=0.01, value=prix_default, key=f"prix_{ticker}_{index}"
         )
         quantite = st.number_input(
             "🔢 Quantité", min_value=1, step=1, value=quantite_precalc, key=f"qty_{ticker}_{index}"
