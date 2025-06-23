@@ -155,6 +155,36 @@ if "watchdog_thread" not in st.session_state:
     st.session_state.watchdog_thread = None
 if "watchlist_updater" not in st.session_state:
     st.session_state.watchlist_updater = None
+if "api_process" not in st.session_state:
+    st.session_state.api_process = None
+
+
+def ensure_api_server() -> None:
+    """Start local FastAPI server if not already running."""
+    if st.session_state.api_process is not None:
+        return
+
+    try:
+        requests.get(f"{API_URL}/watchlist/live", timeout=2)
+        st.session_state.api_process = True
+        return
+    except Exception:
+        pass
+
+    api_script = os.path.join(ROOT_DIR, "api", "watchlist_api.py")
+    try:
+        proc = subprocess.Popen(
+            [sys.executable, api_script],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        st.session_state.api_process = proc
+        time.sleep(1)
+    except Exception as exc:
+        st.warning(f"Impossible de démarrer l'API: {exc}")
+        st.session_state.api_process = None
+
+ensure_api_server()
 
 def start_watchlist_updater(interval: int = 30) -> None:
     """Background thread fetching latest watchlist periodically."""

@@ -126,6 +126,8 @@ python api/watchlist_api.py
 ```
 
 La route `/watchlist/live` renvoie les données utilisées par l'interface.
+Depuis la version 7.03, l'application Streamlit démarre automatiquement ce
+serveur en arrière‑plan s'il n'est pas déjà actif.
 
 ## Exécuter les tests
 
