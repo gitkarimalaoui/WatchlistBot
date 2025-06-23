@@ -240,7 +240,7 @@ if page == "📄 Trades simulés":
     st.title("📄 Historique des trades simulés")
     try:
         conn = sqlite3.connect(DB_PATH)
-        df = pd.read_sql_query("SELECT * FROM trades_simules ORDER BY datetime DESC", conn)
+        df = pd.read_sql_query("SELECT * FROM trades_simules ORDER BY date DESC", conn)
         conn.close()
         st.dataframe(df, use_container_width=True)
     except Exception as e:
