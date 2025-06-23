@@ -569,8 +569,8 @@ watchlist = sorted(
 )
 
 page_size = st.sidebar.number_input("Tickers par page", 5, 50, 10, step=5)
-show_positive = st.sidebar.checkbox("Change positif uniquement", value=False)
-min_score = st.sidebar.slider("Score global minimum", 0, 100, 0)
+show_positive = st.sidebar.checkbox("Change positif uniquement", value=True)
+min_score = st.sidebar.slider("Score global minimum", 0, 100, 50)
 auto_score = st.sidebar.slider("Score auto-ouverture", 0, 100, 85, step=5)
 st.session_state["auto_expand_score"] = auto_score
 
