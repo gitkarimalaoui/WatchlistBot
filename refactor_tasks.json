@@ -20,4 +20,125 @@
     "priority": "High",
     "status": "Done"
   }
+  ,{
+    "id": "CHAP_001",
+    "description": "Add global high-res diagram and executable intro summary",
+    "module": "project_doc/00_intro.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_002",
+    "description": "Provide English version and scope visualization",
+    "module": "project_doc/01_system_initialization.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_003",
+    "description": "Create full network diagram and system dependencies",
+    "module": "project_doc/02_background_scan_scheduler.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_004",
+    "description": "Link UI menus dynamically with Python modules",
+    "module": "project_doc/03_real-time_data_ingestion_and_validation.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_005",
+    "description": "Add auto-updated data source comparison table",
+    "module": "project_doc/04_core_database_and_logging_setup.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_006",
+    "description": "Cross-link watchlists in interface with provenance",
+    "module": "project_doc/05_watchlist_import.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_007",
+    "description": "Add tests and log visualizations for scraping module",
+    "module": "project_doc/06_jaguar_scraping.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_008",
+    "description": "Document real IA rules for ticker validation",
+    "module": "project_doc/08_filtrage_tickers.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_009",
+    "description": "Provide usage examples and explainable IA score",
+    "module": "project_doc/09_analyse_ia.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_010",
+    "description": "Detail final weighted scoring logic with test logs",
+    "module": "project_doc/09_analyse_ia.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_011",
+    "description": "Log order simulation errors and compare with real",
+    "module": "project_doc/11_simulation.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_012",
+    "description": "Add real examples with error handling",
+    "module": "project_doc/12_execution_journalisation.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_013",
+    "description": "Insert auto-adjusting dynamic formula",
+    "module": "project_doc/13_ia_apprentissage.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_014",
+    "description": "Provide 1-year simulated test set for backtest",
+    "module": "project_doc/14_backtest_historique.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_015",
+    "description": "Add dynamic KPI visualization to dashboard",
+    "module": "project_doc/15_tableau_bord.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_016",
+    "description": "Generate automatic PDF daily trade summary",
+    "module": "project_doc/16_cloture_journee.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_017",
+    "description": "Add ERD with integrity constraints and triggers",
+    "module": "project_doc/17_base_donnees.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_018",
+    "description": "Define comprehensive automated test strategy",
+    "module": "project_doc/18_module_tests_qualite.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_019",
+    "description": "Provide real-time log view and debugging interface",
+    "module": "project_doc/19_gestion_erreurs.md",
+    "priority": "Medium",
+    "status": "Todo"
+  },{
+    "id": "CHAP_020",
+    "description": "Offer dark/light mode options in Streamlit UI",
+    "module": "project_doc/20_ui_streamlit.md",
+    "priority": "Medium",
+    "status": "Todo"
+  }
 ]
