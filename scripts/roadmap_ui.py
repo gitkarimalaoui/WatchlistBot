@@ -208,9 +208,9 @@ def personal_interface():
 
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    query = "SELECT id, objectif, date_cible, statut FROM personal_goals"
+    query = "SELECT id, goal, target_date, completed FROM personal_goals"
     if type_selection != "Toutes":
-        query += " WHERE categorie LIKE ?"
+        query += " WHERE category LIKE ?"
         cursor.execute(query, (f"%{type_selection}%",))
     else:
         cursor.execute(query)
@@ -223,7 +223,7 @@ def personal_interface():
             st.markdown(f"- 🔹 **#{t[0]}** : {t[1]} *(Échéance : {t[2] or 'Aucune'})*")
             if st.button(f"✔️ Marquer comme faite #{t[0]}", key=f"done_personal_{t[0]}"):
                 conn = sqlite3.connect(DB_PATH)
-                conn.execute("UPDATE personal_goals SET statut = 'Done' WHERE id = ?", (t[0],))
+                conn.execute("UPDATE personal_goals SET completed = 1 WHERE id = ?", (t[0],))
                 conn.commit()
                 conn.close()
                 st.success(f"Tâche #{t[0]} validée.")
