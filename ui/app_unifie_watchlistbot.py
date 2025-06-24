@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 import threading
 import time
+from pathlib import Path
 
 import pandas as pd
 import streamlit as st
@@ -57,10 +58,27 @@ if "user_role" not in st.session_state:
     st.stop()
 else:
     st.info(f"Connecté en tant que : {st.session_state['user_role']}")
+    if "dark_mode" not in st.session_state:
+        st.session_state["dark_mode"] = False
+    st.session_state["dark_mode"] = st.sidebar.checkbox(
+        "\U0001F319 Mode nuit", value=st.session_state["dark_mode"]
+    )
+    if st.session_state["dark_mode"]:
+        st.markdown(
+            """
+            <style>
+            .stApp { background-color: #0e1117; color: #f0f0f0; }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
 
 # ─── Imports locaux ───
 from notifications.proactive_voice import ProactiveVoiceNotifier
 from monitoring.watchdog_conditions import start_watchdog_thread
+from automation.codex_watcher import start_watchers
+from fusion.module_import_checklist_txt import extraire_tickers_depuis_txt
+from intelligence.learning_loop import run_learning_loop
 
 # ─── Notifications vocales ───
 notifier = ProactiveVoiceNotifier()
@@ -84,6 +102,45 @@ def save_refactor_tasks(tasks, path: str = TASKS_JSON_PATH) -> None:
     """Save ``tasks`` list of dicts to ``path`` in JSON format."""
     with open(path, "w", encoding="utf-8") as f:
         json.dump(tasks, f, indent=2)
+
+
+def import_watchlist_txt_page() -> None:
+    """UI to import a Jaguar watchlist from a text file."""
+    st.title("📥 Importer Watchlist .txt")
+    uploaded = st.file_uploader("Fichier .txt", type="txt")
+    if uploaded:
+        content = uploaded.read().decode("utf-8")
+        tmp_path = Path("uploaded_watchlist.txt")
+        tmp_path.write_text(content)
+        tickers = extraire_tickers_depuis_txt(tmp_path)
+        tmp_path.unlink(missing_ok=True)
+        st.success(f"{len(tickers)} tickers détectés")
+        st.write(tickers)
+        if tickers and st.button("Ajouter à la base"):
+            conn = sqlite3.connect(DB_PATH)
+            conn.execute(
+                """
+                CREATE TABLE IF NOT EXISTS watchlist (
+                    ticker TEXT PRIMARY KEY,
+                    source TEXT,
+                    date TEXT,
+                    description TEXT,
+                    updated_at TEXT
+                )
+                """
+            )
+            for t in tickers:
+                conn.execute(
+                    """
+                    INSERT OR IGNORE INTO watchlist
+                    (ticker, source, date, description, updated_at)
+                    VALUES (?, 'Jaguar', DATE('now'), '', CURRENT_TIMESTAMP)
+                    """,
+                    (t,),
+                )
+            conn.commit()
+            conn.close()
+            st.success("Watchlist mise à jour")
 
 # ─── Imports locaux ───
 from roadmap_ui import (
@@ -155,7 +212,9 @@ page = st.sidebar.radio("Menu principal", [
     "📋 Refactor Tasks",
     "🏢 Entreprise",
     "🧘 Personal",
+    "📥 Import .txt",
     "📦 Clôture",
+    "🤖 Learning Engine",
     "📄 Trades simulés"
 ], index=0)
 
@@ -232,6 +291,10 @@ if st.sidebar.button("🛡️ Activer surveillance IA"):
     start_watchdog_thread()
     st.sidebar.success("Surveillance IA activée")
 
+if st.sidebar.button("📡 Lancer Codex Watcher") and not st.session_state.get("codex_observer"):
+    st.session_state["codex_observer"] = start_watchers()
+    st.sidebar.success("Codex Watcher lancé")
+
 if st.sidebar.button("Afficher paramètres IA"):
     st.session_state["show_ai_params"] = not st.session_state.get("show_ai_params", False)
 
@@ -291,8 +354,20 @@ if page == "🧘 Personal":
     personal_interface()
     st.stop()
 
+if page == "📥 Import .txt":
+    import_watchlist_txt_page()
+    st.stop()
+
 if page == "📦 Clôture":
     cloturer_journee()
+    st.stop()
+
+if page == "🤖 Learning Engine":
+    st.title("🤖 Learning Engine")
+    cycles = st.number_input("Cycles", 1, 10, 1)
+    if st.button("Lancer l'apprentissage"):
+        run_learning_loop(cycles=cycles)
+        st.success("Boucle terminée")
     st.stop()
 
 # ─── Page : Trades simulés ───
