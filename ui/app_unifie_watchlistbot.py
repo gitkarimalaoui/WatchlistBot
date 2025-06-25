@@ -321,7 +321,11 @@ if page == "📋 Refactor Tasks":
         st.session_state["refactor_tasks"] = load_refactor_tasks()
 
     tasks_data = st.session_state["refactor_tasks"]
-    df = tasks_data if isinstance(tasks_data, pd.DataFrame) else pd.DataFrame(tasks_data)
+    # ``tasks_data`` may be a list of dicts or a mapping depending on
+    # how the JSON was saved. ``from_records`` handles both cases
+    # gracefully and avoids the ambiguous ordering error raised by
+    # ``pd.DataFrame()`` when given a plain ``dict``.
+    df = tasks_data if isinstance(tasks_data, pd.DataFrame) else pd.DataFrame.from_records(tasks_data)
 
     status_options = ["Todo", "In Progress", "Done", "Blocked"]
 
