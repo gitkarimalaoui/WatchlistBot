@@ -307,7 +307,7 @@ if st.session_state.get("show_ai_params"):
         st.sidebar.write("Signaux désactivés :")
         st.sidebar.json(disabled)
 
-start_watchlist_updater()
+
 
 # ─── Pages secondaires ───
 if page == "📋 Roadmap":
@@ -687,6 +687,7 @@ with st.expander("📥 Données marché – Historique et Intraday"):
             st.code(proc.stderr)
 
 # 💼 Watchlist Live
+start_watchlist_updater()
 if "watchlist_live" not in st.session_state:
     st.session_state["watchlist_live"] = fetch_live_watchlist()
 
