@@ -48,6 +48,37 @@
 - [Diagrammes BPMN & Schémas Techniques](annexes/diagrams.md)
 
 
+## 🌐 Diagramme réseau et dépendances système
+
+Ce module assure la planification des scans automatiques (watchlist, news, pump
+detector) et la distribution des événements vers les différents sous‑systèmes.
+
+```mermaid
+flowchart TD
+    UI["Streamlit UI"] -->|"Planifie scans"| SCHED[start_watchers.py]
+    SCHED --> WL[watchlist_loop.py]
+    SCHED --> PUMP[realtime/pump_scan_scheduler.py]
+    SCHED --> EVENT[automation/orchestrateur_evenements.py]
+    PUMP --> FINN((Finnhub API))
+    EVENT --> TG[telegram_notifier.py]
+    WL --> DB[(SQLite trades.db)]
+    SCHED --> WATCHER[automation/codex_watcher.py]
+    WATCHER --> GH((GitHub))
+```
+
+### 📂 Dépendances internes
+
+| Fichier | Rôle principal |
+| ------- | -------------- |
+| `start_watchers.py` | Lance le scheduler et les watchers |
+| `realtime/pump_scan_scheduler.py` | Détection en temps réel des mouvements anormaux |
+| `watchlist_loop.py` | Boucle d'analyse IA périodique |
+| `automation/orchestrateur_evenements.py` | Planification et dispatch des événements |
+| `automation/codex_watcher.py` | Surveille modèles et logs pour envoi automatique |
+| `telegram_notifier.py` | Notification des alertes vers Telegram |
+| `utils/market_scheduler.py` | Vérification de l'ouverture du marché |
+
+
 ---
 
 ## 📊 Diagramme BPMN
