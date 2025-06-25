@@ -320,7 +320,8 @@ if page == "📋 Refactor Tasks":
     if "refactor_tasks" not in st.session_state:
         st.session_state["refactor_tasks"] = load_refactor_tasks()
 
-    df = pd.DataFrame(st.session_state["refactor_tasks"])
+    tasks_data = st.session_state["refactor_tasks"]
+    df = tasks_data if isinstance(tasks_data, pd.DataFrame) else pd.DataFrame(tasks_data)
 
     status_options = ["Todo", "In Progress", "Done", "Blocked"]
 
@@ -330,9 +331,14 @@ if page == "📋 Refactor Tasks":
 
     filtered_df = df[df["status"].isin(selected_status) & df["priority"].isin(selected_priority)] if not df.empty else df
 
-    def _save_tasks():
-        st.session_state["refactor_tasks"] = st.session_state["task_editor"]
-        save_refactor_tasks(st.session_state["refactor_tasks"])
+    def _save_tasks() -> None:
+        edited = st.session_state["task_editor"]
+        if isinstance(edited, pd.DataFrame):
+            tasks_list = edited.to_dict(orient="records")
+        else:
+            tasks_list = edited
+        st.session_state["refactor_tasks"] = tasks_list
+        save_refactor_tasks(tasks_list)
         st.toast("Sauvegardé", icon="💾")
 
     st.data_editor(
@@ -342,6 +348,12 @@ if page == "📋 Refactor Tasks":
         on_change=_save_tasks,
         disabled=False,
         use_container_width=True,
+        column_config={
+            "status": st.column_config.SelectboxColumn(
+                "Statut",
+                options=status_options,
+            )
+        },
     )
     st.stop()
 
