@@ -31,7 +31,7 @@
     "description": "Provide English version and scope visualization",
     "module": "project_doc/01_system_initialization.md",
     "priority": "Medium",
-    "status": "Todo"
+    "status": "Done"
   },{
     "id": "CHAP_003",
     "description": "Create full network diagram and system dependencies",
