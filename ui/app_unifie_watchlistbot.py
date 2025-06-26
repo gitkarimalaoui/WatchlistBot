@@ -34,14 +34,15 @@ SCRIPTS = os.path.join(ROOT_DIR, "scripts")
 UTILS = os.path.join(ROOT_DIR, "utils")
 SIMULATION = os.path.join(ROOT_DIR, "simulation")
 
-from db.refactor_tasks import fetch_tasks as load_refactor_tasks
-from db.refactor_tasks import upsert_tasks as save_refactor_tasks
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 
 # ─── Ajout des chemins au système ───
 for path in (ROOT_DIR, SCRIPTS, ROOT_UI, UTILS, SIMULATION):
     if path not in sys.path:
         sys.path.insert(0, path)
+
+from db.refactor_tasks import fetch_tasks as load_refactor_tasks
+from db.refactor_tasks import upsert_tasks as save_refactor_tasks
 
 from security.auth_manager import authenticate_user
 
