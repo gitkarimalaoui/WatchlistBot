@@ -33,7 +33,9 @@ ROOT_DIR = os.path.abspath(os.path.join(ROOT_UI, ".."))
 SCRIPTS = os.path.join(ROOT_DIR, "scripts")
 UTILS = os.path.join(ROOT_DIR, "utils")
 SIMULATION = os.path.join(ROOT_DIR, "simulation")
-TASKS_JSON_PATH = os.path.join(ROOT_DIR, "refactor_tasks.json")
+
+from db.refactor_tasks import fetch_tasks as load_refactor_tasks
+from db.refactor_tasks import upsert_tasks as save_refactor_tasks
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 
 # ─── Ajout des chemins au système ───
@@ -90,18 +92,8 @@ def loop_notifications() -> None:
         time.sleep(5)
 
 # ─── Gestion des tâches de refactor ───
-def load_refactor_tasks(path: str = TASKS_JSON_PATH):
-    """Load refactor tasks from ``path`` if the file exists."""
-    if os.path.exists(path):
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
-
-
-def save_refactor_tasks(tasks, path: str = TASKS_JSON_PATH) -> None:
-    """Save ``tasks`` list of dicts to ``path`` in JSON format."""
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(tasks, f, indent=2)
+# ``load_refactor_tasks`` and ``save_refactor_tasks`` are imported from
+# ``db.refactor_tasks`` and now operate on ``project_tracker.db``.
 
 
 def import_watchlist_txt_page() -> None:
@@ -335,6 +327,26 @@ if page == "📋 Refactor Tasks":
 
     filtered_df = df[df["status"].isin(selected_status) & df["priority"].isin(selected_priority)] if not df.empty else df
 
+    with st.expander("➕ Nouvelle tâche"):
+        col1, col2 = st.columns(2)
+        new_id = col1.text_input("ID")
+        new_priority = col2.selectbox("Priorité", ["Low", "Medium", "High"], key="new_priority")
+        new_desc = st.text_input("Description")
+        new_module = st.text_input("Module")
+        new_status = st.selectbox("Statut", status_options, key="new_status")
+        if st.button("Ajouter") and new_id:
+            new_row = {
+                "id": new_id,
+                "description": new_desc,
+                "module": new_module,
+                "priority": new_priority,
+                "status": new_status,
+            }
+            df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
+            st.session_state["refactor_tasks"] = df.to_dict(orient="records")
+            save_refactor_tasks(st.session_state["refactor_tasks"])
+            st.success("Tâche ajoutée")
+
     def _save_tasks() -> None:
         edited = st.session_state["task_editor"]
         if isinstance(edited, pd.DataFrame):
@@ -359,6 +371,12 @@ if page == "📋 Refactor Tasks":
             )
         },
     )
+    delete_id = st.selectbox("Supprimer la tâche", df["id"] if not df.empty else [], key="delete_select")
+    if st.button("Supprimer") and delete_id:
+        df = df[df["id"] != delete_id]
+        st.session_state["refactor_tasks"] = df.to_dict(orient="records")
+        save_refactor_tasks(st.session_state["refactor_tasks"])
+        st.success("Tâche supprimée")
     st.stop()
 
 if page == "🏢 Entreprise":
