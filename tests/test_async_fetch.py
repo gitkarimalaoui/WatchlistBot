@@ -1,5 +1,6 @@
 import pytest
 pd = pytest.importorskip("pandas")
+pytest.importorskip("pytest_asyncio")
 from utils import utils_intraday as intra
 from utils import utils_yf_historical as hist
 
