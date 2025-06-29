@@ -1,10 +1,11 @@
 # roadmap_ui.py – Version 8.4 avec sauvegarde et barres de progression globales
 import os
-import streamlit as st
 import sqlite3
+import streamlit as st
 from roadmap_generator_tools import create_epic_md, create_bpmn_placeholder
 import task_manager
 import pandas as pd
+from utils.fda_fetcher import _ensure_has_fda_column
 
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 DB_PATH = os.path.join(ROOT_DIR, 'data', 'project_tracker.db')
@@ -247,6 +248,7 @@ def personal_interface():
 def _compute_watchlist_kpis(db_path: str = TRADES_DB) -> dict:
     """Return watchlist KPI metrics from the trades database."""
     conn = sqlite3.connect(db_path)
+    _ensure_has_fda_column(conn)
     cur = conn.cursor()
     total = cur.execute("SELECT COUNT(*) FROM watchlist").fetchone()[0]
     fda = cur.execute(
