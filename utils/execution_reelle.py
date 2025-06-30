@@ -1,5 +1,6 @@
 import subprocess
 import sqlite3
+import os
 from datetime import datetime
 
 from core.db import DB_PATH
@@ -36,6 +37,7 @@ def executer_ordre_reel(ticker: str, prix: float, quantite: int, action: str = "
         ], check=True)
 
         # Log vers trades.db si possible
+        conn = None
         try:
             conn = sqlite3.connect(DB_PATH)
             conn.execute(
@@ -47,7 +49,8 @@ def executer_ordre_reel(ticker: str, prix: float, quantite: int, action: str = "
             )
             conn.commit()
         finally:
-            conn.close()
+            if conn:
+                conn.close()
 
         return {
             "success": True,
