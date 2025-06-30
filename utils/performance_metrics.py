@@ -19,6 +19,11 @@ def _load_trades(db_path: str = DB_PATH) -> List[TradeRow]:
         return []
     conn = sqlite3.connect(db_path)
     try:
+        cur = conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='trades_reels'"
+        )
+        if not cur.fetchone():
+            return []
         rows = conn.execute(
             "SELECT symbol, price, qty, side, timestamp FROM trades_reels ORDER BY timestamp"
         ).fetchall()
@@ -55,6 +60,9 @@ def _compute_profits(rows: Iterable[TradeRow]) -> List[float]:
 def compute_performance_metrics(db_path: str = DB_PATH) -> Dict[str, float]:
     """Compute win rate, profit factor, Sharpe ratio and drawdown from ``trades_reels``."""
     rows = _load_trades(db_path)
+    if not rows:
+        return {"win_rate": 0.0, "profit_factor": 0.0, "sharpe_ratio": 0.0, "drawdown": 0.0}
+
     profits = _compute_profits(rows)
     if not profits:
         return {"win_rate": 0.0, "profit_factor": 0.0, "sharpe_ratio": 0.0, "drawdown": 0.0}
