@@ -248,6 +248,20 @@ def personal_interface():
 def _compute_watchlist_kpis(db_path: str = TRADES_DB) -> dict:
     """Return watchlist KPI metrics from the trades database."""
     conn = sqlite3.connect(db_path)
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS news_by_ticker (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ticker TEXT NOT NULL,
+            date TEXT NOT NULL,
+            title TEXT,
+            summary TEXT,
+            url TEXT,
+            source TEXT,
+            UNIQUE(ticker, date)
+        )
+        """
+    )
     _ensure_has_fda_column(conn)
     cur = conn.cursor()
     total = cur.execute("SELECT COUNT(*) FROM watchlist").fetchone()[0]
