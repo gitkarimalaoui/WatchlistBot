@@ -144,6 +144,7 @@ from roadmap_ui import (
 )
 from query_entreprise_db import get_portfolio_modules, get_use_cases, get_revenue_sources, get_kpi_targets
 from page_modules.cloture_journee import cloturer_journee
+from page_modules.crypto_section import show_crypto_section
 from utils_affichage_ticker import (
     afficher_ticker_panel,
     _ia_score,
@@ -209,6 +210,7 @@ page = st.sidebar.radio("Menu principal", [
     "📥 Import .txt",
     "📦 Clôture",
     "🤖 Learning Engine",
+    "💱 Cryptos",
     "📄 Trades simulés",
     "🎓 Formation IA"
 ], index=0)
@@ -405,6 +407,10 @@ if page == "🤖 Learning Engine":
     if st.button("Lancer l'apprentissage"):
         run_learning_loop(cycles=cycles)
         st.success("Boucle terminée")
+    st.stop()
+
+if page == "💱 Cryptos":
+    show_crypto_section()
     st.stop()
 
 # ─── Page : Trades simulés ───
