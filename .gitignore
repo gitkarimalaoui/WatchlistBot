@@ -66,3 +66,6 @@ models/model_gain_*
 
 # Ignorer les logs même dans scripts
 scripts/logs/
+
+# UI badges directory
+ui/badges/
