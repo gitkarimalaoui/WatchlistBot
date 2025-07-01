@@ -253,4 +253,5 @@ Les watchers gèrent l'exécution des stratégies dès qu'un nouveau modèle ou 
 
 Ce module de formation s'appuie sur les ressources officielles [FinRL](https://github.com/AI4Finance-Foundation/FinRL).
 Les notebooks sont adaptés pour entraîner un agent DRL avec nos watchlists et la table `trades_simules`.
+Une introduction vidéo intitulée _FinRL: A Deep Reinforcement Learning Library for Automated Trading in Quantitative Finance_ est disponible sur [YouTube](https://www.youtube.com/channel/UCrVri6k3KPBa3NhapVV4K5g).
 Le modèle sauvegardé dans `intelligence/models/trained_drl_model.pkl` permet d'afficher les prédictions dans l'interface.
