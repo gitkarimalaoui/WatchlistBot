@@ -82,6 +82,12 @@ DEBUG_MODE=False
 4. Démarrer l'interface :
 
 ```bash
+streamlit run ui/main_menu.py
+```
+Ce menu central donne accès à toutes les pages (Dashboard, Watchlist, Journal,
+trading manuel…). Pour un lancement direct de la watchlist uniquement vous
+pouvez toujours utiliser :
+```bash
 streamlit run ui/app_unifie_watchlistbot.py
 ```
 Un écran de connexion s'affichera pour saisir votre identifiant et mot de passe.
