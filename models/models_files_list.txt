@@ -1,4 +1,6 @@
 ├── models/
 │   ├── modele_ia.pkl                    ← Modèle IA entraîné
+│   ├── finrl/trained_agent.zip          ← Agent FinRL source
+│   ├── intelligence/models/trained_drl_model.pkl ← DRL entraîné sur watchlist
 │   └── converted/
 │       └── modele_ia_converted.pkl      ← Version exportée (ONNX, joblib, etc.)

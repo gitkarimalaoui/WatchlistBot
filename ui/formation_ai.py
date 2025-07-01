@@ -26,6 +26,12 @@ MODULES = [
         "summary": "Modules internes IA scoring et backtest.",
     },
     {
+        "id": "m35",
+        "title": "FinRL Advanced DRL Strategy",
+        "link": "https://github.com/AI4Finance-Foundation/FinRL",
+        "summary": "Prise en main FinRL avec nos watchlists et trades_simules.",
+    },
+    {
         "id": "m4",
         "title": "IA News & Pattern",
         "link": "",

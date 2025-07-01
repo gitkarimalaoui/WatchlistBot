@@ -1,7 +1,8 @@
 import os
 import requests
 import streamlit as st
-from typing import List, Dict
+from typing import List, Dict, Optional
+from intelligence import drl_engine
 
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 
@@ -67,8 +68,13 @@ def render_watchlist_panel() -> None:
         ema_sig = itm.get("ema_signal") or itm.get("ema9")
         ema_sig = ema_sig if ema_sig is not None else "NA"
         score = itm.get("score_global", itm.get("global_score", "N/A"))
+        try:
+            prediction: Optional[str] = drl_engine.predict_for_ticker(tic)
+        except Exception:
+            prediction = None
+        pred_txt = f" | DRL {prediction}" if prediction else ""
         label = (
-            f"{tic} | {price} ({pct:+.2f}%) | Vol {vol_ratio} | RSI {rsi} | EMA {ema_sig} | Score {score}{badge}"
+            f"{tic} | {price} ({pct:+.2f}%) | Vol {vol_ratio} | RSI {rsi} | EMA {ema_sig} | Score {score}{badge}{pred_txt}"
         )
         if st.button(label, key=f"watch_{tic}"):
             st.query_params["ticker"] = tic
