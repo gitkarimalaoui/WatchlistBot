@@ -2,6 +2,7 @@
 │   ├── learning_loop.py                 ← Boucle d'apprentissage IA automatique
 │   ├── apprentissage_hybride.py         ← Analyse des trades passés pour renforcer IA
 │   ├── rules_auto.json                  ← Règles IA apprises (modifiables)
+│   ├── drl_engine.py                    ← Stratégie DRL FinRL
 │   └── training/
 │       ├── prepare_qlib_data.py         ← Entraînement IA à partir des CSV cleans
 │       └── tools/

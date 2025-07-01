@@ -242,3 +242,9 @@ python start_watchers.py
 ```
 
 Les watchers gèrent l'exécution des stratégies dès qu'un nouveau modèle ou un log pertinent est détecté.
+
+## Module 3.5 – FinRL Advanced DRL Strategy
+
+Ce module de formation s'appuie sur les ressources officielles [FinRL](https://github.com/AI4Finance-Foundation/FinRL).
+Les notebooks sont adaptés pour entraîner un agent DRL avec nos watchlists et la table `trades_simules`.
+Le modèle sauvegardé dans `intelligence/models/trained_drl_model.pkl` permet d'afficher les prédictions dans l'interface.
