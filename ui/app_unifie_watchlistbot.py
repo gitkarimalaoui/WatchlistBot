@@ -223,6 +223,22 @@ auto_refresh = st.sidebar.checkbox("\U0001F503 Auto refresh", value=True)
 if auto_refresh and st_autorefresh:
     st_autorefresh(interval=30 * 1000, key="watchlist_global_refresh")
 
+if "workflow_thread" not in st.session_state:
+    st.session_state.workflow_thread = None
+auto_mode = st.sidebar.checkbox("\U0001F3AF Activer stratégie IA autonome")
+if auto_mode and st.session_state.workflow_thread is None:
+    def _run_workflow() -> None:
+        from config.config_manager import ConfigManager
+        from core.workflow_automated_mode import lancer_workflow_ia
+
+        lancer_workflow_ia(ConfigManager())
+
+    t = threading.Thread(target=_run_workflow, daemon=True)
+    t.start()
+    st.session_state.workflow_thread = t
+if st.sidebar.button("⏹ Stopper IA") and st.session_state.workflow_thread:
+    st.session_state.workflow_thread = None
+
 if "voice_thread" not in st.session_state:
     st.session_state.voice_thread = None
 if "watchdog_thread" not in st.session_state:
