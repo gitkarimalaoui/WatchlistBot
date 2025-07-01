@@ -105,8 +105,8 @@ def formation_ai_page() -> None:
                 _update_module(module["id"], done_state)
                 st.success("Sauvegardé")
     with tabs[-1]:
-        from .quiz_ia import run_quiz
-        from .certificat_ia import generate_certificate
+        from ui.quiz_ia import run_quiz
+        from ui.certificat_ia import generate_certificate
 
         score = run_quiz()
         if score is not None:
