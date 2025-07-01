@@ -154,6 +154,7 @@ from utils.execution_reelle import executer_ordre_reel
 from execution.strategie_scalping import executer_strategie_scalping
 from intelligence.ai_scorer import compute_global_score
 from utils.progress_tracker import load_progress
+from formation_ai import formation_ai_page
 from utils.fda_fetcher import fetch_fda_data, enrichir_watchlist_avec_fda
 from utils.utils_news import fetch_news_finnhub
 from utils.utils_graph import charger_intraday_intelligent
@@ -208,7 +209,8 @@ page = st.sidebar.radio("Menu principal", [
     "📥 Import .txt",
     "📦 Clôture",
     "🤖 Learning Engine",
-    "📄 Trades simulés"
+    "📄 Trades simulés",
+    "🎓 Formation IA"
 ], index=0)
 
 # Activation IA locale
@@ -415,6 +417,10 @@ if page == "📄 Trades simulés":
         st.dataframe(df, use_container_width=True)
     except Exception as e:
         st.error(f"Erreur chargement trades : {e}")
+    st.stop()
+
+if page == "🎓 Formation IA":
+    formation_ai_page()
     st.stop()
 
 # ─── Watchlist ───
