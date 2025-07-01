@@ -73,6 +73,17 @@ def ensure_schema(db_path: str = DB_PATH) -> None:
                     conn.execute(
                         f"ALTER TABLE trades_simules ADD COLUMN {col} {typ};"
                     )
+        # Ensure progression_ia table
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS progression_ia (
+                module TEXT PRIMARY KEY,
+                completed INTEGER DEFAULT 0,
+                badge TEXT,
+                completion_date TEXT
+            )
+            """
+        )
         conn.commit()
     finally:
         conn.close()
