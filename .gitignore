@@ -46,7 +46,9 @@ __outputs__/
 *.old
 
 # WatchlistBot specific
-models/finrl/
+models/finrl/*
+!models/finrl/config.json
+!models/finrl/prepare_data_for_finrl.py
 models/mistral/
 qlib_integration/
 intelligence/local_llm_backup.py
