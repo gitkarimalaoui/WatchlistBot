@@ -32,6 +32,12 @@ MODULES = [
         "summary": "Prise en main FinRL avec nos watchlists et trades_simules.",
     },
     {
+        "id": "m36",
+        "title": "FinRL Automation Module (Post-certification)",
+        "link": "",
+        "summary": "Ce module permet d’activer un agent IA autonome entraîné sur vos penny stocks préférés.",
+    },
+    {
         "id": "m4",
         "title": "IA News & Pattern",
         "link": "",
@@ -125,3 +131,8 @@ def formation_ai_page() -> None:
                     file_name="certificat.pdf",
                     mime="application/pdf",
                 )
+
+    st.markdown("## 🧠 FinRL Automation Module (Post-certification)")
+    st.write(
+        "Ce module permet d’activer un agent IA autonome entraîné sur vos penny stocks préférés."
+    )
