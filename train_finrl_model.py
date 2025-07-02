@@ -5,7 +5,10 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import Dict, Union
+import shutil
 import datetime
+
+SAVED_MODEL_PATH = Path("models/finrl/saved_model/ppo_model.zip")
 
 
 
@@ -69,5 +72,21 @@ def train_from_config(
     }
 
 
+def launch_finrl_training(force: bool = False) -> Dict[str, object]:
+    """Prepare data, train PPO model and copy it to ``SAVED_MODEL_PATH``."""
+    from models.finrl import prepare_data_for_finrl
+
+    if SAVED_MODEL_PATH.exists() and not force:
+        return {"model_path": str(SAVED_MODEL_PATH)}
+
+    csv_path = prepare_data_for_finrl.main()
+    metrics = train_from_config(data_path=csv_path)
+
+    SAVED_MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy(metrics["model_path"], SAVED_MODEL_PATH)
+    metrics["model_path"] = str(SAVED_MODEL_PATH)
+    return metrics
+
+
 if __name__ == "__main__":  # pragma: no cover - CLI entry point
-    train_from_config()
+    launch_finrl_training()

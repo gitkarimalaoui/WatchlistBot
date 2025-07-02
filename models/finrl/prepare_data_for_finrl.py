@@ -11,13 +11,25 @@ DEFAULT_OUT = Path(__file__).resolve().parent / "finrl_data.csv"
 
 
 def main(out_path: Path = DEFAULT_OUT) -> Path:
-    """Extract intraday data from the DB into a CSV file for FinRL."""
+    """Extract OHLCV intraday data from the local DB into ``out_path``."""
     conn = sqlite3.connect(str(DB_PATH))
     try:
-        df = pd.read_sql_query(
-            "SELECT timestamp, ticker, close FROM intraday_data ORDER BY timestamp",
-            conn,
-        )
+        try:
+            df = pd.read_sql_query(
+                """
+                SELECT timestamp, ticker, price as close, high, low, volume
+                FROM intraday_smart ORDER BY timestamp
+                """,
+                conn,
+            )
+        except Exception:
+            df = pd.read_sql_query(
+                """
+                SELECT timestamp, ticker, close, high, low, volume
+                FROM intraday_data ORDER BY timestamp
+                """,
+                conn,
+            )
     finally:
         conn.close()
 

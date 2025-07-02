@@ -166,10 +166,8 @@ from intelligence.local_llm import (
     save_scores_from_objects,
 )
 from utils.performance_metrics import compute_performance_metrics
-from intelligence.smart_finrl_agent import (
-    lancer_apprentissage_rl,
-    executer_trading_reel_auto,
-)
+from intelligence.smart_finrl_agent import executer_trading_reel_auto
+from train_finrl_model import launch_finrl_training, SAVED_MODEL_PATH
 
 # ─── Progression Capital / Milestones ───
 try:
@@ -327,13 +325,23 @@ if st.session_state.get("show_ai_params"):
         st.sidebar.json(disabled)
 
 activer_agent = st.sidebar.checkbox("🤖 Activer SmartFinRL")
+if SAVED_MODEL_PATH.exists():
+    st.sidebar.info("⚙️ Modèle FinRL PPO chargé avec succès")
+
+if st.sidebar.checkbox("🔁 Lancer IA FinRL (PPO)", key="launch_finrl") and not st.session_state.get("finrl_training_done"):
+    with st.spinner("Entraînement FinRL en cours..."):
+        result = launch_finrl_training()
+    st.session_state["finrl_training_done"] = True
+    st.session_state["finrl_model_path"] = result["model_path"]
+    st.sidebar.success("Modèle PPO entraîné")
+    st.sidebar.metric("Sharpe", f"{result['sharpe_ratio']:.2f}")
+    st.sidebar.metric("Return", f"{result['cumulative_return']*100:.2f}%")
+
 if activer_agent:
     st.sidebar.success("L’agent SmartFinRL est activé. Il apprendra et exécutera les trades.")
-    if st.sidebar.button("🚀 Lancer apprentissage IA"):
-        tickers = [w["ticker"] for w in load_watchlist()]
-        lancer_apprentissage_rl(tickers, 2000, "ppo")
     if st.sidebar.button("▶️ Exécuter stratégie en live"):
-        executer_trading_reel_auto("intelligence/models/ppo_trained.pkl")
+        path = st.session_state.get("finrl_model_path", str(SAVED_MODEL_PATH))
+        executer_trading_reel_auto(path)
 
 
 
