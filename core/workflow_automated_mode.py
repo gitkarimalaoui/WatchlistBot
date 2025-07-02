@@ -6,7 +6,7 @@ import json
 import os
 import sqlite3
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import yfinance as yf
 
@@ -18,7 +18,7 @@ from intelligence.learn_from_trades import main as learn_from_trades_main
 from simulation.execution_simulee import enregistrer_trade_simule
 from utils.fda_fetcher import check_fda_match
 from utils.order_executor import executer_ordre_reel_direct
-from utils.telegram_alert import send_telegram_alert
+from utils.telegram_alert import MISSING_CREDENTIALS, send_telegram_alert
 from utils.utils_graph import charger_intraday_intelligent
 from ui.utils_affichage_ticker import calculer_indicateurs
 from utils.utils_signaux import is_buy_signal
@@ -125,8 +125,17 @@ def validate_trade(ticker: str) -> float:
         return 0.0
 
 
-def lancer_workflow_ia(config: Optional[ConfigManager] = None) -> List[TradeDecision]:
-    """Main entry point for the autonomous IA workflow."""
+def lancer_workflow_ia(
+    config: Optional[ConfigManager] = None,
+) -> Tuple[List[TradeDecision], bool]:
+    """Main entry point for the autonomous IA workflow.
+
+    Returns
+    -------
+    Tuple[List[TradeDecision], bool]
+        The list of trade decisions and a flag indicating whether Telegram
+        credentials were missing during notifications.
+    """
     cfg = config or ConfigManager()
     _ = load_meta()  # ensure meta_ia.json exists
 
@@ -134,6 +143,7 @@ def lancer_workflow_ia(config: Optional[ConfigManager] = None) -> List[TradeDeci
     simulations = simulate_trades(watchlist)
 
     decisions: List[TradeDecision] = []
+    missing_credentials = False
     for sim in simulations:
         ticker = sim["ticker"]
         price = sim.get("entry") or sim.get("prix_achat")
@@ -145,9 +155,11 @@ def lancer_workflow_ia(config: Optional[ConfigManager] = None) -> List[TradeDeci
         if approved and cfg.get("trading_mode") == "real":
             executer_ordre_reel_direct(ticker, price, qty)
         else:
-            send_telegram_alert(
+            res = send_telegram_alert(
                 f"{ticker} {price}$ Qty:{qty} Strat:{strategy} Conf:{conf:.2f}"
             )
+            if res == MISSING_CREDENTIALS:
+                missing_credentials = True
         decisions.append(
             TradeDecision(
                 ticker=ticker,
@@ -164,4 +176,4 @@ def lancer_workflow_ia(config: Optional[ConfigManager] = None) -> List[TradeDeci
     meta.setdefault("history", []).append({"run": len(meta.get("history", [])) + 1})
     save_meta(meta)
 
-    return decisions
+    return decisions, missing_credentials

@@ -231,7 +231,9 @@ if auto_mode and st.session_state.workflow_thread is None:
         from config.config_manager import ConfigManager
         from core.workflow_automated_mode import lancer_workflow_ia
 
-        lancer_workflow_ia(ConfigManager())
+        _, creds_missing = lancer_workflow_ia(ConfigManager())
+        if creds_missing:
+            st.warning("Telegram credentials missing; alerts not sent")
 
     t = threading.Thread(target=_run_workflow, daemon=True)
     t.start()

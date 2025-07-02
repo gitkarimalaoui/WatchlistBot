@@ -1,11 +1,15 @@
 import os
 import requests
 import logging
+from typing import Union
 
 logger = logging.getLogger(__name__)
 
 
-def send_telegram_message(message: str) -> bool:
+MISSING_CREDENTIALS = "MISSING_CREDENTIALS"
+
+
+def send_telegram_message(message: str) -> Union[bool, str]:
     """Send a Telegram message using credentials from environment variables.
 
     If ``TELEGRAM_BOT_TOKEN`` or ``TELEGRAM_CHAT_ID`` is missing, the function
@@ -15,7 +19,7 @@ def send_telegram_message(message: str) -> bool:
     chat_id = os.getenv("TELEGRAM_CHAT_ID")
     if not token or not chat_id:
         logger.warning("Telegram credentials missing; message not sent")
-        return False
+        return MISSING_CREDENTIALS
 
     url = f"https://api.telegram.org/bot{token}/sendMessage"
     payload = {"chat_id": chat_id, "text": message}
