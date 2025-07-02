@@ -26,6 +26,7 @@ alembic
 # Reinforcement learning
 finrl
 stable-baselines3
+stockstats
 
 # Testing
 pytest
