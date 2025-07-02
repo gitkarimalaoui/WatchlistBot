@@ -422,9 +422,23 @@ if page == "📦 Clôture":
 if page == "🤖 Learning Engine":
     st.title("🤖 Learning Engine")
     cycles = st.number_input("Cycles", 1, 10, 1)
+    launch_finrl = st.checkbox("Activer stratégie IA FinRL sur penny stocks")
     if st.button("Lancer l'apprentissage"):
         run_learning_loop(cycles=cycles)
         st.success("Boucle terminée")
+    if launch_finrl:
+        from intelligence.smart_finrl_agent import run_pipeline, dummy_live_signals
+
+        with st.spinner("Entra\xEEnement FinRL en cours..."):
+            result = run_pipeline()
+        st.metric("Sharpe", f"{result['sharpe_ratio']:.2f}")
+        st.metric("Cumulative Return", f"{result['cumulative_return']*100:.2f}%")
+        if result.get("equity_curve"):
+            st.line_chart(result["equity_curve"])
+        st.success("Strat\xE9gie pr\xEAte \xE0 \xEAtre utilis\xE9e")
+        if st.button("Utiliser mod\xE8le FinRL pour simulation en live"):
+            signals = dummy_live_signals()
+            st.write(signals)
     st.stop()
 
 if page == "💱 Cryptos":
