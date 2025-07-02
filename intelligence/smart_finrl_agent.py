@@ -1,11 +1,15 @@
+from __future__ import annotations
 
 import datetime
 import importlib
+import logging
 import sqlite3
 from pathlib import Path
-from typing import Dict, Optional
-from __future__ import annotations
+from typing import Dict, Optional, List
+
 from core.db import DB_PATH
+from intelligence.finrl_env_penny import PennyStockEnv
+from utils.telegram_utils import send_telegram_message, MISSING_CREDENTIALS
 
 
 def _log_metrics(metrics: Dict[str, object]) -> None:
@@ -64,15 +68,6 @@ def dummy_live_signals() -> Dict[str, str]:
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry point
     run_pipeline()
-=======
-import logging
-import sqlite3
-from pathlib import Path
-from typing import List
-
-from core.db import DB_PATH
-from intelligence.finrl_env_penny import PennyStockEnv
-from utils.telegram_utils import send_telegram_message, MISSING_CREDENTIALS
 
 try:  # Optional heavy deps
     from stable_baselines3 import PPO, A2C, DQN
