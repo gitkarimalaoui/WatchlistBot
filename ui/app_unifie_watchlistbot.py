@@ -166,6 +166,10 @@ from intelligence.local_llm import (
     save_scores_from_objects,
 )
 from utils.performance_metrics import compute_performance_metrics
+from intelligence.smart_finrl_agent import (
+    lancer_apprentissage_rl,
+    executer_trading_reel_auto,
+)
 
 # ─── Progression Capital / Milestones ───
 try:
@@ -321,6 +325,15 @@ if st.session_state.get("show_ai_params"):
     if disabled:
         st.sidebar.write("Signaux désactivés :")
         st.sidebar.json(disabled)
+
+activer_agent = st.sidebar.checkbox("🤖 Activer SmartFinRL")
+if activer_agent:
+    st.sidebar.success("L’agent SmartFinRL est activé. Il apprendra et exécutera les trades.")
+    if st.sidebar.button("🚀 Lancer apprentissage IA"):
+        tickers = [w["ticker"] for w in load_watchlist()]
+        lancer_apprentissage_rl(tickers, 2000, "ppo")
+    if st.sidebar.button("▶️ Exécuter stratégie en live"):
+        executer_trading_reel_auto("intelligence/models/ppo_trained.pkl")
 
 
 
