@@ -64,7 +64,7 @@ else:
     if "dark_mode" not in st.session_state:
         st.session_state["dark_mode"] = False
     st.session_state["dark_mode"] = st.sidebar.checkbox(
-        "\U0001F319 Mode nuit", value=st.session_state["dark_mode"]
+        "\U0001f319 Mode nuit", value=st.session_state["dark_mode"]
     )
     if st.session_state["dark_mode"]:
         st.markdown(
@@ -91,6 +91,7 @@ def loop_notifications() -> None:
     while True:
         notifier.run_pending()
         time.sleep(5)
+
 
 # ─── Gestion des tâches de refactor ───
 # ``load_refactor_tasks`` and ``save_refactor_tasks`` are imported from
@@ -135,6 +136,7 @@ def import_watchlist_txt_page() -> None:
             conn.close()
             st.success("Watchlist mise à jour")
 
+
 # ─── Imports locaux ───
 from roadmap_ui import (
     roadmap_interface,
@@ -142,7 +144,12 @@ from roadmap_ui import (
     personal_interface,
     watchlist_kpi_dashboard,
 )
-from query_entreprise_db import get_portfolio_modules, get_use_cases, get_revenue_sources, get_kpi_targets
+from query_entreprise_db import (
+    get_portfolio_modules,
+    get_use_cases,
+    get_revenue_sources,
+    get_kpi_targets,
+)
 from page_modules.cloture_journee import cloturer_journee
 from page_modules.crypto_section import show_crypto_section
 from utils_affichage_ticker import (
@@ -176,6 +183,7 @@ try:
         update_roadmap_from_progress,
         MILESTONES,
     )
+
     progress_data = get_latest_progress()
     update_roadmap_from_progress()
 
@@ -191,6 +199,7 @@ try:
 except ImportError:
     try:
         from utils.progress_tracker import load_progress
+
         data = load_progress()
         last_capital = data[-1][1] if data else 3000
         progress = min(last_capital / 100000, 1.0)
@@ -203,32 +212,38 @@ DB_PATH = os.path.join(ROOT_DIR, "data", "trades.db")
 
 # ─── Menu latéral ───
 st.sidebar.markdown("## 🚀 Navigation")
-page = st.sidebar.radio("Menu principal", [
-    "📊 Watchlist",
-    "📋 Roadmap",
-    "📋 Refactor Tasks",
-    "🏢 Entreprise",
-    "🧘 Personal",
-    "📥 Import .txt",
-    "📦 Clôture",
-    "🤖 Learning Engine",
-    "💱 Cryptos",
-    "📄 Trades simulés",
-    "🎓 Formation IA"
-], index=0)
+page = st.sidebar.radio(
+    "Menu principal",
+    [
+        "📊 Watchlist",
+        "📋 Roadmap",
+        "📋 Refactor Tasks",
+        "🏢 Entreprise",
+        "🧘 Personal",
+        "📥 Import .txt",
+        "📦 Clôture",
+        "🤖 Learning Engine",
+        "💱 Cryptos",
+        "📄 Trades simulés",
+        "🎓 Formation IA",
+        "🧠 Éditeur Prompt IA (Lyra)",
+    ],
+    index=0,
+)
 
 # Activation IA locale
 use_local_llm = st.sidebar.checkbox("Activer IA locale (Mistral-7B)", key="local_llm")
 
 # Enable or disable automatic page refresh
-auto_refresh = st.sidebar.checkbox("\U0001F503 Auto refresh", value=True)
+auto_refresh = st.sidebar.checkbox("\U0001f503 Auto refresh", value=True)
 if auto_refresh and st_autorefresh:
     st_autorefresh(interval=30 * 1000, key="watchlist_global_refresh")
 
 if "workflow_thread" not in st.session_state:
     st.session_state.workflow_thread = None
-auto_mode = st.sidebar.checkbox("\U0001F3AF Activer stratégie IA autonome")
+auto_mode = st.sidebar.checkbox("\U0001f3af Activer stratégie IA autonome")
 if auto_mode and st.session_state.workflow_thread is None:
+
     def _run_workflow() -> None:
         from config.config_manager import ConfigManager
         from core.workflow_automated_mode import lancer_workflow_ia
@@ -278,7 +293,9 @@ def ensure_api_server() -> None:
         st.warning(f"Impossible de démarrer l'API: {exc}")
         st.session_state.api_process = None
 
+
 ensure_api_server()
+
 
 def start_watchlist_updater(interval: int = 30) -> None:
     """Background thread fetching latest watchlist periodically."""
@@ -298,7 +315,11 @@ def start_watchlist_updater(interval: int = 30) -> None:
     thread.start()
     st.session_state.watchlist_updater = thread
 
-if st.sidebar.button("🎤 Activer notifications vocales") and st.session_state.voice_thread is None:
+
+if (
+    st.sidebar.button("🎤 Activer notifications vocales")
+    and st.session_state.voice_thread is None
+):
     thread = threading.Thread(target=loop_notifications, daemon=True)
     thread.start()
     st.session_state.voice_thread = thread
@@ -308,15 +329,20 @@ if st.sidebar.button("🛡️ Activer surveillance IA"):
     start_watchdog_thread()
     st.sidebar.success("Surveillance IA activée")
 
-if st.sidebar.button("📡 Lancer Codex Watcher") and not st.session_state.get("codex_observer"):
+if st.sidebar.button("📡 Lancer Codex Watcher") and not st.session_state.get(
+    "codex_observer"
+):
     st.session_state["codex_observer"] = start_watchers()
     st.sidebar.success("Codex Watcher lancé")
 
 if st.sidebar.button("Afficher paramètres IA"):
-    st.session_state["show_ai_params"] = not st.session_state.get("show_ai_params", False)
+    st.session_state["show_ai_params"] = not st.session_state.get(
+        "show_ai_params", False
+    )
 
 if st.session_state.get("show_ai_params"):
     from intelligence.meta_ia import load_meta
+
     meta = load_meta()
     st.sidebar.json(meta.get("weights", {}))
     disabled = meta.get("disabled_signals", {})
@@ -328,7 +354,9 @@ activer_agent = st.sidebar.checkbox("🤖 Activer SmartFinRL")
 if SAVED_MODEL_PATH.exists():
     st.sidebar.info("⚙️ Modèle FinRL PPO chargé avec succès")
 
-if st.sidebar.checkbox("🔁 Lancer IA FinRL (PPO)", key="launch_finrl") and not st.session_state.get("finrl_training_done"):
+if st.sidebar.checkbox(
+    "🔁 Lancer IA FinRL (PPO)", key="launch_finrl"
+) and not st.session_state.get("finrl_training_done"):
     with st.spinner("Entraînement FinRL en cours..."):
         result = launch_finrl_training()
     st.session_state["finrl_training_done"] = True
@@ -338,11 +366,12 @@ if st.sidebar.checkbox("🔁 Lancer IA FinRL (PPO)", key="launch_finrl") and not
     st.sidebar.metric("Return", f"{result['cumulative_return']*100:.2f}%")
 
 if activer_agent:
-    st.sidebar.success("L’agent SmartFinRL est activé. Il apprendra et exécutera les trades.")
+    st.sidebar.success(
+        "L’agent SmartFinRL est activé. Il apprendra et exécutera les trades."
+    )
     if st.sidebar.button("▶️ Exécuter stratégie en live"):
         path = st.session_state.get("finrl_model_path", str(SAVED_MODEL_PATH))
         executer_trading_reel_auto(path)
-
 
 
 # ─── Pages secondaires ───
@@ -361,20 +390,34 @@ if page == "📋 Refactor Tasks":
     # how the JSON was saved. ``from_records`` handles both cases
     # gracefully and avoids the ambiguous ordering error raised by
     # ``pd.DataFrame()`` when given a plain ``dict``.
-    df = tasks_data if isinstance(tasks_data, pd.DataFrame) else pd.DataFrame.from_records(tasks_data)
+    df = (
+        tasks_data
+        if isinstance(tasks_data, pd.DataFrame)
+        else pd.DataFrame.from_records(tasks_data)
+    )
 
     status_options = ["Todo", "In Progress", "Done", "Blocked"]
 
     priorities = sorted(df["priority"].unique()) if not df.empty else []
-    selected_status = st.multiselect("Filtrer par statut", status_options, default=status_options)
-    selected_priority = st.multiselect("Filtrer par priorité", priorities, default=priorities)
+    selected_status = st.multiselect(
+        "Filtrer par statut", status_options, default=status_options
+    )
+    selected_priority = st.multiselect(
+        "Filtrer par priorité", priorities, default=priorities
+    )
 
-    filtered_df = df[df["status"].isin(selected_status) & df["priority"].isin(selected_priority)] if not df.empty else df
+    filtered_df = (
+        df[df["status"].isin(selected_status) & df["priority"].isin(selected_priority)]
+        if not df.empty
+        else df
+    )
 
     with st.expander("➕ Nouvelle tâche"):
         col1, col2 = st.columns(2)
         new_id = col1.text_input("ID")
-        new_priority = col2.selectbox("Priorité", ["Low", "Medium", "High"], key="new_priority")
+        new_priority = col2.selectbox(
+            "Priorité", ["Low", "Medium", "High"], key="new_priority"
+        )
         new_desc = st.text_input("Description")
         new_module = st.text_input("Module")
         new_status = st.selectbox("Statut", status_options, key="new_status")
@@ -415,7 +458,9 @@ if page == "📋 Refactor Tasks":
             )
         },
     )
-    delete_id = st.selectbox("Supprimer la tâche", df["id"] if not df.empty else [], key="delete_select")
+    delete_id = st.selectbox(
+        "Supprimer la tâche", df["id"] if not df.empty else [], key="delete_select"
+    )
     if st.button("Supprimer") and delete_id:
         df = df[df["id"] != delete_id]
         st.session_state["refactor_tasks"] = df.to_dict(orient="records")
@@ -450,14 +495,14 @@ if page == "🤖 Learning Engine":
     if launch_finrl:
         from intelligence.smart_finrl_agent import run_pipeline, dummy_live_signals
 
-        with st.spinner("Entra\xEEnement FinRL en cours..."):
+        with st.spinner("Entra\xeenement FinRL en cours..."):
             result = run_pipeline()
         st.metric("Sharpe", f"{result['sharpe_ratio']:.2f}")
         st.metric("Cumulative Return", f"{result['cumulative_return']*100:.2f}%")
         if result.get("equity_curve"):
             st.line_chart(result["equity_curve"])
-        st.success("Strat\xE9gie pr\xEAte \xE0 \xEAtre utilis\xE9e")
-        if st.button("Utiliser mod\xE8le FinRL pour simulation en live"):
+        st.success("Strat\xe9gie pr\xeate \xe0 \xeatre utilis\xe9e")
+        if st.button("Utiliser mod\xe8le FinRL pour simulation en live"):
             signals = dummy_live_signals()
             st.write(signals)
     st.stop()
@@ -482,6 +527,12 @@ if page == "🎓 Formation IA":
     formation_ai_page()
     st.stop()
 
+if page == "🧠 Éditeur Prompt IA (Lyra)":
+    from ui.editeur_prompt_lyra import main as afficher_editeur_lyra
+
+    afficher_editeur_lyra()
+    st.stop()
+
 # ─── Watchlist ───
 st.title("📊 WatchlistBot – Version V7")
 
@@ -491,9 +542,12 @@ try:
     last_capital = data[-1][1] if data else 3000
     progress = min(last_capital / 100000, 1.0)
     st.progress(progress, text=f"Capital actuel : {last_capital}$")
-    daily_gain = st.number_input("Gain moyen par jour ($)", value=0.0, key="gain_journalier")
+    daily_gain = st.number_input(
+        "Gain moyen par jour ($)", value=0.0, key="gain_journalier"
+    )
     if daily_gain > 0:
         from utils.progress_tracker import project_target_date
+
         target_date = project_target_date(last_capital, daily_gain)
         if target_date:
             days = (target_date - datetime.now().date()).days
@@ -514,11 +568,13 @@ with st.sidebar.expander("📈 Performance réelle"):
     else:
         st.write("Aucune donnée")
 
+
 def count_watchlist_tickers():
     conn = sqlite3.connect(DB_PATH)
     cnt = conn.execute("SELECT COUNT(*) FROM watchlist").fetchone()[0]
     conn.close()
     return cnt
+
 
 @st.cache_data
 def load_watchlist():
@@ -553,18 +609,19 @@ def load_watchlist():
         conn,
     )
     conn.close()
-    df['global_score'] = df.apply(
+    df["global_score"] = df.apply(
         lambda r: compute_global_score(
-            r.get('score'),
-            r.get('score_gpt'),
-            r.get('percent_gain'),
-            r.get('volume'),
-            r.get('float'),
-            r.get('sentiment'),
+            r.get("score"),
+            r.get("score_gpt"),
+            r.get("percent_gain"),
+            r.get("volume"),
+            r.get("float"),
+            r.get("sentiment"),
         ),
         axis=1,
     )
-    return df.to_dict(orient='records')
+    return df.to_dict(orient="records")
+
 
 def fetch_live_watchlist():
     try:
@@ -573,8 +630,7 @@ def fetch_live_watchlist():
             return resp.json()
     except Exception as e:
         if not st.session_state.get("api_error_displayed"):
-            st.warning(
-                f"API indisponible ({e}). Utilisation des donn\xE9es locales.")
+            st.warning(f"API indisponible ({e}). Utilisation des donn\xe9es locales.")
             st.session_state["api_error_displayed"] = True
     return load_watchlist()
 
@@ -588,6 +644,7 @@ def safe_fetch_live_watchlist():
         return [], f"HTTP {resp.status_code}"
     except Exception as e:
         return [], str(e)
+
 
 def load_watchlist_full():
     conn = sqlite3.connect(DB_PATH)
@@ -671,7 +728,7 @@ with st.expander("Saisie manuelle"):
             conn = sqlite3.connect(DB_PATH)
             conn.execute(
                 "INSERT OR REPLACE INTO watchlist (ticker, source, date, description, updated_at) VALUES (?, 'Manual', ?, ?, CURRENT_TIMESTAMP)",
-                (new_tic.upper(), datetime.now().isoformat(), new_desc)
+                (new_tic.upper(), datetime.now().isoformat(), new_desc),
             )
             conn.commit()
             conn.close()
@@ -718,7 +775,11 @@ with col2:
         if use_local_llm:
             run_local_batch()
             return
-        proc = subprocess.run([sys.executable, os.path.join(SCRIPTS, "run_chatgpt_batch.py")], capture_output=True, text=True)
+        proc = subprocess.run(
+            [sys.executable, os.path.join(SCRIPTS, "run_chatgpt_batch.py")],
+            capture_output=True,
+            text=True,
+        )
         if proc.returncode != 0:
             st.error(f"Batch failed:\n{proc.stderr}")
             return
@@ -727,7 +788,6 @@ with col2:
         df_scores = pd.read_sql_query("SELECT * FROM news_score", conn)
         conn.close()
         st.dataframe(df_scores)
-
 
     if st.button("🚀 Lancer analyse GPT", key="btn_batch") or auto_batch:
         run_and_show()
@@ -773,11 +833,17 @@ with st.expander("📥 Scraper Jaguar et Injecter"):
         st.warning(f"Export CSV indisponible: {e}")
 
 with st.expander("📥 Données marché – Historique et Intraday"):
-    st.markdown("Génère les données depuis l’API Yahoo Finance pour tous les tickers de la base (7d/1min + 2y/daily).")
+    st.markdown(
+        "Génère les données depuis l’API Yahoo Finance pour tous les tickers de la base (7d/1min + 2y/daily)."
+    )
     if st.button("🟢 Lancer collecte et enregistrement DB"):
         proc = subprocess.run(
-            [sys.executable, os.path.join(SCRIPTS, "collect_historical_batch_to_db.py")],
-            capture_output=True, text=True
+            [
+                sys.executable,
+                os.path.join(SCRIPTS, "collect_historical_batch_to_db.py"),
+            ],
+            capture_output=True,
+            text=True,
         )
         if proc.returncode == 0:
             st.success("✅ Collecte et insertion en base terminées avec succès.")
@@ -814,12 +880,7 @@ if show_positive:
     watchlist = [
         w
         for w in watchlist
-        if (
-            w.get("change")
-            or w.get("percent_gain")
-            or w.get("change_percent")
-            or 0
-        )
+        if (w.get("change") or w.get("percent_gain") or w.get("change_percent") or 0)
         > 0
     ]
 
@@ -833,7 +894,7 @@ page_watchlist = watchlist[start:end]
 
 if st.sidebar.button("🔧 MAJ indicateurs verts"):
     updated = update_green_indicators(watchlist)
-    st.sidebar.success(f"{len(updated)} tickers mis \xE0 jour")
+    st.sidebar.success(f"{len(updated)} tickers mis \xe0 jour")
 
 main_col, right_col = st.columns([8, 1])
 
