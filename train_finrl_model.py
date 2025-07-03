@@ -31,6 +31,10 @@ def train_from_config(
 
     config = load_config(config_path)
 
+    # Ensure third-party libraries are compatible with older Python versions
+    from utils.compat import patch_stockstats_for_py38
+    patch_stockstats_for_py38()
+
     # Import heavy libraries lazily so that tests not requiring them can run
     import pandas as pd  # type: ignore
     from finrl.agents.stablebaselines3.models import DRLAgent  # type: ignore
