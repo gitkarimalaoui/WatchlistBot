@@ -49,6 +49,12 @@ MODULES = [
         "link": "",
         "summary": "Process de sauvegarde modèle et logs.",
     },
+    {
+        "id": "m6",
+        "title": "Vision Language Models (VLM Bootcamp)",
+        "link": "https://courses.opencv.org/courses/course-v1:Vision-Language-Models+Bootcamp+VLMs/courseware/6010d8df776c4f96ae1b09bc859b0b21/12356a27ac3b4725bdd431ec05f3b08b/",
+        "summary": "Introduction aux VLM (BLIP, CLIP, GPT-4V), captioning de graphiques boursiers et Q&A visuelle. Fusion avec FinBERT et scoring IA.",
+    },
 ]
 
 
