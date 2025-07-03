@@ -30,7 +30,6 @@ Thumbs.db
 # Streamlit logs and cache
 .streamlit/
 .cache/
-logs/
 logs/*.log
 
 # Database
