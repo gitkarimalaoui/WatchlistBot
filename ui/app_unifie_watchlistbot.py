@@ -163,6 +163,7 @@ from execution.strategie_scalping import executer_strategie_scalping
 from intelligence.ai_scorer import compute_global_score
 from utils.progress_tracker import load_progress
 from formation_ai import formation_ai_page
+from ui.menu_strategie_personnelle import afficher_strategie_personnelle
 from utils.fda_fetcher import fetch_fda_data, enrichir_watchlist_avec_fda
 from utils.utils_news import fetch_news_finnhub
 from utils.utils_graph import charger_intraday_intelligent
@@ -226,6 +227,7 @@ page = st.sidebar.radio(
         "💱 Cryptos",
         "📄 Trades simulés",
         "🎓 Formation IA",
+        "📌 Plan Stratège Visionnaire",
         "🧠 Éditeur Prompt IA (Lyra)",
     ],
     index=0,
@@ -525,6 +527,10 @@ if page == "📄 Trades simulés":
 
 if page == "🎓 Formation IA":
     formation_ai_page()
+    st.stop()
+
+if page == "📌 Plan Stratège Visionnaire":
+    afficher_strategie_personnelle()
     st.stop()
 
 if page == "🧠 Éditeur Prompt IA (Lyra)":

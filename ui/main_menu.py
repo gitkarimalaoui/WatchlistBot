@@ -15,6 +15,7 @@ PAGES = [
     ("control_center/ia_control_center.py", "🧠 IA Control Center"),
     ("backtest_ui/ai_backtest.py", "🤖 AI Backtest"),
     ("formation_ai.py", "🎓 Formation IA"),
+    ("menu_strategie_personnelle.py", "📌 Plan Stratège Visionnaire"),
 ]
 
 for script, label in PAGES:
