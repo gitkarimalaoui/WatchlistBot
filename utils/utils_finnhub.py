@@ -1,7 +1,13 @@
-import requests
-import pandas as pd
+import asyncio
 import os
 import time
+from typing import List, Any
+
+import pandas as pd
+import requests
+
+from api.http_async import fetch_many
+from caching.ttl_cache import ttl_cache
 from config.config_manager import _load_dotenv
 
 # API key is now read strictly from the environment
@@ -11,6 +17,7 @@ FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
 def _missing_key() -> bool:
     return not FINNHUB_API_KEY or "your_real_api_key_here" in FINNHUB_API_KEY
 
+@ttl_cache(600)
 def fetch_finnhub_historical_data(ticker: str) -> pd.DataFrame:
     if _missing_key():
         print("[Finnhub ERROR] API key missing")
@@ -42,6 +49,7 @@ def fetch_finnhub_historical_data(ticker: str) -> pd.DataFrame:
         return None
 
 
+@ttl_cache(600)
 def fetch_finnhub_intraday_data(ticker: str) -> pd.DataFrame:
     if _missing_key():
         print("[Finnhub ERROR] API key missing")
@@ -71,3 +79,15 @@ def fetch_finnhub_intraday_data(ticker: str) -> pd.DataFrame:
     except Exception as e:
         print(f"[Finnhub Intraday ERROR] {ticker}: {e}")
         return None
+
+
+@ttl_cache(30)
+def fetch_quotes_batch(tickers: List[str]) -> List[Any]:
+    """Fetch quote data concurrently for multiple ``tickers``."""
+    if _missing_key():
+        return []
+    urls = [
+        f"https://finnhub.io/api/v1/quote?symbol={t}&token={FINNHUB_API_KEY}"
+        for t in tickers
+    ]
+    return asyncio.run(fetch_many(urls))

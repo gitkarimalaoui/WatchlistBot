@@ -1,10 +1,12 @@
 """AI scoring utilities."""
 
-import json
-import os
 import base64
 import io
+import json
+import os
 from datetime import datetime
+
+import pandas as pd
 
 from intelligence.meta_ia import load_meta, save_meta
 
@@ -57,6 +59,22 @@ def score_ai(ticker_data):
             except (ValueError, TypeError):
                 continue
     return round(score, 2)
+
+
+def score_batch(df: pd.DataFrame) -> pd.DataFrame:
+    """Vectorised scoring for a batch of tickers in ``df``."""
+    rules = _get_rules()
+    cols = [c for c in df.columns if c in rules]
+    if not cols:
+        return df.assign(score=0)
+    weights = pd.Series({c: rules[c] for c in cols})
+    numeric = df[cols].apply(pd.to_numeric, errors="coerce").fillna(0)
+    scores = numeric.mul(weights, axis=1).sum(axis=1).round(2)
+    out = df.copy()
+    out["score"] = scores
+    if "symbol" in out.columns:
+        out["symbol"] = out["symbol"].astype("category")
+    return out
 
 
 def compute_global_score(

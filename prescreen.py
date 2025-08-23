@@ -1,7 +1,7 @@
+import pandas as pd
 import yfinance as yf
 from functools import lru_cache
 from typing import Optional
-import pandas as pd
 
 
 def _download(*args, **kwargs) -> pd.DataFrame:
@@ -44,6 +44,14 @@ def get_gap_pct(ticker: str) -> Optional[float]:
         if prev_close:
             return (today_open - prev_close) / prev_close * 100
     return None
+
+
+def prefilter_quotes(df: pd.DataFrame) -> pd.DataFrame:
+    """Lightweight price/volume filter before expensive calls."""
+    if df.empty:
+        return df
+    filt = (df["c"].astype(float) > 1.0) & (df["v"].astype(float) > 100_000)
+    return df.loc[filt]
 
 
 @lru_cache(maxsize=128)
