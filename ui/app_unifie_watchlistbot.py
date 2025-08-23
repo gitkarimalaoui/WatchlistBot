@@ -49,6 +49,44 @@ for path in (ROOT_DIR, SCRIPTS, ROOT_UI, UTILS, SIMULATION):
     if path not in sys.path:
         sys.path.insert(0, path)
 
+# ─── Configuration base de données ───
+BASE_DIR = Path(__file__).resolve().parents[1]
+DB_PATH = BASE_DIR / "data" / "trades.db"
+DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+
+def get_conn() -> sqlite3.Connection:
+    conn = sqlite3.connect(DB_PATH.as_posix(), check_same_thread=False)
+    conn.execute("PRAGMA journal_mode=WAL;")
+    return conn
+
+
+def init_schema(conn: sqlite3.Connection) -> None:
+    """Crée les tables minimales si elles n'existent pas."""
+    conn.execute(
+        """
+    CREATE TABLE IF NOT EXISTS scores(
+      symbol TEXT NOT NULL,
+      date   TEXT NOT NULL,
+      score  REAL NOT NULL,
+      details_json TEXT,
+      PRIMARY KEY (symbol, date)
+    );
+    """
+    )
+    conn.execute(
+        """
+    CREATE INDEX IF NOT EXISTS idx_scores_symbol_date
+      ON scores(symbol, date);
+    """
+    )
+    conn.commit()
+
+
+conn_boot = get_conn()
+init_schema(conn_boot)
+conn_boot.close()
+
 from db.refactor_tasks import fetch_tasks as load_refactor_tasks
 from db.refactor_tasks import upsert_tasks as save_refactor_tasks
 
@@ -119,7 +157,7 @@ def import_watchlist_txt_page() -> None:
         st.success(f"{len(tickers)} tickers détectés")
         st.write(tickers)
         if tickers and st.button("Ajouter à la base"):
-            conn = sqlite3.connect(DB_PATH)
+            conn = get_conn()
             conn.execute(
                 """
                 CREATE TABLE IF NOT EXISTS watchlist (
@@ -216,20 +254,31 @@ except ImportError:
     except Exception:
         st.progress(0.0, text="Capital actuel : inconnue")
 
-# ─── Définition chemin base SQLite ───
-DB_PATH = os.path.join(ROOT_DIR, "data", "trades.db")
+# ─── Fonctions de lecture ───
+@st.cache_resource
+def _shared_conn() -> sqlite3.Connection:
+    return get_conn()
 
 
 @st.cache_data(ttl=15)
 def read_top_scores(limit: int = 50) -> pd.DataFrame:
-    conn = sqlite3.connect(DB_PATH)
-    df = pd.read_sql_query(
-        "SELECT symbol, score FROM scores ORDER BY score DESC LIMIT ?",
-        conn,
-        params=(limit,),
-    )
-    conn.close()
-    return df
+    conn = _shared_conn()
+    exists = conn.execute(
+        """
+      SELECT name FROM sqlite_master
+      WHERE type='table' AND name='scores';
+    """
+    ).fetchone()
+    if not exists:
+        return pd.DataFrame(columns=["symbol", "score"])
+    try:
+        return pd.read_sql_query(
+            "SELECT symbol, score FROM scores ORDER BY score DESC LIMIT ?",
+            conn,
+            params=(limit,),
+        )
+    except Exception:
+        return pd.DataFrame(columns=["symbol", "score"])
 
 # ─── Menu latéral ───
 st.sidebar.markdown("## 🚀 Navigation")
@@ -537,7 +586,7 @@ if page == "💱 Cryptos":
 if page == "📄 Trades simulés":
     st.title("📄 Historique des trades simulés")
     try:
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_conn()
         df = pd.read_sql_query("SELECT * FROM trades_simules ORDER BY date DESC", conn)
         conn.close()
         st.dataframe(df, use_container_width=True)
@@ -587,7 +636,7 @@ except Exception:
 watchlist_kpi_dashboard()
 
 with st.sidebar.expander("📈 Performance réelle"):
-    metrics = compute_performance_metrics(DB_PATH)
+    metrics = compute_performance_metrics(DB_PATH.as_posix())
     if metrics:
         col_a, col_b = st.columns(2)
         col_a.metric("Win Rate", f"{metrics['win_rate']*100:.1f}%")
@@ -599,7 +648,7 @@ with st.sidebar.expander("📈 Performance réelle"):
 
 
 def count_watchlist_tickers():
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_conn()
     cnt = conn.execute("SELECT COUNT(*) FROM watchlist").fetchone()[0]
     conn.close()
     return cnt
@@ -607,7 +656,7 @@ def count_watchlist_tickers():
 
 @st.cache_data
 def load_watchlist():
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_conn()
     df = pd.read_sql_query(
         """
         SELECT
@@ -676,7 +725,7 @@ def safe_fetch_live_watchlist():
 
 
 def load_watchlist_full():
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_conn()
     rows = conn.execute(
         "SELECT ticker, description FROM watchlist WHERE description IS NOT NULL"
     ).fetchall()
@@ -754,7 +803,7 @@ with st.expander("Saisie manuelle"):
     new_desc = st.text_area("Description", key="manual_desc")
     if st.button("Ajouter", key="manual_add"):
         if new_tic and new_desc:
-            conn = sqlite3.connect(DB_PATH)
+            conn = get_conn()
             conn.execute(
                 "INSERT OR REPLACE INTO watchlist (ticker, source, date, description, updated_at) VALUES (?, 'Manual', ?, ?, CURRENT_TIMESTAMP)",
                 (new_tic.upper(), datetime.now().isoformat(), new_desc),
@@ -793,7 +842,7 @@ with col2:
                     st.warning(f"⚠️ Échec analyse {item.get('symbol')}")
 
             st.success("✅ Analyse locale terminée.")
-            conn = sqlite3.connect(DB_PATH)
+            conn = get_conn()
             df_scores = pd.read_sql_query("SELECT * FROM news_score", conn)
             conn.close()
             st.dataframe(df_scores)
@@ -813,7 +862,7 @@ with col2:
             st.error(f"Batch failed:\n{proc.stderr}")
             return
         st.success("✅ Analyse GPT terminée.")
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_conn()
         df_scores = pd.read_sql_query("SELECT * FROM news_score", conn)
         conn.close()
         st.dataframe(df_scores)
@@ -823,11 +872,11 @@ with col2:
 
     if st.button("🔬 Récupérer approbations FDA récentes"):
         with st.spinner("Chargement des approbations…"):
-            inserted = fetch_fda_data(limit=100, verbose=True, db_path=DB_PATH)
+            inserted = fetch_fda_data(limit=100, verbose=True, db_path=DB_PATH.as_posix())
         st.success(f"✅ {inserted} approbations ajoutées")
 
     if st.button("🧪 Vérifier FDA"):
-        with sqlite3.connect(DB_PATH) as conn:
+        with get_conn() as conn:
             enrichir_watchlist_avec_fda(conn)
         st.success("Watchlist mise à jour avec les données FDA.")
 
