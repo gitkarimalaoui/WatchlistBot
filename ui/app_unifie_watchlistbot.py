@@ -39,6 +39,7 @@ if "ticker" in params:
 ROOT_UI = os.path.dirname(__file__)
 ROOT_DIR = os.path.abspath(os.path.join(ROOT_UI, ".."))
 SCRIPTS = os.path.join(ROOT_DIR, "scripts")
+SCRIPTS_DIR = Path(__file__).resolve().parents[1] / "scripts"
 UTILS = os.path.join(ROOT_DIR, "utils")
 SIMULATION = os.path.join(ROOT_DIR, "simulation")
 
@@ -261,24 +262,26 @@ def _shared_conn() -> sqlite3.Connection:
 
 
 @st.cache_data(ttl=15)
-def read_top_scores(limit: int = 50) -> pd.DataFrame:
+def read_top_scores(limit: int, freshness_key: int) -> pd.DataFrame:
     conn = _shared_conn()
     exists = conn.execute(
-        """
-      SELECT name FROM sqlite_master
-      WHERE type='table' AND name='scores';
-    """
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name='scores';"
     ).fetchone()
     if not exists:
-        return pd.DataFrame(columns=["symbol", "score"])
-    try:
-        return pd.read_sql_query(
-            "SELECT symbol, score FROM scores ORDER BY score DESC LIMIT ?",
-            conn,
-            params=(limit,),
-        )
-    except Exception:
-        return pd.DataFrame(columns=["symbol", "score"])
+        return pd.DataFrame(columns=["symbol", "score", "date"])
+
+    return pd.read_sql_query(
+        """
+      WITH last AS (SELECT MAX(date) AS d FROM scores)
+      SELECT symbol, score, date
+      FROM scores, last
+      WHERE date = last.d
+      ORDER BY score DESC
+      LIMIT ?
+    """,
+        conn,
+        params=(limit,),
+    )
 
 # ─── Menu latéral ───
 st.sidebar.markdown("## 🚀 Navigation")
@@ -612,7 +615,35 @@ if page == "🧠 Éditeur Prompt IA (Lyra)":
 st.title("📊 WatchlistBot – Version V7")
 
 st.subheader("Top scores")
-st.dataframe(read_top_scores())
+
+if "freshness_key" not in st.session_state:
+    st.session_state.freshness_key = int(time.time())
+
+col1, col2 = st.columns([1, 1])
+
+if col1.button("🔄 Refresh cache"):
+    read_top_scores.clear()
+    st.session_state.freshness_key = int(time.time())
+
+if col2.button("⚡ Rescorer (watchlist → scores)"):
+    cmd = [
+        sys.executable,
+        "-m",
+        "scripts.sync_watchlist_to_scores",
+        "--fresh-only",
+        "--limit",
+        "200",
+    ]
+    st.info(f"Running: {' '.join(cmd)}")
+    ret = subprocess.run(cmd, cwd=str(SCRIPTS_DIR.parent))
+    if ret.returncode != 0:
+        st.error("Rescore a échoué — voir logs terminal.")
+    read_top_scores.clear()
+    st.session_state.freshness_key = int(time.time())
+
+st.dataframe(
+    read_top_scores(limit=20, freshness_key=st.session_state.freshness_key)
+)
 
 # ─── Progression vers l'objectif 100k$ ────────────────────────────────────────
 try:
