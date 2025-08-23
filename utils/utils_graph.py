@@ -70,6 +70,8 @@ def charger_historique_intelligent(
     if not df_final.empty:
         df_final.sort_values("timestamp", inplace=True)
         df_final.drop_duplicates(subset="timestamp", inplace=True)
+        if "ticker" in df_final.columns:
+            df_final["ticker"] = df_final["ticker"].astype("category")
     return df_final
 
 
@@ -96,6 +98,8 @@ def charger_intraday_intelligent(ticker: str) -> pd.DataFrame:
             return pd.DataFrame()
     df_db.sort_values("timestamp", inplace=True)
     df_db.drop_duplicates(subset="timestamp", inplace=True)
+    df_db["ticker"] = ticker
+    df_db["ticker"] = df_db["ticker"].astype("category")
     return df_db
 
 

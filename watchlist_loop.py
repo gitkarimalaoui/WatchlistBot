@@ -1,39 +1,51 @@
-"""Example IA loop executing automatic scalping."""
+"""Batch scanning pipeline using async fetch and DB batching."""
 
 from __future__ import annotations
 
-import time
+import json
+from pathlib import Path
+import sqlite3
 
-from movers_detector import get_top_movers
-from pump_score import score_pump_ia
-from execution.strategie_scalping import executer_strategie_scalping
-from data.fundamental_filters import get_fundamental_data
-from db.fundamentals import update_fundamentals
+import pandas as pd
 
-
-def boucle_ia() -> None:
-    """Run detection and scalping once."""
-    movers = get_top_movers()
-    for m in movers:
-        fundamentals = get_fundamental_data(m["ticker"])
-        update_fundamentals(
-            m["ticker"],
-            fundamentals.get("pdufa_date"),
-            fundamentals.get("market_cap"),
-            fundamentals.get("de_ratio"),
-            fundamentals.get("cash_runway"),
-        )
-        res = score_pump_ia(m["ticker"])
-        if res.get("score", 0) >= 80:
-            executer_strategie_scalping(m["ticker"])
+from db.bulk_upsert import bulk_upsert_scores
+from db.init_sqlite import init as init_db
+from intelligence.ai_scorer import score_batch
+from observability.perf import step
+from prescreen import screen_ticker, prefilter_quotes
+from utils.utils_finnhub import fetch_quotes_batch
 
 
-def boucle_ia_loop(interval: int = 10) -> None:
-    """Continuous loop running every ``interval`` seconds."""
-    while True:
-        boucle_ia()
-        time.sleep(interval)
+def run_scan(universe: str, limit: int = 500) -> None:
+    tickers = json.loads(Path(universe).read_text())[:limit]
+    tickers = [t for t in tickers if screen_ticker(t)]
+
+    with step("fetch_batch"):
+        quotes = fetch_quotes_batch(tickers)
+
+    df = pd.DataFrame(quotes)
+    df["symbol"] = pd.Series(tickers, dtype="category")
+    df = prefilter_quotes(df)
+
+    with step("score"):
+        scored = score_batch(df)
+
+    rows = [
+        (row.symbol, pd.Timestamp.utcnow().date().isoformat(), row.score, row.to_json())
+        for row in scored.itertuples()
+    ]
+
+    conn = sqlite3.connect(Path(__file__).resolve().parent / "data" / "trades.db")
+    init_db(conn)
+    with step("db_write"):
+        bulk_upsert_scores(conn, rows)
+    conn.close()
 
 
 if __name__ == "__main__":  # pragma: no cover - CLI
-    boucle_ia_loop()
+    import typer
+
+    def main(universe: str, limit: int = 500):
+        run_scan(universe, limit)
+
+    typer.run(main)

@@ -43,6 +43,8 @@ __outputs__/
 *.bak
 *.tmp
 *.old
+reports/
+data/*.db
 
 # WatchlistBot specific
 models/finrl/*

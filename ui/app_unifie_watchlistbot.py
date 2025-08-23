@@ -211,6 +211,18 @@ except ImportError:
 # ─── Définition chemin base SQLite ───
 DB_PATH = os.path.join(ROOT_DIR, "data", "trades.db")
 
+
+@st.cache_data(ttl=15)
+def read_top_scores(limit: int = 50) -> pd.DataFrame:
+    conn = sqlite3.connect(DB_PATH)
+    df = pd.read_sql_query(
+        "SELECT symbol, score FROM scores ORDER BY score DESC LIMIT ?",
+        conn,
+        params=(limit,),
+    )
+    conn.close()
+    return df
+
 # ─── Menu latéral ───
 st.sidebar.markdown("## 🚀 Navigation")
 page = st.sidebar.radio(
@@ -541,6 +553,9 @@ if page == "🧠 Éditeur Prompt IA (Lyra)":
 
 # ─── Watchlist ───
 st.title("📊 WatchlistBot – Version V7")
+
+st.subheader("Top scores")
+st.dataframe(read_top_scores())
 
 # ─── Progression vers l'objectif 100k$ ────────────────────────────────────────
 try:
