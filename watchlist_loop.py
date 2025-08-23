@@ -4,12 +4,10 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-import sqlite3
 
 import pandas as pd
 
 from db.bulk_upsert import bulk_upsert_scores
-from db.init_sqlite import init as init_db
 from intelligence.ai_scorer import score_batch
 from observability.perf import step
 from prescreen import screen_ticker, prefilter_quotes
@@ -35,11 +33,15 @@ def run_scan(universe: str, limit: int = 500) -> None:
         for row in scored.itertuples()
     ]
 
-    conn = sqlite3.connect(Path(__file__).resolve().parent / "data" / "trades.db")
-    init_db(conn)
     with step("db_write"):
-        bulk_upsert_scores(conn, rows)
-    conn.close()
+        bulk_upsert_scores(rows)
+
+    try:  # invalidate cached scores in UI if available
+        from ui.app_unifie_watchlistbot import read_top_scores
+
+        read_top_scores.clear()
+    except Exception:  # pragma: no cover - optional dependency
+        pass
 
 
 if __name__ == "__main__":  # pragma: no cover - CLI
