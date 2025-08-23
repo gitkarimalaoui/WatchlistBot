@@ -20,6 +20,7 @@ if sys.platform.startswith("win"):
 import pandas as pd
 import streamlit as st
 import requests
+from db.watchlist_utils import pick_date_column, ensure_schema_watchlist_scores
 
 try:  # Optional dependency for auto refresh
     from streamlit_autorefresh import st_autorefresh
@@ -60,33 +61,6 @@ def get_conn() -> sqlite3.Connection:
     conn = sqlite3.connect(DB_PATH.as_posix(), check_same_thread=False)
     conn.execute("PRAGMA journal_mode=WAL;")
     return conn
-
-
-def init_schema(conn: sqlite3.Connection) -> None:
-    """Crée les tables minimales si elles n'existent pas."""
-    conn.execute(
-        """
-    CREATE TABLE IF NOT EXISTS scores(
-      symbol TEXT NOT NULL,
-      date   TEXT NOT NULL,
-      score  REAL NOT NULL,
-      details_json TEXT,
-      PRIMARY KEY (symbol, date)
-    );
-    """
-    )
-    conn.execute(
-        """
-    CREATE INDEX IF NOT EXISTS idx_scores_symbol_date
-      ON scores(symbol, date);
-    """
-    )
-    conn.commit()
-
-
-conn_boot = get_conn()
-init_schema(conn_boot)
-conn_boot.close()
 
 from db.refactor_tasks import fetch_tasks as load_refactor_tasks
 from db.refactor_tasks import upsert_tasks as save_refactor_tasks
@@ -258,30 +232,27 @@ except ImportError:
 # ─── Fonctions de lecture ───
 @st.cache_resource
 def _shared_conn() -> sqlite3.Connection:
-    return get_conn()
+    conn = get_conn()
+    ensure_schema_watchlist_scores(conn)
+    return conn
 
 
 @st.cache_data(ttl=15)
-def read_top_scores(limit: int, freshness_key: int) -> pd.DataFrame:
+def read_top_watchlist(limit: int, freshness_key: int) -> pd.DataFrame:
     conn = _shared_conn()
-    exists = conn.execute(
-        "SELECT 1 FROM sqlite_master WHERE type='table' AND name='scores';"
-    ).fetchone()
-    if not exists:
-        return pd.DataFrame(columns=["symbol", "score", "date"])
+    date_col = pick_date_column(conn)
+    if date_col is None:
+        return pd.DataFrame(columns=["symbol", "score", "dt"])
 
-    return pd.read_sql_query(
-        """
-      WITH last AS (SELECT MAX(date) AS d FROM scores)
-      SELECT symbol, score, date
-      FROM scores, last
-      WHERE date = last.d
+    sql = f"""
+      WITH last AS (SELECT MAX({date_col}) AS d FROM watchlist WHERE score IS NOT NULL)
+      SELECT symbol, score, {date_col} AS dt
+      FROM watchlist, last
+      WHERE {date_col} = last.d AND score IS NOT NULL
       ORDER BY score DESC
       LIMIT ?
-    """,
-        conn,
-        params=(limit,),
-    )
+    """
+    return pd.read_sql_query(sql, conn, params=(limit,))
 
 # ─── Menu latéral ───
 st.sidebar.markdown("## 🚀 Navigation")
@@ -619,31 +590,13 @@ st.subheader("Top scores")
 if "freshness_key" not in st.session_state:
     st.session_state.freshness_key = int(time.time())
 
-col1, col2 = st.columns([1, 1])
-
-if col1.button("🔄 Refresh cache"):
-    read_top_scores.clear()
+if st.button("🔄 Refresh"):
+    read_top_watchlist.clear()
     st.session_state.freshness_key = int(time.time())
 
-if col2.button("⚡ Rescorer (watchlist → scores)"):
-    cmd = [
-        sys.executable,
-        "-m",
-        "scripts.sync_watchlist_to_scores",
-        "--fresh-only",
-        "--limit",
-        "200",
-    ]
-    st.info(f"Running: {' '.join(cmd)}")
-    ret = subprocess.run(cmd, cwd=str(SCRIPTS_DIR.parent))
-    if ret.returncode != 0:
-        st.error("Rescore a échoué — voir logs terminal.")
-    read_top_scores.clear()
-    st.session_state.freshness_key = int(time.time())
-
-st.dataframe(
-    read_top_scores(limit=20, freshness_key=st.session_state.freshness_key)
-)
+topN = read_top_watchlist(20, st.session_state.freshness_key)
+st.caption(f"Dernier lot: {topN['dt'].max() if not topN.empty else '—'}")
+st.dataframe(topN[["symbol", "score"]])
 
 # ─── Progression vers l'objectif 100k$ ────────────────────────────────────────
 try:
