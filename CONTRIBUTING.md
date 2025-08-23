@@ -1,0 +1,4 @@
+- Branche de travail: feat/<sujet>
+- Commits conventionnels (feat:, fix:, chore:, docs:)
+- Lancer `pre-commit run --all-files` avant chaque commit
+- Tests: `pytest` (couverture cible >=85 %)

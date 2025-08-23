@@ -1,0 +1,37 @@
+name: CI
+on:
+  pull_request:
+    branches: ["dev","main"]
+  push:
+    branches: ["dev","feat/**"]
+jobs:
+  lint_type:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install -U pip ruff mypy bandit
+      - run: ruff check . && ruff format --check .
+      - run: mypy src || true
+      - run: bandit -r src -lll || true
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: { python-version: ["3.10","3.11"] }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: ${{ matrix.python-version }} }
+      - run: pip install -U pip
+      - run: pip install -e .[dev]
+      - run: pytest
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install pip-audit detect-secrets
+      - run: pip-audit --strict || true
+      - run: detect-secrets scan > reports/secrets.json || true
