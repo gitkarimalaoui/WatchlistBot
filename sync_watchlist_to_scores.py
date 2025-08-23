@@ -9,25 +9,15 @@ This bridges the gap between the Jaguar import which fills ``watchlist`` and
 
 from __future__ import annotations
 
-import json
-from datetime import datetime, timezone
-
-from db.bulk_upsert import bulk_upsert_scores, get_conn, DB_PATH
-from db.init_sqlite import init
+from db.bulk_upsert import DB_PATH, get_conn
 from execution.strategie_scalping import _compute_score
-
-
-def now_iso() -> str:
-    """Return the current UTC timestamp in ISO format."""
-
-    return datetime.now(timezone.utc).isoformat()
+from writers.scoring_writer import upsert_watchlist_and_scores
 
 
 def process_watchlist_to_scores() -> None:
-    """Fetch tickers from watchlist, score them and persist to ``scores``."""
+    """Fetch tickers from watchlist, score them and persist snapshots/history."""
 
     conn = get_conn()
-    init(conn)
     print("USING DB:", DB_PATH)
     tickers = [row[0] for row in conn.execute("SELECT DISTINCT ticker FROM watchlist;")]
     rows = []
@@ -35,10 +25,10 @@ def process_watchlist_to_scores() -> None:
         data = _compute_score(sym)
         if not data:
             continue
-        rows.append((sym, now_iso(), float(data.get("score", 0)), json.dumps(data)))
-    conn.close()
+        rows.append((sym, float(data.get("score", 0)), data))
     if rows:
-        bulk_upsert_scores(rows)
+        upsert_watchlist_and_scores(conn, rows)
+    conn.close()
 
 
 if __name__ == "__main__":  # pragma: no cover - manual execution
