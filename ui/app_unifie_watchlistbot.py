@@ -9,6 +9,14 @@ import threading
 import time
 from pathlib import Path
 
+import asyncio
+
+if sys.platform.startswith("win"):
+    try:  # pragma: no cover - depends on platform
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    except Exception:
+        pass
+
 import pandas as pd
 import streamlit as st
 import requests
