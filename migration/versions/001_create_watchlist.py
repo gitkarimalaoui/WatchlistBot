@@ -14,7 +14,7 @@ def upgrade():
         sa.Column('ticker', sa.String, unique=True, nullable=False),
         sa.Column('last_price', sa.Float),
         sa.Column('volume', sa.Integer),
-        sa.Column('float', sa.Integer),
+        sa.Column('float_shares', sa.Integer),
         sa.Column('change_percent', sa.Float),
         sa.Column('score', sa.Float),
         sa.Column('source', sa.String),

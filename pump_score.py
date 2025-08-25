@@ -8,7 +8,7 @@ from data.indicateurs import (
     get_rsi,
     get_ema,
     get_vwap,
-    get_float,
+    get_float_shares,
     get_macd,
 )
 from data.stream_data_manager import get_latest_data
@@ -31,7 +31,7 @@ def score_pump_ia(ticker: str) -> dict:
     ema9 = emas.get(9)
     ema21 = emas.get(21)
     vwap = get_vwap(ticker)
-    float_shares = get_float(ticker)
+    float_shares = get_float_shares(ticker)
     macd, macd_signal = get_macd(ticker)
     pump_pct = get_pump_pct(ticker)
     momentum = get_momentum(ticker)
@@ -76,7 +76,7 @@ def score_pump_ia(ticker: str) -> dict:
         "pump_pct_60s": round(pump_pct, 2),
         "momentum": momentum,
         "vwap": vwap,
-        "float": float_shares,
+        "float_shares": float_shares,
         "macd": macd,
         "macd_signal": macd_signal,
         "ema_diff": ema_diff,

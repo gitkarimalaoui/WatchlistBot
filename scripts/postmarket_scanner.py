@@ -3,7 +3,7 @@ import yfinance as yf
 from datetime import datetime
 import pandas as pd
 
-def scan_postmarket_watchlist(threshold_percent=50, min_volume=500_000, max_float=200_000_000):
+def scan_postmarket_watchlist(threshold_percent=50, min_volume=500_000, max_float_shares=200_000_000):
     now = datetime.now()
     tickers = ['TSLA', 'AMD', 'NVDA', 'SPCE', 'LYFT']  # Exemple – à remplacer par liste dynamique
     results = []

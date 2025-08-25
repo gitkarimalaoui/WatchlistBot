@@ -10,7 +10,7 @@ class Watchlist(Base):
     ticker = Column(String, unique=True, nullable=False)
     last_price = Column(Float)
     volume = Column(Integer)
-    float = Column(Integer)
+    float_shares = Column(Integer)
     change_percent = Column(Float)
     score = Column(Float)
     source = Column(String)

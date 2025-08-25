@@ -66,7 +66,7 @@ def generate_watchlist() -> List[Dict[str, Any]]:
         itm["score_ai"] = score_ai(
             {
                 "volume": itm.get("volume"),
-                "float": itm.get("float"),
+                "float_shares": itm.get("float_shares"),
                 "change_percent": itm.get("percent_change"),
             }
         )
