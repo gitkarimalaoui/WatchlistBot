@@ -108,10 +108,20 @@ def _ensure_schema(conn: sqlite3.Connection) -> None:
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             ticker TEXT UNIQUE NOT NULL,
             source TEXT,
-            date TEXT,
             description TEXT,
-            updated_at DATETIME
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TRIGGER IF NOT EXISTS watchlist_set_updated_at
+        AFTER UPDATE ON watchlist
+        FOR EACH ROW
+        BEGIN
+            UPDATE watchlist SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+        END;
         """
     )
     conn.execute(
@@ -158,10 +168,10 @@ def insert_news_ticker_in_watchlist(conn: sqlite3.Connection, ticker: str, news_
     if inserted:
         conn.execute(
             """
-            INSERT INTO watchlist (ticker, source, date, description, updated_at)
-            VALUES (?, 'NewsAuto', ?, ?, CURRENT_TIMESTAMP)
+            INSERT INTO watchlist (ticker, source, description)
+            VALUES (?, 'NewsAuto', ?)
             """,
-            (ticker, news_data.get("date"), news_data.get("title", "")[:200]),
+            (ticker, news_data.get("title", "")[:200]),
         )
     else:
         conn.execute(
@@ -169,8 +179,7 @@ def insert_news_ticker_in_watchlist(conn: sqlite3.Connection, ticker: str, news_
             UPDATE watchlist
             SET source = CASE WHEN instr(COALESCE(source, ''), 'NewsAuto') > 0
                                THEN source
-                               ELSE COALESCE(source, '') || ' | NewsAuto' END,
-                updated_at = CURRENT_TIMESTAMP
+                               ELSE COALESCE(source, '') || ' | NewsAuto' END
             WHERE ticker = ?
             """,
             (ticker,),
