@@ -11,3 +11,7 @@ ALTER TABLE trades ADD COLUMN source_data TEXT;
 ALTER TABLE watchlist ADD COLUMN pump_pct_60s REAL;
 ALTER TABLE watchlist ADD COLUMN ema_diff REAL;
 ALTER TABLE watchlist ADD COLUMN rsi REAL;
+
+-- Indexes
+CREATE INDEX IF NOT EXISTS idx_intraday_smart_ticker ON intraday_smart(ticker);
+CREATE INDEX IF NOT EXISTS idx_intraday_smart_ticker_created_at ON intraday_smart(ticker, created_at);
