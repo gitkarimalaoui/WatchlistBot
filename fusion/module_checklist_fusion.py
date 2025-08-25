@@ -70,7 +70,7 @@ def generer_checklist_fusionnee(meta_ia, rules_auto, tickers_total, tickers_manu
         mots_cles = meta_ia.get(ticker, {}).get("mots_cles_news", [])
         volume = meta_ia.get(ticker, {}).get("volume", 0)
         gain_pct = meta_ia.get(ticker, {}).get("gain_pct", 0)
-        float_max = meta_ia.get(ticker, {}).get("float", 0)
+        float_shares = meta_ia.get(ticker, {}).get("float_shares", 0)
 
         resultat.append({
             "Ticker": ticker,
@@ -82,8 +82,8 @@ def generer_checklist_fusionnee(meta_ia, rules_auto, tickers_total, tickers_manu
             "Check seuil_gain_pour_selection": "✅" if gain_pct > rules_auto.get("gain_pct_min", 0) else "❌",
             "seuil_volume": volume,
             "Check seuil_volume": "✅" if volume > rules_auto.get("volume_min", 0) else "❌",
-            "float_max": float_max,
-            "Check float_max": "✅" if float_max < rules_auto.get("float_max", 99999999) else "❌",
+            "float_shares": float_shares,
+            "Check float_shares": "✅" if float_shares < rules_auto.get("float_shares_max", 99999999) else "❌",
         })
 
     return pd.DataFrame(resultat)

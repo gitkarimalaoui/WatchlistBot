@@ -62,16 +62,16 @@ def verifier_conditions_achat(ticker: str, thresholds: Optional[Dict[str, Any]] 
 
     with sqlite3.connect(DB_PATH) as conn:
         row = conn.execute(
-            "SELECT float, change_percent, score, has_fda FROM watchlist WHERE ticker = ?",
+            "SELECT float_shares, change_percent, score, has_fda FROM watchlist WHERE ticker = ?",
             (ticker,),
         ).fetchone()
-        flt = row[0] if row else 0
+        float_shares = row[0] if row else 0
         change_pct = row[1] if row else 0
         ai_score = row[2] if row else 0
         has_fda = row[3] if row else 0
 
     if not ai_score:
-        ai_score = score_ai({"volume": volume, "float": flt, "change_percent": change_pct})
+        ai_score = score_ai({"volume": volume, "float_shares": float_shares, "change_percent": change_pct})
 
     details = []
     conditions = [

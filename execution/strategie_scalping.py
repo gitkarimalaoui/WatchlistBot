@@ -38,7 +38,7 @@ from data.indicateurs import (
     get_volume,
     get_last_price,
     get_price_5s_ago,
-    get_float,
+    get_float_shares,
     get_catalyseur_score,
     check_breakout_sustain,
     get_atr,
@@ -125,7 +125,7 @@ def _compute_score(ticker: str) -> Optional[dict]:
         vwap = vwap.squeeze()
     volume_5min_ago = get_volume(ticker, "5m")
     price_prev = get_price_5s_ago(ticker)
-    float_val = get_float(ticker)
+    float_shares = get_float_shares(ticker)
     catalyst = get_catalyseur_score(ticker)
     atr = get_atr(ticker)
 
@@ -165,7 +165,7 @@ def _compute_score(ticker: str) -> Optional[dict]:
         score += 5
     if volume_now is not None and volume_now > 750_000:
         score += 20
-    if float_val is not None and float_val < 100_000_000:
+    if float_shares is not None and float_shares < 100_000_000:
         score += 4
     if catalyst is not None and catalyst > 0.7:
         score += 35

@@ -25,7 +25,7 @@ def load_scores() -> pd.DataFrame:
         """
         SELECT w.ticker, COALESCE(w.score,0) AS score_ai,
                COALESCE(ns.score,0) AS score_gpt,
-               COALESCE(w.float,0) AS float_shares,
+               COALESCE(w.float_shares,0) AS float_shares,
                COALESCE(ns.sentiment,'NA') AS sentiment
         FROM watchlist w
         LEFT JOIN news_score ns ON w.ticker = ns.symbol

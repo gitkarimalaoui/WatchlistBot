@@ -14,7 +14,7 @@ def _setup_indicators(monkeypatch):
     monkeypatch.setattr(f'{STRAT_PATH}.get_volume', lambda t, i="1m": 900000 if i=="1m" else 100000)
     monkeypatch.setattr(f'{STRAT_PATH}.get_last_price', lambda t: 3.12)
     monkeypatch.setattr(f'{STRAT_PATH}.get_price_5s_ago', lambda t: 3.0)
-    monkeypatch.setattr(f'{STRAT_PATH}.get_float', lambda t: 50_000_000)
+    monkeypatch.setattr(f'{STRAT_PATH}.get_float_shares', lambda t: 50_000_000)
     monkeypatch.setattr(f'{STRAT_PATH}.get_catalyseur_score', lambda t: 0.8)
     monkeypatch.setattr(f'{STRAT_PATH}.check_breakout_sustain', lambda m,v1,v2: True)
     monkeypatch.setattr(f'{STRAT_PATH}.get_atr', lambda t: 0.5)

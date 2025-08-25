@@ -5,7 +5,7 @@ def main() -> None:
     test_data = {
         "symbol": "AVXL",
         "prix": 3.45,
-        "float": 12_000_000,
+        "float_shares": 12_000_000,
         "volume": 1_500_000,
         "variation": "+67%",
         "news": "FDA approval",

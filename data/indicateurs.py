@@ -120,7 +120,7 @@ def get_atr(ticker: str, period: int = 14) -> Optional[float]:
     return float(atr) if pd.notna(atr) else None
 
 
-def get_float(ticker: str) -> Optional[float]:
+def get_float_shares(ticker: str) -> Optional[float]:
     """Return share float stored in the local database."""
 
     if not os.path.exists(DB_PATH):
@@ -128,7 +128,7 @@ def get_float(ticker: str) -> Optional[float]:
     conn = sqlite3.connect(DB_PATH)
     try:
         row = conn.execute(
-            "SELECT float FROM watchlist WHERE ticker = ?", (ticker,)
+            "SELECT float_shares FROM watchlist WHERE ticker = ?", (ticker,)
         ).fetchone()
     finally:
         conn.close()

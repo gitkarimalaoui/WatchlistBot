@@ -92,7 +92,7 @@ def calculer_score_indicateurs(data: dict) -> int:
         score += 10
     if data.get("volume", 0) > 1.5 * data.get("volume_avg", 0):
         score += 10
-    if data.get("float", 0) < 20_000_000:
+    if data.get("float_shares", 0) < 20_000_000:
         score += 5
     if data.get("catalyst"):
         score += 15
@@ -221,7 +221,7 @@ def afficher_ticker_panel(ticker, stock, index):
         indicateurs = calculer_indicateurs(df_intraday)
         catalyst = "FDA" if stock.get("has_fda") else ""
         if indicateurs:
-            indicateurs["float"] = float(stock.get("float", 0) or 0)
+            indicateurs["float_shares"] = float(stock.get("float_shares", 0) or 0)
             indicateurs["catalyst"] = catalyst
             stock.update(indicateurs)
         else:
@@ -266,7 +266,7 @@ def afficher_ticker_panel(ticker, stock, index):
         volume_str = f"{volume}" if volume is not None else "N/A"
 
         # --- FLOAT : gestion robuste si None ---
-        float_value = stock.get("float")
+        float_value = stock.get("float_shares")
         if float_value is None:
             float_str = "N/A"
             float_flag = ""
@@ -348,7 +348,7 @@ def afficher_ticker_panel(ticker, stock, index):
         st.markdown(
             f"**% Gain :** {stock.get('percent_gain', stock.get('change_percent', 'N/A'))}"
         )
-        st.markdown(f"**Float :** {stock.get('float', 'N/A')}")
+        st.markdown(f"**Float :** {stock.get('float_shares', 'N/A')}")
 
         details_key = f"details_{ticker}_{index}"
         details_state_key = f"{details_key}_state"
