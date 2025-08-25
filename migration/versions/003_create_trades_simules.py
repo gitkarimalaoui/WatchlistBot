@@ -11,7 +11,7 @@ def upgrade():
     op.create_table(
         'trades_simules',
         sa.Column('id', sa.Integer, primary_key=True),
-        sa.Column('ticker', sa.String),
+        sa.Column('ticker', sa.String, nullable=False),
         sa.Column('prix_achat', sa.Float),
         sa.Column('quantite', sa.Integer),
         sa.Column('frais', sa.Float),
@@ -19,9 +19,10 @@ def upgrade():
         sa.Column('sl', sa.Float),
         sa.Column('tp', sa.Float),
         sa.Column('exit_price', sa.Float),
-        sa.Column('date', sa.DateTime, default=sa.func.now()),
+        sa.Column('date', sa.DateTime, nullable=False, default=sa.func.now()),
         sa.Column('provenance', sa.String),
         sa.Column('note', sa.String),
+        sa.UniqueConstraint('ticker', 'date', name='uix_trades_simules_ticker_date'),
     )
 
 def downgrade():

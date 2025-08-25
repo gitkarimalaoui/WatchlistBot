@@ -135,6 +135,19 @@ def executer_trading_reel_auto(agent_model_path: str) -> None:
     conn = sqlite3.connect(str(DB_PATH))
     missing_creds = False
     try:
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS trades_simules (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                ticker TEXT NOT NULL,
+                prix_achat REAL,
+                quantite INTEGER,
+                provenance TEXT,
+                date DATETIME NOT NULL,
+                UNIQUE(ticker, date)
+            )
+            """
+        )
         while not done:
             action, _ = model.predict(obs, deterministic=True)
             obs, _reward, done, _, info = env.step(action)
@@ -142,13 +155,17 @@ def executer_trading_reel_auto(agent_model_path: str) -> None:
                 act = float(action[idx])
                 if act > 0.5:
                     price = env.data[t].iloc[env.current_step]["close"]
-                    conn.execute(
-                        """
-                        INSERT INTO trades_simules (ticker, prix_achat, quantite, provenance, date)
-                        VALUES (?, ?, 1, 'finrl', datetime('now'))
-                        """,
-                        (t, price),
-                    )
+                    try:
+                        conn.execute(
+                            """
+                            INSERT INTO trades_simules (ticker, prix_achat, quantite, provenance, date)
+                            VALUES (?, ?, 1, 'finrl', datetime('now'))
+                            """,
+                            (t, price),
+                        )
+                    except sqlite3.IntegrityError:
+                        logger.info("Trade already exists for %s", t)
+                        continue
                     res = send_telegram_message(f"FinRL BUY {t} at {price:.2f}")
                     if res == MISSING_CREDENTIALS:
                         missing_creds = True

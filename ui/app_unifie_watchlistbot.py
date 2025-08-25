@@ -790,8 +790,8 @@ with st.expander("Saisie manuelle"):
         if new_tic and new_desc:
             conn = get_conn()
             conn.execute(
-                "INSERT OR REPLACE INTO watchlist (ticker, source, date, description, updated_at) VALUES (?, 'Manual', ?, ?, CURRENT_TIMESTAMP)",
-                (new_tic.upper(), datetime.now().isoformat(), new_desc),
+                "INSERT OR REPLACE INTO watchlist (ticker, source, description) VALUES (?, 'Manual', ?)",
+                (new_tic.upper(), new_desc),
             )
             conn.commit()
             conn.close()
