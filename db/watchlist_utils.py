@@ -38,8 +38,14 @@ def ensure_schema_watchlist_scores(conn: sqlite3.Connection) -> None:
         conn.execute("ALTER TABLE watchlist ADD COLUMN score REAL;")
     if "batch_ts" not in cols:
         conn.execute("ALTER TABLE watchlist ADD COLUMN batch_ts TEXT;")
+    if "created_at" not in cols:
+        conn.execute(
+            "ALTER TABLE watchlist ADD COLUMN created_at DATETIME DEFAULT CURRENT_TIMESTAMP;"
+        )
     if "updated_at" not in cols:
-        conn.execute("ALTER TABLE watchlist ADD COLUMN updated_at TEXT;")
+        conn.execute(
+            "ALTER TABLE watchlist ADD COLUMN updated_at DATETIME DEFAULT CURRENT_TIMESTAMP;"
+        )
 
     # table scores (journal historique)
     conn.execute(

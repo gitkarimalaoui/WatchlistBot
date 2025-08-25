@@ -11,7 +11,8 @@ def test_insert_historical(monkeypatch, tmp_path):
         """
         CREATE TABLE historical_data (
             ticker TEXT,
-            date TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             open REAL,
             high REAL,
             low REAL,
@@ -19,6 +20,16 @@ def test_insert_historical(monkeypatch, tmp_path):
             adj_close REAL,
             volume INTEGER
         )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TRIGGER historical_data_set_updated_at
+        AFTER UPDATE ON historical_data
+        FOR EACH ROW
+        BEGIN
+            UPDATE historical_data SET updated_at = CURRENT_TIMESTAMP WHERE rowid = NEW.rowid;
+        END;
         """
     )
     conn.commit()
