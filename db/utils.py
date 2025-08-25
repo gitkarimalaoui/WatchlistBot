@@ -38,7 +38,7 @@ def ensure_schema(db_path: str = DB_PATH) -> None:
                 """
                 CREATE TABLE trades_simules (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    ticker TEXT,
+                    ticker TEXT NOT NULL,
                     prix_achat REAL,
                     quantite INTEGER,
                     frais REAL,
@@ -46,9 +46,10 @@ def ensure_schema(db_path: str = DB_PATH) -> None:
                     sl REAL,
                     tp REAL,
                     exit_price REAL,
-                    date DATETIME,
+                    date DATETIME NOT NULL,
                     provenance TEXT,
-                    note TEXT
+                    note TEXT,
+                    UNIQUE(ticker, date)
                 )
                 """
             )
@@ -73,6 +74,12 @@ def ensure_schema(db_path: str = DB_PATH) -> None:
                     conn.execute(
                         f"ALTER TABLE trades_simules ADD COLUMN {col} {typ};"
                     )
+        conn.execute(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_trades_simules_ticker_date
+            ON trades_simules(ticker, date)
+            """
+        )
         # Ensure progression_ia table
         conn.execute(
             """
