@@ -16,7 +16,17 @@ def ensure_column(conn: sqlite3.Connection, table: str, col: str, coltype: str) 
         conn.execute(f"ALTER TABLE {table} ADD COLUMN {col} {coltype};")
 
 def ensure_indexes(conn: sqlite3.Connection) -> None:
-    conn.execute("CREATE INDEX IF NOT EXISTS idx_watchlist_symbol ON watchlist(symbol);")
+    cols = get_watchlist_cols(conn)
+
+    if "symbol" in cols:
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_watchlist_symbol ON watchlist(symbol);"
+        )
+    elif "ticker" in cols:
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_watchlist_ticker ON watchlist(ticker);"
+        )
+
     conn.execute("CREATE INDEX IF NOT EXISTS idx_watchlist_batch  ON watchlist(batch_ts);")
     conn.execute("CREATE INDEX IF NOT EXISTS idx_scores_date        ON scores(date);")
     conn.execute("CREATE INDEX IF NOT EXISTS idx_scores_symbol_date ON scores(symbol, date);")
