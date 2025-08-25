@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, UniqueConstraint
 from .db import Base
 
 
@@ -38,9 +38,10 @@ class IntradaySmart(Base):
 
 class TradeSimule(Base):
     __tablename__ = "trades_simules"
+    __table_args__ = (UniqueConstraint("ticker", "date"),)
 
     id = Column(Integer, primary_key=True)
-    ticker = Column(String)
+    ticker = Column(String, nullable=False)
     prix_achat = Column(Float)
     quantite = Column(Integer)
     frais = Column(Float)
@@ -48,7 +49,7 @@ class TradeSimule(Base):
     sl = Column(Float)
     tp = Column(Float)
     exit_price = Column(Float)
-    date = Column(DateTime, default=datetime.utcnow)
+    date = Column(DateTime, nullable=False, default=datetime.utcnow)
     provenance = Column(String)
     note = Column(String)
 

@@ -106,15 +106,20 @@ def _simulate_buy(ticker: str) -> str:
     try:
         conn = sqlite3.connect(DB_PATH)
         conn.execute(
-            "CREATE TABLE IF NOT EXISTS trades_simules (id INTEGER PRIMARY KEY AUTOINCREMENT, ticker TEXT, date TEXT)"
+            "CREATE TABLE IF NOT EXISTS trades_simules (id INTEGER PRIMARY KEY AUTOINCREMENT, ticker TEXT NOT NULL, date TEXT NOT NULL, UNIQUE(ticker, date))"
         )
-        conn.execute(
-            "INSERT INTO trades_simules (ticker, date) VALUES (?, ?)",
-            (ticker, datetime.utcnow().isoformat()),
-        )
-        conn.commit()
-        conn.close()
-        return f"Ordre simulé pour {ticker}."
+        try:
+            conn.execute(
+                "INSERT INTO trades_simules (ticker, date) VALUES (?, ?)",
+                (ticker, datetime.utcnow().isoformat()),
+            )
+            conn.commit()
+            msg = f"Ordre simulé pour {ticker}."
+        except sqlite3.IntegrityError:
+            msg = f"Ordre déjà enregistré pour {ticker}."
+        finally:
+            conn.close()
+        return msg
     except Exception as exc:
         return f"Erreur: {exc}"
 
