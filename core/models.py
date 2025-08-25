@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, UniqueConstraint
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, UniqueConstraint, CheckConstraint
 
 from .db import Base
 
