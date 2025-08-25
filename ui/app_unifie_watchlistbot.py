@@ -20,7 +20,6 @@ if sys.platform.startswith("win"):
 import pandas as pd
 import streamlit as st
 import requests
-from db.watchlist_utils import pick_date_column, ensure_schema_watchlist_scores
 
 try:  # Optional dependency for auto refresh
     from streamlit_autorefresh import st_autorefresh
@@ -50,6 +49,8 @@ API_URL = os.getenv("API_URL", "http://localhost:8000")
 for path in (ROOT_DIR, SCRIPTS, ROOT_UI, UTILS, SIMULATION):
     if path not in sys.path:
         sys.path.insert(0, path)
+
+from db.watchlist_utils import pick_date_column, ensure_schema_watchlist_scores
 
 # ─── Configuration base de données ───
 BASE_DIR = Path(__file__).resolve().parents[1]
