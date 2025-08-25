@@ -1,10 +1,13 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, CheckConstraint
 from .db import Base
 
 
 class Watchlist(Base):
     __tablename__ = "watchlist"
+    __table_args__ = (
+        CheckConstraint("has_fda IN (0,1)", name="ck_watchlist_has_fda"),
+    )
 
     id = Column(Integer, primary_key=True)
     ticker = Column(String, unique=True, nullable=False)
@@ -16,7 +19,7 @@ class Watchlist(Base):
     source = Column(String)
     date = Column(String)
     description = Column(String)
-    has_fda = Column(Boolean, default=False)
+    has_fda = Column(Boolean, default=False, nullable=False)
     updated_at = Column(DateTime)
 
 

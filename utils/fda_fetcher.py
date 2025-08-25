@@ -213,7 +213,9 @@ def _ensure_has_fda_column(conn: sqlite3.Connection) -> None:
     cur = conn.execute("PRAGMA table_info(watchlist)")
     cols = [row[1] for row in cur.fetchall()]
     if "has_fda" not in cols:
-        conn.execute("ALTER TABLE watchlist ADD COLUMN has_fda INTEGER DEFAULT 0")
+        conn.execute(
+            "ALTER TABLE watchlist ADD COLUMN has_fda INTEGER NOT NULL DEFAULT 0 CHECK (has_fda IN (0,1))"
+        )
         conn.commit()
 
 
@@ -234,16 +236,32 @@ def check_fda_match(conn: sqlite3.Connection, symbol: str) -> bool:
     return cursor.fetchone() is not None
 
 
-def update_watchlist_with_fda_flag(conn: sqlite3.Connection, symbol: str) -> None:
+def update_watchlist_with_fda_flag(
+    conn: sqlite3.Connection, symbol: str, has_fda: bool = True
+) -> None:
+    """Update ``has_fda`` flag for ``symbol`` ensuring a boolean value.
+
+    Parameters
+    ----------
+    conn : sqlite3.Connection
+        Database connection.
+    symbol : str
+        Ticker symbol to update.
+    has_fda : bool, optional
+        Whether the ticker has an FDA catalyst. Defaults to ``True``.
+    """
+
+    flag = int(bool(has_fda))
     conn.execute(
         """
         UPDATE watchlist
-        SET has_fda = 1,
-            source = CASE WHEN source LIKE '%FDA%' THEN source
-                          ELSE COALESCE(source, '') || ' | FDA' END
+        SET has_fda = ?,
+            source = CASE WHEN ? = 1 AND source LIKE '%FDA%' THEN source
+                          WHEN ? = 1 THEN COALESCE(source, '') || ' | FDA'
+                          ELSE source END
         WHERE ticker = ?
         """,
-        (symbol,),
+        (flag, flag, flag, symbol),
     )
     conn.commit()
 
